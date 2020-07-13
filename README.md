@@ -348,18 +348,7 @@ https://www.figma.com/proto/kiPvhX2u1JPHdBgKz4JTcC/FBU-Project%3A-Package-Sendin
 | lastName | String   | Last name of user|
 | profilePic | ParseFile   | Optional profile picture of user|
 | home | GeoPoint   | Optional "home" location of user|
-| createdAt | DateTime   | Date when request is created (default field)|
-| updatedAt | DateTime   | Date when request is last updated (default field)|
-
-#### Driver
-
-| Property | Type	  | Description |
-| -------- | -------- | -------- |
-| objectId | String   | Unique id for the package request (default field) |
-| username | String   | Username of driver|
-| firstName | String   | First name of driver|
-| lastName | String   | Last name of driver|
-| profilePic | ParseFile   | Optional profile picture of driver|
+| isDriver | Boolean   | Sets whether Driver or not. |
 | rating | Number   | Optional rating of driver|
 | currentLocation | GeoPoint   | Optional current location of driver|
 | createdAt | DateTime   | Date when request is created (default field)|
