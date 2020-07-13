@@ -1,4 +1,6 @@
 package com.example.nextstreet.login;
 
-public class SignupViewModel {
+import androidx.lifecycle.ViewModel;
+
+public class SignupViewModel extends ViewModel {
 }

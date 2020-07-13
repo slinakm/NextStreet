@@ -9,4 +9,20 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_trips">Trips</string>
+
+    <string name="login_loginButton">Log in</string>
+    <string name="login_signUpButton">Sign Up</string>
+    <string name="login_logOutButton">Log out</string>
+    <string name="login_password">Password</string>
+    <string name="login_username">Username</string>
+    <string name="login_new_password">New Password *</string>
+    <string name="login_new_password_again">New Password Again *</string>
+    <string name="login_new_username">New Username *</string>
+    <string name="login_email">Email</string>
+
+    <string name="toast_login_err">Issue with login</string>
+    <string name="toast_login_succ">Success!</string>
+    <string name="toast_success">Success!</string>
+
+    <string name="empty_string"/>
 </resources>

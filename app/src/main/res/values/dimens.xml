@@ -5,4 +5,10 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="login_side_margins">10dp</dimen>
+    <dimen name="login_vertical_spacing">20dp</dimen>
+    <dimen name="login_top_margin">80dp</dimen>
+
+    <dimen name="resized_post_image">150dp</dimen>
 </resources>
