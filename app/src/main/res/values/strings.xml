@@ -32,5 +32,8 @@
     <string name="toast_required_fields_err">Required fields must be filled out!</string>
     <string name="toast_match_password">Passwords must match</string>
 
+    <string name="compose_description">Description</string>
     <string name="empty_string"/>
+    <string name="compose_camera">Submit picture of package contents</string>
+    <string name="submit_package_request">Submit package request</string>
 </resources>

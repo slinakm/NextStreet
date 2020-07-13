@@ -13,5 +13,9 @@
     <dimen name="cancel_icon_top_margin">5dp</dimen>
     <dimen name="cancel_icon_side_margin">5dp</dimen>
 
+    <dimen name="compose_side_margins">10dp</dimen>
+    <dimen name="compose_vertical_spacing">20dp</dimen>
+    <dimen name="compose_top_margin">80dp</dimen>
+
     <dimen name="resized_post_image">150dp</dimen>
 </resources>
