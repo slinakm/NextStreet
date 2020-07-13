@@ -10,6 +10,9 @@
     <color name="btn_scnd_color">@color/light_blue_grey</color>
     <color name="btn_scnd_text_color">@color/text_primary</color>
 
+    <color name="icon_color">@color/blue_grey</color>
+    <color name="icon_text_color">@color/text_primary</color>
+
     <color name="text_primary">@color/white</color>
     <color name="text_secondary">@color/light_grey</color>
 
