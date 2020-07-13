@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.nextstreet.databinding.FragmentProfileBinding;
+import com.example.nextstreet.listeners.DismissOnClickListener;
 import com.example.nextstreet.login.LoginActivity;
 import com.parse.ParseUser;
 
@@ -41,6 +42,15 @@ public class ProfileFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.btnLogout.setOnClickListener(new LogoutOnClickListener());
+        binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.FILL_PARENT);
     }
 
     /**
