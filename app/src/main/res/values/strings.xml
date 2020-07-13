@@ -7,6 +7,10 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="app_id">selina-nextstreet</string>
+    <string name="client_key">skimNextStreet</string>
+    <string name="server_url">http://selina-nextstreet.herokuapp.com/parse</string>
+
     <string name="menu_home">Home</string>
     <string name="menu_trips">Trips</string>
 

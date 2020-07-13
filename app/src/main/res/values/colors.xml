@@ -4,6 +4,12 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+    <color name="btn_color">@color/blue_grey</color>
+    <color name="btn_text_color">@color/text_primary</color>
+
+    <color name="btn_scnd_color">@color/light_blue_grey</color>
+    <color name="btn_scnd_text_color">@color/text_primary</color>
+
     <color name="text_primary">@color/white</color>
     <color name="text_secondary">@color/light_grey</color>
 
