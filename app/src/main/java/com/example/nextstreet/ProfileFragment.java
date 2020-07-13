@@ -61,7 +61,6 @@ public class ProfileFragment extends DialogFragment {
             Log.i(TAG, "onClick: submit button was clicked by user");
 
             ParseUser.logOut();
-            ParseUser currentUser = ParseUser.getCurrentUser();
 
             Intent i = new Intent(ProfileFragment.this.getContext(), LoginActivity.class);
             getContext().startActivity(i);
