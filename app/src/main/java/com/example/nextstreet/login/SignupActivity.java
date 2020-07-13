@@ -15,7 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.nextstreet.MainActivity;
 import com.example.nextstreet.R;
+import com.example.nextstreet.databinding.ActivitySignupBinding;
 import com.example.nextstreet.listeners.LoginCallback;
+import com.example.nextstreet.listeners.SignupCallback;
 import com.example.nextstreet.listeners.TextObserver;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -36,12 +38,6 @@ public class SignupActivity extends AppCompatActivity {
 
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        ActionBar ab = getSupportActionBar();
-        assert ab != null;
-
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
 
         binding.btnSignup.setOnClickListener(new SignupOnClickListener());
 
@@ -84,14 +80,8 @@ public class SignupActivity extends AppCompatActivity {
             user.setEmail(email);
         }
 
-        user.signUpInBackground();
+        user.signUpInBackground(new SignupCallback(TAG, binding.getRoot(), this, username));
 
-        ParseUser.logInInBackground(new LoginCallback(TAG, binding.getRoot(), this));
-    }
-
-    private void goActivity(Class c) {
-        Intent i = new Intent(this, c);
-        startActivity(i);
-        finish();
+        ParseUser.logInInBackground(username, password, new LoginCallback(TAG, binding.getRoot(), this));
     }
 }

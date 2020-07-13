@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.nextstreet.MainActivity;
 import com.example.nextstreet.R;
+import com.example.nextstreet.listeners.LoginCallback;
 import com.example.nextstreet.listeners.TextObserver;
 import com.example.nextstreet.databinding.ActivityLoginBinding;
 import com.google.android.material.snackbar.Snackbar;
@@ -66,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser(String username, String password) {
         Log.i(TAG, "loginUser: " + username);
 
-        ParseUser.logInInBackground(username, password, new LoginCallback() );
+        ParseUser.logInInBackground(username, password, new LoginCallback(TAG, binding.getRoot(), this) );
     }
 
     private void goActivity(Class c) {
