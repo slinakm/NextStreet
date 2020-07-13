@@ -27,6 +27,10 @@
     <string name="toast_login_err">Issue with login</string>
     <string name="toast_login_succ">Success!</string>
     <string name="toast_success">Success!</string>
+    <string name="toast_signup_err">Could not sign up</string>
+    <string name="toast_camera_err">Picture wasn\'t taken!</string>
+    <string name="toast_required_fields_err">Required fields must be filled out!</string>
+    <string name="toast_match_password">Passwords must match</string>
 
     <string name="empty_string"/>
 </resources>
