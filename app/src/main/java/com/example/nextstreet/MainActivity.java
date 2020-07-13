@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.widget.ImageView;
 
 import com.example.nextstreet.databinding.ActivityMainBinding;
+import com.example.nextstreet.listeners.ComposeFragmentOnClickListener;
 import com.example.nextstreet.listeners.ProfileFragmentOnClickListener;
 import com.example.nextstreet.listeners.SnackbarOnClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new );
+        fab.setOnClickListener(new ComposeFragmentOnClickListener(TAG, this));
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);

@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 public class TextObserver implements Observer<String> {
-    TextView tv;
+    private TextView tv;
 
     public TextObserver(TextView tv) {
         this.tv = tv;

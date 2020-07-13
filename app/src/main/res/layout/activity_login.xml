@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -26,9 +26,9 @@
         android:ems="10"
         android:inputType="textPassword"
         android:hint="@string/login_password"
-        app:layout_constraintEnd_toEndOf="@+id/etUsername"
-        app:layout_constraintStart_toStartOf="@+id/etUsername"
-        app:layout_constraintTop_toBottomOf="@+id/etUsername"
+        app:layout_constraintEnd_toEndOf="@+id/etDescription"
+        app:layout_constraintStart_toStartOf="@+id/etDescription"
+        app:layout_constraintTop_toBottomOf="@+id/etDescription"
         app:layout_constraintBottom_toTopOf="@id/btnLogin" />
 
     <Button
