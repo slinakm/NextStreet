@@ -1,4 +1,11 @@
 package com.example.nextstreet.listeners;
 
-public class CameraOnClickListener {
+import android.view.View;
+
+public class CameraOnClickListener implements View.OnClickListener{
+
+    @Override
+    public void onClick(View view) {
+
+    }
 }
