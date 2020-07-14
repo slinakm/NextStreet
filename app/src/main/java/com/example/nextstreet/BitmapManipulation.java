@@ -32,8 +32,8 @@ public class BitmapManipulation {
 
     /**
      * Scale and keep aspect ratio.
-     * @param b, Bitmap to scale
-     * @param width, desired width
+     * @param b, Bitmap to scale.
+     * @param width, Desired width.
      * @return rescaled Bitmap
      */
     public static Bitmap scaleToFitWidth(Bitmap b, int width)
@@ -45,8 +45,8 @@ public class BitmapManipulation {
 
     /**
      * Scale and keep aspect ratio.
-     * @param b, Bitmap to scale
-     * @param height, desired height
+     * @param b, Bitmap to scale.
+     * @param height, Desired height.
      * @return rescaled Bitmap
      */
     public static Bitmap scaleToFitHeight(Bitmap b, int height)
@@ -58,9 +58,9 @@ public class BitmapManipulation {
 
     /**
      * Scale and keep aspect ratio.
-     * @param b, Bitmap to scale
-     * @param width, desired width
-     * @param height, desired height
+     * @param b, Bitmap to scale.
+     * @param width, Desired width.
+     * @param height, Desired height.
      * @return rescaled Bitmap
      */
     public static Bitmap scaleToFill(Bitmap b, int width, int height)
@@ -75,9 +75,9 @@ public class BitmapManipulation {
 
     /**
      * Scale and don't keep aspect ratio.
-     * @param b, Bitmap to scale
-     * @param width, desired width
-     * @param height, desired height
+     * @param b, Bitmap to scale.
+     * @param width, Desired width.
+     * @param height, Desired height.
      * @return stretched Bitmap
      */
     public static Bitmap strechToFill(Bitmap b, int width, int height)
@@ -91,7 +91,7 @@ public class BitmapManipulation {
     /**
      * Rotate Bitmap based on EXIF orientation.
      * Based on https://stackoverflow.com/questions/12933085/android-camera-intent-saving-image-landscape-when-taken-portrait/12933632#12933632
-     * @param photoFilePath
+     * @param photoFilePath, Path to file.
      * @return
      */
     public static Bitmap rotateBitmapOrientation(String photoFilePath) {
@@ -125,6 +125,14 @@ public class BitmapManipulation {
     }
 
 
+    /**
+     * Launches camera as a new Activity.
+     * @param context, Context to launch camera in.
+     * @param fragment, Fragment where camera is being launched.
+     * @param photoFileName, Path to file.
+     * @param TAG, TAG for log statements.
+     * @return File containing photo.
+     */
     public static File launchCamera(Activity context, Fragment fragment, String photoFileName, String TAG) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = getPhotoFileUri(context, photoFileName, TAG);
@@ -140,6 +148,13 @@ public class BitmapManipulation {
         return photoFile;
     }
 
+    /**
+     * Get URI of photo file.
+     * @param context, Context to launch camera in.
+     * @param fileName, Path to file.
+     * @param TAG, TAG for log statements.
+     * @return new File.
+     */
     public static File getPhotoFileUri(Context context, String fileName, String TAG) {
         File mediaStorageDir = new File(
                 context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -153,6 +168,15 @@ public class BitmapManipulation {
         return new File(mediaStorageDir.getPath() + File.separator + fileName);
     }
 
+    /**
+     * Write a new file.
+     * @param context, Context to launch camera in.
+     * @param photoFileName, Path to file.
+     * @param changedBitmap, Bitmap of changed image.
+     * @param resized, String to add to end of file name.
+     * @param TAG, TAG for log statements.
+     * @return new File containing changed Bitmap.
+     */
     public static File writeResizedBitmap(Context context, String photoFileName,
                                           Bitmap changedBitmap, String resized, String TAG){
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -172,6 +196,11 @@ public class BitmapManipulation {
         return resizedFile;
     }
 
+    /**
+     * Launches a photo gallery as a new Activity.
+     * @param context, Context to launch camera in.
+     * @param fragment, Fragment where gallery is being launched.
+     */
     public static void onPickPhoto(Context context, Fragment fragment) {
         // Create intent for picking a photo from the gallery
         Intent intent = new Intent(Intent.ACTION_PICK,
@@ -185,6 +214,12 @@ public class BitmapManipulation {
         }
     }
 
+    /**
+     * Load an image from given URI.
+     * @param context, Context to launch camera in.
+     * @param photoUri, URI where Bitmap is located.
+     * @return Bitmap of image in given URI.
+     */
     public static Bitmap loadFromUri(Context context, Uri photoUri) {
         Bitmap image = null;
         try {
