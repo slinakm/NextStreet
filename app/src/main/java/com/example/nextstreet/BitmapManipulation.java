@@ -138,7 +138,7 @@ public class BitmapManipulation {
         File photoFile = getPhotoFileUri(context, photoFileName, TAG);
 
         Uri fileProvider = FileProvider.getUriForFile(context,
-                "com.codepath.fileprovider.Parstagram", photoFile);
+                "com.codepath.fileprovider.NextStreet", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         if (intent.resolveActivity(context.getPackageManager()) != null) {
