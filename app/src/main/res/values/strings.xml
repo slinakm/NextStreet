@@ -23,6 +23,8 @@
     <string name="login_new_password_again">New Password Again *</string>
     <string name="login_new_username">New Username *</string>
     <string name="login_email">Email</string>
+    <string name="login_first_name">First Name *</string>
+    <string name="login_last_name">Last Name *</string>
 
     <string name="toast_login_err">Issue with login</string>
     <string name="toast_login_succ">Success!</string>

@@ -25,7 +25,6 @@ public class ComposeFragment extends DialogFragment {
     private ComposeViewModel composeViewModel;
 
     public static ComposeFragment newInstance() {
-
         Bundle args = new Bundle();
 
         ComposeFragment fragment = new ComposeFragment();
@@ -38,14 +37,13 @@ public class ComposeFragment extends DialogFragment {
         composeViewModel =
                 ViewModelProviders.of(this).get(ComposeViewModel.class);
         binding = FragmentComposeBinding.inflate(getLayoutInflater());
+        binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        composeViewModel.getDescription().observe(getViewLifecycleOwner(),
-                new TextObserver(binding.etDescription));
         composeViewModel.getDescription().observe(getViewLifecycleOwner(),
                 new TextObserver(binding.etDescription));
     }

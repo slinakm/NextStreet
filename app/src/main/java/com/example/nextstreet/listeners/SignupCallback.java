@@ -11,6 +11,7 @@ import com.example.nextstreet.R;
 import com.example.nextstreet.login.SignupActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 public class SignupCallback implements SignUpCallback {
@@ -19,12 +20,14 @@ public class SignupCallback implements SignUpCallback {
     private View view;
     private Activity activity;
     private String username;
+    private String password;
 
-    public SignupCallback(String TAG, View view, Activity activity, String username) {
+    public SignupCallback(String TAG, View view, Activity activity, String username, String password) {
         this.TAG = TAG;
         this.view = view;
         this.activity = activity;
         this.username = username;
+        this.password = password;
     }
 
     @Override
@@ -43,6 +46,8 @@ public class SignupCallback implements SignUpCallback {
 
 
     private void goActivity(Class c) {
+        ParseUser.logInInBackground(username, password, new LoginCallback(TAG, view, activity));
+
         Intent i = new Intent(activity, c);
         activity.startActivity(i);
         activity.finish();

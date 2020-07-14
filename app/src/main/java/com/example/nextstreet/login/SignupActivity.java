@@ -26,6 +26,9 @@ import com.parse.SignUpCallback;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = SignupActivity.class.getSimpleName();
+    public static final String KEY_FIRSTNAME = "firstName";
+    public static final String KEY_LASTNAME = "lastName";
+    public static final String KEY_PROFILEPIC = "profilePic";
 
     private SignupViewModel signupViewModel;
     private ActivitySignupBinding binding;
@@ -52,12 +55,16 @@ public class SignupActivity extends AppCompatActivity {
         public void onClick(View view) {
             Log.i(TAG, "onClick: signup button clicked");
 
+            String firstName = binding.etFirstName.getText().toString();
+            String lastName = binding.etLastName.getText().toString();
             String username = binding.etUsername.getText().toString();
             String password = binding.etPassword.getText().toString();
             String password2 = binding.etPassword2.getText().toString();
             String email = binding.etEmail.getText().toString();
 
-            if (username.isEmpty()
+            if (firstName.isEmpty()
+                    || lastName.isEmpty()
+                    || username.isEmpty()
                     || password.isEmpty()
                     || password2.isEmpty()) {
                 Toast.makeText(SignupActivity.this,
@@ -66,13 +73,16 @@ public class SignupActivity extends AppCompatActivity {
                 Toast.makeText(SignupActivity.this,
                         R.string.toast_match_password, Toast.LENGTH_SHORT).show();
             } else {
-                signupUser(username, password, email);
+                signupUser(username, password, firstName, lastName, email);
             }
         }
     }
 
-    private void signupUser(final String username, String password, String email) {
+    private void signupUser(final String username, String password, String firstName,
+                            String lastName, String email) {
         ParseUser user = new ParseUser();
+        user.put(KEY_FIRSTNAME, firstName);
+        user.put(KEY_LASTNAME, lastName);
         user.setUsername(username);
         user.setPassword(password);
 
@@ -80,8 +90,7 @@ public class SignupActivity extends AppCompatActivity {
             user.setEmail(email);
         }
 
-        user.signUpInBackground(new SignupCallback(TAG, binding.getRoot(), this, username));
-
-        ParseUser.logInInBackground(username, password, new LoginCallback(TAG, binding.getRoot(), this));
+        user.signUpInBackground(new SignupCallback(TAG, binding.getRoot(),
+                this, username, password));
     }
 }

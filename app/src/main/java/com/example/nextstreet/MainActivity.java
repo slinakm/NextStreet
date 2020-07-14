@@ -4,14 +4,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.nextstreet.databinding.ActivityMainBinding;
 import com.example.nextstreet.listeners.ComposeFragmentOnClickListener;
 import com.example.nextstreet.listeners.ProfileFragmentOnClickListener;
 import com.example.nextstreet.listeners.SnackbarOnClickListener;
+import com.example.nextstreet.login.SignupActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.parse.ParseFile;
+import com.parse.ParseUser;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -20,6 +25,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,9 +50,24 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        // Set current user information
+        ParseUser currUser = ParseUser.getCurrentUser();
         View headerView = navigationView.getHeaderView(0);
+        TextView name = headerView.findViewById(R.id.tvName);
+        String strName = (String) currUser.get(SignupActivity.KEY_FIRSTNAME)
+                + " " + (String) currUser.get(SignupActivity.KEY_FIRSTNAME);
+        name.setText(strName);
+        TextView username = headerView.findViewById(R.id.tvUsername);
+        String strUsername = currUser.getUsername();
+        username.setText(strUsername);
         ImageView profilePic = headerView.findViewById(R.id.ivProfilePic);
         profilePic.setOnClickListener(new ProfileFragmentOnClickListener(TAG, this));
+        ParseFile image = currUser.getParseFile(SignupActivity.KEY_PROFILEPIC);
+        if (image != null) {
+            Glide.with(binding.getRoot()).load(image.getUrl()).into(profilePic);
+        }
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
