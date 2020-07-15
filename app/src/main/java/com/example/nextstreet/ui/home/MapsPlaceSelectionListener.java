@@ -20,7 +20,7 @@ public class MapsPlaceSelectionListener implements PlaceSelectionListener {
 
     private Place place;
 
-    public MapsPlaceSelectionListener(String TAG, View view, Context context) {
+    protected MapsPlaceSelectionListener(String TAG, View view, Context context) {
         this.TAG = TAG;
         this.view = view;
         this.context = context;
