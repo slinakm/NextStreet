@@ -38,4 +38,7 @@
     <string name="empty_string"/>
     <string name="compose_camera">Submit picture of package contents</string>
     <string name="submit_package_request">Submit package request</string>
+
+    <string name="maps_onplace_succ">Chosen!</string>
+    <string name="maps_onplace_err">Couldn\'t choose place</string>
 </resources>

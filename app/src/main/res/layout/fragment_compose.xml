@@ -24,9 +24,9 @@
         android:layout_marginStart="@dimen/compose_side_margins"
         android:layout_marginTop="@dimen/compose_top_margin"
         android:layout_marginEnd="@dimen/compose_side_margins"
-        android:ems="10"
+        android:ems="@integer/description_ems"
+        android:lines="@integer/description_number_of_lines"
         android:hint="@string/compose_description"
-        android:lines="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

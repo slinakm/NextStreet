@@ -18,4 +18,7 @@
     <dimen name="compose_top_margin">80dp</dimen>
 
     <dimen name="resized_post_image">150dp</dimen>
+
+    <integer name="description_ems">10</integer>
+    <integer name="description_number_of_lines">3</integer>
 </resources>

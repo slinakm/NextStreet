@@ -21,8 +21,8 @@
 <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <fragment
-        android:id="@+id/place_autocomplete_fragment"
-        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_autocomplete_fragment"
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment"
         tools:context=".MapsActivity"
         tools:layout_editor_absoluteX="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
