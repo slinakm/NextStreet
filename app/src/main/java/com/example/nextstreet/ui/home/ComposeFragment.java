@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +23,7 @@ import com.example.nextstreet.listeners.TextObserver;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.ParseUser;
 
 import java.io.File;
 
@@ -106,6 +110,29 @@ public class ComposeFragment extends DialogFragment {
                 Snackbar.make(binding.getRoot(), getString(R.string.toast_camera_err),
                         BaseTransientBottomBar.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void checkPostable(){
+        binding.pbLoading.setVisibility(ProgressBar.VISIBLE);
+
+        String desc = binding.etDescription.getText().toString();
+
+        Log.d(TAG, "checkPostable: description =" + desc);
+        Log.d(TAG, "checkPostable: get size of image" + photoFile.getTotalSpace());
+
+        if (desc.isEmpty()) {
+            Toast.makeText(getContext(),
+                    R.string.toast_desc_empt, Toast.LENGTH_SHORT).show();
+            binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
+        } else if (photoFile == null
+                || binding.ivPackage.getDrawable() == null) {
+            Toast.makeText(getContext(),
+                    R.string.toast_img_empt, Toast.LENGTH_SHORT).show();
+            binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
+        } else {
+            ParseUser currUser = ParseUser.getCurrentUser();
+            savePost(desc, photoFile, currUser);
         }
     }
 

@@ -8,7 +8,7 @@ public class PackageSubmissionOnClickListener implements View.OnClickListener{
 
     private String TAG;
 
-    public PackageSubmissionOnClickListener(String TAG, String username, File image) {
+    public PackageSubmissionOnClickListener(String TAG, String username) {
         this.TAG = TAG;
     }
 

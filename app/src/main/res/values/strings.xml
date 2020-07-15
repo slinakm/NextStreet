@@ -35,6 +35,8 @@
     <string name="toast_match_password">Passwords must match</string>
     <string name="set_destination">Set destination!</string>
     <string name="set_origin">Set origin!</string>
+    <string name="toast_desc_empt">Description can not be empty</string>
+    <string name="toast_img_empt">Every request must have an image!</string>
 
     <string name="compose_description">Description</string>
     <string name="empty_string"/>
