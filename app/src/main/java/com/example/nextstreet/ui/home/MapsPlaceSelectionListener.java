@@ -8,6 +8,11 @@ import androidx.annotation.NonNull;
 
 import com.example.nextstreet.R;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -19,11 +24,13 @@ public class MapsPlaceSelectionListener implements PlaceSelectionListener {
     private Context context;
 
     private Place place;
+    private GoogleMap map;
 
-    protected MapsPlaceSelectionListener(String TAG, View view, Context context) {
+    protected MapsPlaceSelectionListener(String TAG, View view, Context context, GoogleMap map) {
         this.TAG = TAG;
         this.view = view;
         this.context = context;
+        this.map = map;
     }
 
     @Override
@@ -33,7 +40,15 @@ public class MapsPlaceSelectionListener implements PlaceSelectionListener {
                 + context.getString(R.string.maps_onplace_succ);
         Snackbar.make(view, placeSelected, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-        Log.i(TAG, "onPlaceSelected: Selected " + place.getName().toString());
+        Log.i(TAG, "onPlaceSelected: Selected " + place.getName()
+                + " and id: " + place.getId());
+
+        LatLng newPlace = place.getLatLng();
+        map.moveCamera(CameraUpdateFactory
+                .newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
+
+        Marker marker = map.addMarker(new MarkerOptions()
+                .position(newPlace));
     }
 
     @Override

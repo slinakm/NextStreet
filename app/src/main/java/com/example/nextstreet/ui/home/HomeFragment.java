@@ -3,10 +3,12 @@ package com.example.nextstreet.ui.home;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,10 +26,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Arrays;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
@@ -42,6 +50,7 @@ public class HomeFragment extends Fragment
     private static final String TAG = HomeFragment.class.getSimpleName();
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    protected static final int DEFAULT_ZOOM = 15;
 
     private static Location lastKnownLocation;
     private static LatLng destination;
@@ -53,18 +62,18 @@ public class HomeFragment extends Fragment
 
     private PlacesClient placesClient;
     private FusedLocationProviderClient fusedLocationProviderClient;
-
+    private AutocompleteSupportFragment autocompleteFragment;
     private GoogleMap map;
 
     protected static void setLastKnownLocation(Location lastKnownLocation) {
         HomeFragment.lastKnownLocation = lastKnownLocation;
     }
 
-    public static LatLng getDestination() {
+    protected static LatLng getDestination() {
         return destination;
     }
 
-    public static LatLng getOrigin() {
+    protected static LatLng getOrigin() {
         origin = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
         return origin;
     }
@@ -84,6 +93,9 @@ public class HomeFragment extends Fragment
         placesClient = Places.createClient(getContext());
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
+        autocompleteFragment = (AutocompleteSupportFragment)
+                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
         return binding.getRoot();
     }
 
@@ -93,6 +105,13 @@ public class HomeFragment extends Fragment
         if (map != null) {
             // Map is ready
             map.setOnMapLongClickListener(this);
+
+            assert autocompleteFragment != null;
+            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,
+                    Place.Field.LAT_LNG));
+            autocompleteFragment.setOnPlaceSelectedListener(new
+                    MapsPlaceSelectionListener(TAG, binding.getRoot(), getContext(), map));
+
             Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
 
             getLocationPermission();
@@ -181,6 +200,8 @@ public class HomeFragment extends Fragment
         Snackbar.make(binding.getRoot(), getString(R.string.set_destination),
                 Snackbar.LENGTH_SHORT).show();
         destination = latLng;
+        Marker marker = map.addMarker(new MarkerOptions()
+                .position(destination));
     }
 
 }

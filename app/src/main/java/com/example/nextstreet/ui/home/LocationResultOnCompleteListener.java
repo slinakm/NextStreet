@@ -17,7 +17,6 @@ public class LocationResultOnCompleteListener implements OnCompleteListener<Loca
     private GoogleMap map;
     private Location lastKnownLocation;
     private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
-    private static final int DEFAULT_ZOOM = 15;
 
     protected LocationResultOnCompleteListener(String TAG, GoogleMap map) {
         this.TAG = TAG;
@@ -32,14 +31,14 @@ public class LocationResultOnCompleteListener implements OnCompleteListener<Loca
             if (lastKnownLocation != null) {
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                         new LatLng(lastKnownLocation.getLatitude(),
-                                lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                lastKnownLocation.getLongitude()), HomeFragment.DEFAULT_ZOOM));
                 HomeFragment.setLastKnownLocation(lastKnownLocation);
             }
         } else {
             Log.d(TAG, "Current location is null. Using defaults.");
             Log.e(TAG, "Exception: %s", task.getException());
             map.moveCamera(CameraUpdateFactory
-                    .newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
+                    .newLatLngZoom(defaultLocation, HomeFragment.DEFAULT_ZOOM));
             map.getUiSettings().setMyLocationButtonEnabled(false);
         }
     }
