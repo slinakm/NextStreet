@@ -1,29 +1,23 @@
-package com.example.nextstreet;
+package com.example.nextstreet.ui.home;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeBinding;
-import com.example.nextstreet.databinding.FragmentProfileBinding;
-import com.example.nextstreet.listeners.CameraOnClickListener;
 import com.example.nextstreet.listeners.DismissOnClickListener;
-import com.example.nextstreet.listeners.SnackbarOnClickListener;
 import com.example.nextstreet.listeners.TextObserver;
-import com.example.nextstreet.ui.home.HomeFragment;
-import com.example.nextstreet.ui.trips.TripsViewModel;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -65,8 +59,14 @@ public class ComposeFragment extends DialogFragment {
         composeViewModel.getDescription().observe(getViewLifecycleOwner(),
                 new TextObserver(binding.etDescription));
 
-        binding.tvDestination.setText(HomeFragment.getDestination().toString());
-        binding.tvOrigin.setText(HomeFragment.getOrigin().toString());
+        LatLng dest = HomeFragment.getDestination();
+        LatLng origin = HomeFragment.getOrigin();
+        if (dest != null) {
+            binding.tvDestination.setText(dest.toString());
+        }
+        if (origin != null) {
+            binding.tvOrigin.setText(origin.toString());
+        }
 
         binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
         cameraOnClickListener = new CameraOnClickListener(TAG, getActivity(),

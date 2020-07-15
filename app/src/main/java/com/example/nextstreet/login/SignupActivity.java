@@ -1,28 +1,18 @@
 package com.example.nextstreet.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.nextstreet.MainActivity;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ActivitySignupBinding;
-import com.example.nextstreet.listeners.LoginCallback;
-import com.example.nextstreet.listeners.SignupCallback;
 import com.example.nextstreet.listeners.TextObserver;
-import com.parse.LogInCallback;
-import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.parse.SignUpCallback;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = SignupActivity.class.getSimpleName();

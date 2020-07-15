@@ -1,12 +1,10 @@
-package com.example.nextstreet.listeners;
+package com.example.nextstreet.ui.home;
 
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
-
-import com.example.nextstreet.BitmapManipulation;
 
 import java.io.File;
 

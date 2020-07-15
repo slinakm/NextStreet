@@ -1,13 +1,12 @@
-package com.example.nextstreet.listeners;
+package com.example.nextstreet.ui;
 
-import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.nextstreet.ProfileFragment;
+import com.example.nextstreet.ui.ProfileFragment;
 
 public class ProfileFragmentOnClickListener implements View.OnClickListener {
 

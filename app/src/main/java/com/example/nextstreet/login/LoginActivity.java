@@ -9,14 +9,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.nextstreet.MainActivity;
-import com.example.nextstreet.R;
-import com.example.nextstreet.listeners.LoginCallback;
+import com.example.nextstreet.ui.MainActivity;
 import com.example.nextstreet.listeners.TextObserver;
 import com.example.nextstreet.databinding.ActivityLoginBinding;
-import com.google.android.material.snackbar.Snackbar;
-import com.parse.LogInCallback;
-import com.parse.ParseException;
 import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {

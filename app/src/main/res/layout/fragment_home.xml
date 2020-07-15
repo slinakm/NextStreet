@@ -38,4 +38,8 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".MapsActivity"
         tools:layout_editor_absoluteX="16dp" />
+
+<!--    <include-->
+<!--        android:id="@+id/home_fragment_bottom_sheet"-->
+<!--        layout="@layout/bottom_sheet_compose"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

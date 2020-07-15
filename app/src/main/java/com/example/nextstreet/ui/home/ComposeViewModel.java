@@ -1,4 +1,4 @@
-package com.example.nextstreet;
+package com.example.nextstreet.ui.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

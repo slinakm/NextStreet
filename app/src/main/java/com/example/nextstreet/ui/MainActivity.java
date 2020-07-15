@@ -1,4 +1,4 @@
-package com.example.nextstreet;
+package com.example.nextstreet.ui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,13 +7,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ActivityMainBinding;
-import com.example.nextstreet.listeners.ComposeFragmentOnClickListener;
-import com.example.nextstreet.listeners.ProfileFragmentOnClickListener;
-import com.example.nextstreet.listeners.SnackbarOnClickListener;
+import com.example.nextstreet.ui.home.ComposeFragmentOnClickListener;
 import com.example.nextstreet.login.SignupActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -25,8 +23,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 

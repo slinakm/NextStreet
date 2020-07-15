@@ -1,14 +1,12 @@
-package com.example.nextstreet.listeners;
+package com.example.nextstreet.login;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.nextstreet.MainActivity;
+import com.example.nextstreet.ui.MainActivity;
 import com.example.nextstreet.R;
-import com.example.nextstreet.login.SignupActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.ParseUser;

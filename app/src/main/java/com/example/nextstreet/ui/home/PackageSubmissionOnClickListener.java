@@ -1,4 +1,4 @@
-package com.example.nextstreet.listeners;
+package com.example.nextstreet.ui.home;
 
 import android.view.View;
 
