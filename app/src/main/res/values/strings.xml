@@ -33,6 +33,8 @@
     <string name="toast_camera_err">Picture wasn\'t taken!</string>
     <string name="toast_required_fields_err">Required fields must be filled out!</string>
     <string name="toast_match_password">Passwords must match</string>
+    <string name="set_destination">Set destination!</string>
+    <string name="set_origin">Set origin!</string>
 
     <string name="compose_description">Description</string>
     <string name="empty_string"/>
@@ -41,4 +43,8 @@
 
     <string name="maps_onplace_succ">Chosen!</string>
     <string name="maps_onplace_err">Couldn\'t choose place</string>
+    <string name="maps_no_permissions_err">Permission not granted to go to current location</string>
+    <string name="testing">testing</string>
+    <string name="destination">Destination</string>
+    <string name="origin">Origin</string>
 </resources>

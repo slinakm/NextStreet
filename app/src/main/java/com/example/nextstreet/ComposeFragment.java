@@ -22,6 +22,7 @@ import com.example.nextstreet.listeners.CameraOnClickListener;
 import com.example.nextstreet.listeners.DismissOnClickListener;
 import com.example.nextstreet.listeners.SnackbarOnClickListener;
 import com.example.nextstreet.listeners.TextObserver;
+import com.example.nextstreet.ui.home.HomeFragment;
 import com.example.nextstreet.ui.trips.TripsViewModel;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -54,11 +55,6 @@ public class ComposeFragment extends DialogFragment {
         composeViewModel =
                 ViewModelProviders.of(this).get(ComposeViewModel.class);
         binding = FragmentComposeBinding.inflate(getLayoutInflater());
-        binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
-
-        cameraOnClickListener = new CameraOnClickListener(TAG, getActivity(),
-                this, photoFileName);
-        binding.btnCamera.setOnClickListener(cameraOnClickListener);
 
         return binding.getRoot();
     }
@@ -68,6 +64,14 @@ public class ComposeFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         composeViewModel.getDescription().observe(getViewLifecycleOwner(),
                 new TextObserver(binding.etDescription));
+
+        binding.tvDestination.setText(HomeFragment.getDestination().toString());
+        binding.tvOrigin.setText(HomeFragment.getOrigin().toString());
+
+        binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
+        cameraOnClickListener = new CameraOnClickListener(TAG, getActivity(),
+                this, photoFileName);
+        binding.btnCamera.setOnClickListener(cameraOnClickListener);
     }
 
     @Override

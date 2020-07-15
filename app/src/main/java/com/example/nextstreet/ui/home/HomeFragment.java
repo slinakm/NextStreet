@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.nextstreet.BuildConfig;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
+import com.example.nextstreet.listeners.ComposeFragmentOnClickListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,6 +29,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.snackbar.Snackbar;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
@@ -43,6 +47,8 @@ public class HomeFragment extends Fragment
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
 
     private static Location lastKnownLocation;
+    private static LatLng destination;
+    private static LatLng origin;
 
     private FragmentHomeBinding binding;
     private HomeViewModel homeViewModel;
@@ -54,7 +60,16 @@ public class HomeFragment extends Fragment
     private GoogleMap map;
 
     protected static void setLastKnownLocation(Location lastKnownLocation) {
-        lastKnownLocation = lastKnownLocation;
+        HomeFragment.lastKnownLocation = lastKnownLocation;
+    }
+
+    public static LatLng getDestination() {
+        return destination;
+    }
+
+    public static LatLng getOrigin() {
+        origin = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+        return origin;
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -154,6 +169,10 @@ public class HomeFragment extends Fragment
             if (locationPermissionGranted) {
                 Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
                 locationResult.addOnCompleteListener(new LocationResultOnCompleteListener(TAG, map));
+            } else {
+                Snackbar.make(binding.getRoot(), getString(R.string.maps_no_permissions_err),
+                        Snackbar.LENGTH_SHORT).show();
+                Log.d(TAG, "getDeviceLocation: Location Permission not granted", null);
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage(), e);
@@ -162,6 +181,9 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-
+        Snackbar.make(binding.getRoot(), getString(R.string.set_destination),
+                Snackbar.LENGTH_SHORT).show();
+        destination = latLng;
     }
+
 }
