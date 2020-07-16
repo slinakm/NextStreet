@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.request.RequestOptions;
@@ -318,6 +319,19 @@ public class HomeFragment extends Fragment
 
             setMarkerDestination(latlngOrigin);
             setMarkerOrigin(latlngDest);
+
+            View originView = autocompleteFragmentOrigin.getView();
+            originView
+                    .animate()
+                    .translationYBy(-originView.getHeight())
+                    .setDuration(300)
+                    .setListener(new DismissAnimatorListenerAdapter(originView));
+            View destinationView = autocompleteFragmentDestination.getView();
+            destinationView
+                    .animate()
+                    .translationYBy(-originView.getHeight())
+                    .setDuration(600)
+                    .setListener(new DismissAnimatorListenerAdapter(destinationView));
         }
     }
 
