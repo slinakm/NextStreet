@@ -2,6 +2,7 @@ package com.example.nextstreet;
 
 import android.app.Application;
 
+import com.example.nextstreet.models.PackageRequest;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -23,7 +24,7 @@ public class ParseApplication extends Application {
         builder.networkInterceptors().add(httpLoggingInterceptor);
 
         // Register Parse Models here
-
+        ParseObject.registerSubclass(PackageRequest.class);
 
         // Initialize Parse
         Parse.initialize(new Parse.Configuration.Builder(this)

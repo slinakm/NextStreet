@@ -37,6 +37,9 @@
     <string name="set_origin">Set origin!</string>
     <string name="toast_desc_empt">Description can not be empty</string>
     <string name="toast_img_empt">Every request must have an image!</string>
+    <string name="toast_dest_empt">Every request must have an origin and an ending destination!</string>
+    <string name="toast_save_err">Error while saving!</string>
+    <string name="toast_save_succ">Success!</string>
 
     <string name="compose_description">Description</string>
     <string name="empty_string"/>

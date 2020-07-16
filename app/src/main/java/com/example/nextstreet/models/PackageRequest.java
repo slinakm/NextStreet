@@ -2,9 +2,13 @@ package com.example.nextstreet.models;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.io.File;
+import java.util.ArrayList;
 
 @ParseClassName("PackageRequest")
 public class PackageRequest extends ParseObject {
@@ -21,10 +25,18 @@ public class PackageRequest extends ParseObject {
     public PackageRequest(){}
 
     public PackageRequest(File image, String description,
-                          LatLng origin, LatLng destination){
-        put(KEY_IMAGE, image);
-        put(KEY_DESCRIPTION, description);
-        put(KEY_ORIGIN, origin);
-        put(KEY_DESTINATION, destination);
+                          LatLng origin, LatLng destination, ParseUser user){
+        if (image != null) {
+            put(KEY_IMAGE, image);
+        }
+        if (description != null) {
+            put(KEY_DESCRIPTION, description);
+        }
+        put(KEY_ORIGIN, new ParseGeoPoint(origin.latitude, origin.longitude));
+        ParseGeoPoint destGeoPoint= new ParseGeoPoint(destination.latitude, destination.longitude);
+        ArrayList<ParseGeoPoint> geoPointArrayList = new ArrayList<ParseGeoPoint>();
+        geoPointArrayList.add(destGeoPoint);
+        put(KEY_DESTINATION, geoPointArrayList);
+        put(KEY_USER, user);
     }
 }

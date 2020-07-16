@@ -8,33 +8,23 @@
 
     <TextView
         android:id="@+id/tvDestination"
-        android:layout_width="72dp"
-        android:layout_height="15dp"
-        android:layout_marginStart="@dimen/compose_side_margins"
-        android:layout_marginTop="@dimen/compose_top_margin"
-        android:text="@string/destination"
-        app:layout_constraintEnd_toStartOf="@+id/ivArrow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/ivArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/destination"
+        android:layout_margin="@dimen/compose_vertical_spacing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvDestination"
-        app:srcCompat="@drawable/quantum_ic_arrow_back_grey600_24" />
+        app:layout_constraintTop_toBottomOf="@id/tvOrigin" />
 
     <TextView
         android:id="@+id/tvOrigin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/compose_side_margins"
+        android:layout_marginTop="@dimen/compose_top_margin"
         android:text="@string/origin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivArrow"
-        app:layout_constraintTop_toTopOf="@id/tvDestination" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ivCancel"

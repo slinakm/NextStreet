@@ -20,10 +20,14 @@ import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeBinding;
 import com.example.nextstreet.listeners.DismissOnClickListener;
 import com.example.nextstreet.listeners.TextObserver;
+import com.example.nextstreet.models.PackageRequest;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.File;
 
@@ -39,6 +43,8 @@ public class ComposeFragment extends DialogFragment {
 
     private CameraOnClickListener cameraOnClickListener;
     private File photoFile;
+    private LatLng dest;
+    private LatLng origin;
 
     public static ComposeFragment newInstance() {
         Bundle args = new Bundle();
@@ -63,8 +69,8 @@ public class ComposeFragment extends DialogFragment {
         composeViewModel.getDescription().observe(getViewLifecycleOwner(),
                 new TextObserver(binding.etDescription));
 
-        LatLng dest = HomeFragment.getDestination();
-        LatLng origin = HomeFragment.getOrigin();
+        dest = HomeFragment.getDestination();
+        origin = HomeFragment.getOrigin();
         if (dest != null) {
             binding.tvDestination.setText(dest.toString());
         }
@@ -76,6 +82,8 @@ public class ComposeFragment extends DialogFragment {
         cameraOnClickListener = new CameraOnClickListener(TAG, getActivity(),
                 this, photoFileName);
         binding.btnCamera.setOnClickListener(cameraOnClickListener);
+        binding.btnSubmit.setOnClickListener(new PackageSubmissionOnClickListener(TAG,
+                ParseUser.getCurrentUser().getUsername(), this));
     }
 
     @Override
@@ -113,27 +121,54 @@ public class ComposeFragment extends DialogFragment {
         }
     }
 
-    private void checkPostable(){
+    protected void checkPostable() {
         binding.pbLoading.setVisibility(ProgressBar.VISIBLE);
 
         String desc = binding.etDescription.getText().toString();
 
-        Log.d(TAG, "checkPostable: description =" + desc);
-        Log.d(TAG, "checkPostable: get size of image" + photoFile.getTotalSpace());
+        Log.d(TAG, "checkPostable: destination =" + dest);
+        Log.d(TAG, "checkPostable: origin" + origin);
 
-        if (desc.isEmpty()) {
+        if (dest == null
+                || origin == null) {
             Toast.makeText(getContext(),
-                    R.string.toast_desc_empt, Toast.LENGTH_SHORT).show();
+                    R.string.toast_dest_empt, Toast.LENGTH_SHORT).show();
             binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
-        } else if (photoFile == null
-                || binding.ivPackage.getDrawable() == null) {
-            Toast.makeText(getContext(),
-                    R.string.toast_img_empt, Toast.LENGTH_SHORT).show();
-            binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
+            //TODO: Set the following as warnings with Snackbars
+//        } else if (desc.isEmpty()) {
+//            Toast.makeText(getContext(),
+//                    R.string.toast_desc_empt, Toast.LENGTH_SHORT).show();
+//            binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
+//        } else if (photoFile == null
+//                || binding.ivPackage.getDrawable() == null) {
+//            Toast.makeText(getContext(),
+//                    R.string.toast_img_empt, Toast.LENGTH_SHORT).show();
+//            binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
         } else {
             ParseUser currUser = ParseUser.getCurrentUser();
-            savePost(desc, photoFile, currUser);
+            saveRequest(desc, photoFile, currUser);
         }
+    }
+
+    private void saveRequest(String desc, File file, ParseUser currUser) {
+        PackageRequest request = new PackageRequest(file, desc, origin, dest, currUser);
+
+        request.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
+
+                if (e != null) {
+                    Log.e(TAG, "done: Error while saving request", e);
+                    Toast.makeText(getContext(), getString(R.string.toast_save_err),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.i(TAG, "done: Request save was successful!");
+                    Toast.makeText(getContext(), getString(R.string.toast_save_succ),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 }
