@@ -134,23 +134,22 @@ public class ComposeFragment extends DialogFragment {
             Toast.makeText(getContext(),
                     R.string.toast_dest_empt, Toast.LENGTH_SHORT).show();
             binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
-            //TODO: Set the following as warnings with Snackbars
-//        } else if (desc.isEmpty()) {
-//            Toast.makeText(getContext(),
-//                    R.string.toast_desc_empt, Toast.LENGTH_SHORT).show();
-//            binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
-//        } else if (photoFile == null
-//                || binding.ivPackage.getDrawable() == null) {
-//            Toast.makeText(getContext(),
-//                    R.string.toast_img_empt, Toast.LENGTH_SHORT).show();
-//            binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
         } else {
+            if (desc.isEmpty()) {
+                Snackbar.make(binding.getRoot(), R.string.toast_desc_empt,
+                        Snackbar.LENGTH_LONG).show();
+            } else if (photoFile == null
+                    || binding.ivPackage.getDrawable() == null) {
+                Snackbar.make(binding.getRoot(), R.string.toast_img_empt,
+                        Snackbar.LENGTH_LONG).show();
+            }
             ParseUser currUser = ParseUser.getCurrentUser();
             saveRequest(desc, photoFile, currUser);
         }
     }
 
     private void saveRequest(String desc, File file, ParseUser currUser) {
+
         PackageRequest request = new PackageRequest(file, desc, origin, dest, currUser);
 
         request.saveInBackground(new SaveCallback() {
