@@ -107,6 +107,13 @@ public class HomeFragment extends Fragment
         setMarkerOrigin(newPlace);
     }
 
+    protected void setOriginNoCamera(LatLng newPlace) {
+        origin = newPlace;
+        assert newPlace != null;
+        setMarkerOrigin(newPlace);
+    }
+
+
     protected void setDestination(LatLng newPlace) {
         map.moveCamera(CameraUpdateFactory
                 .newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
@@ -309,29 +316,26 @@ public class HomeFragment extends Fragment
         if (destination != null) {
             Log.i(TAG, "setMapToCurrRequest: " + destination.getLatitude());
 
-            LatLng latlngOrigin = new LatLng(destination.getLatitude(),
-                    destination.getLongitude());
+            LatLng latlngOrigin = new LatLng(origin.getLatitude(),
+                    origin.getLongitude());
             LatLng latlngDest = new LatLng(destination.getLatitude(),
                     destination.getLongitude());
-
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlngOrigin,
-                    HomeFragment.DEFAULT_ZOOM));
-
-            setMarkerDestination(latlngOrigin);
-            setMarkerOrigin(latlngDest);
 
             View originView = autocompleteFragmentOrigin.getView();
             originView
                     .animate()
                     .translationYBy(-originView.getHeight())
-                    .setDuration(300)
+                    .setDuration(200)
                     .setListener(new DismissAnimatorListenerAdapter(originView));
             View destinationView = autocompleteFragmentDestination.getView();
             destinationView
                     .animate()
-                    .translationYBy(-originView.getHeight())
-                    .setDuration(600)
+                    .translationYBy(-destinationView.getHeight()-originView.getHeight())
+                    .setDuration(400)
                     .setListener(new DismissAnimatorListenerAdapter(destinationView));
+
+            setOriginNoCamera(latlngOrigin);
+            setDestination(latlngDest);
         }
     }
 

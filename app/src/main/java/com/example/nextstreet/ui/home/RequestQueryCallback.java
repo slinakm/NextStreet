@@ -21,14 +21,18 @@ public class RequestQueryCallback implements FindCallback<PackageRequest> {
 
     @Override
     public void done(List<PackageRequest> posts, ParseException e) {
-        Log.d(TAG, "done query: post size = " + posts.size());
-        if (e != null) {
-            Log.e(TAG, "queryPosts: Issue getting posts", e);
+        if (posts != null) {
+            Log.d(TAG, "done query: post size = " + posts.size());
+            if (e != null) {
+                Log.e(TAG, "queryPosts: Issue getting posts", e);
+            }
+
+            if (posts.size() != 0) {
+                PackageRequest request = posts.get(0);
+                Log.i(TAG, "received post" + request);
+
+                fragment.respondToQuery(request);
+            }
         }
-
-        PackageRequest request = posts.get(0);
-        Log.i(TAG, "received post" + request);
-
-        fragment.respondToQuery(request);
     }
 }
