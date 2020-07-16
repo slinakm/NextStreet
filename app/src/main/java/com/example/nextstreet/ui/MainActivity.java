@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ActivityMainBinding;
-import com.example.nextstreet.ui.home.ComposeFragmentOnClickListener;
+import com.example.nextstreet.ui.home.compose.ComposeFragmentOnClickListener;
 import com.example.nextstreet.login.SignupActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;

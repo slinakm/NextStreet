@@ -22,9 +22,11 @@ import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -62,20 +64,63 @@ public class HomeFragment extends Fragment
 
     private PlacesClient placesClient;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private AutocompleteSupportFragment autocompleteFragment;
+    private AutocompleteSupportFragment autocompleteFragmentOrigin;
+    private AutocompleteSupportFragment autocompleteFragmentDestination;
+    private Marker markerOrigin;
+    private Marker markerDestination;
     private GoogleMap map;
 
     protected static void setLastKnownLocation(Location lastKnownLocation) {
         HomeFragment.lastKnownLocation = lastKnownLocation;
     }
 
-    protected static LatLng getDestination() {
+    public static LatLng getDestination() {
         return destination;
     }
 
-    protected static LatLng getOrigin() {
+    public static LatLng getOrigin() {
         origin = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
         return origin;
+    }
+
+    protected void setOrigin(LatLng newPlace) {
+        map.moveCamera(CameraUpdateFactory
+                .newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
+        origin = newPlace;
+        assert newPlace != null;
+        setMarkerOrigin(newPlace);
+    }
+
+    protected void setDestination(LatLng newPlace) {
+        map.moveCamera(CameraUpdateFactory
+                .newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
+        destination = newPlace;
+        assert newPlace != null;
+        setMarkerDestination(newPlace);
+    }
+
+    private void setMarkerOrigin(LatLng latLng) {
+        MarkerOptions marker = new MarkerOptions().position(latLng).
+                title(getString(R.string.origin)).flat(true);
+        Marker markerOrigin = map.addMarker(marker);
+
+        if (this.markerOrigin != null) {
+            this.markerOrigin.remove();
+        }
+        this.markerOrigin = markerOrigin;
+    }
+
+    private void setMarkerDestination(LatLng latLng) {
+        MarkerOptions marker = new MarkerOptions().position(latLng).
+                title(getString(R.string.destination)).
+                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).
+                flat(true);
+        Marker markerDestination = map.addMarker(marker);
+
+        if (this.markerDestination != null) {
+            this.markerDestination.remove();
+        }
+        this.markerDestination = markerDestination;
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -93,8 +138,12 @@ public class HomeFragment extends Fragment
         placesClient = Places.createClient(getContext());
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-        autocompleteFragment = (AutocompleteSupportFragment)
-                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        autocompleteFragmentOrigin = (AutocompleteSupportFragment)
+                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment_origin);
+        autocompleteFragmentOrigin.setHint(getString(R.string.origin));
+        autocompleteFragmentDestination = (AutocompleteSupportFragment)
+                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment_destination);
+        autocompleteFragmentDestination.setHint(getString(R.string.destination));
 
         return binding.getRoot();
     }
@@ -106,11 +155,17 @@ public class HomeFragment extends Fragment
             // Map is ready
             map.setOnMapLongClickListener(this);
 
-            assert autocompleteFragment != null;
-            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,
+            assert autocompleteFragmentOrigin != null;
+            autocompleteFragmentOrigin.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,
                     Place.Field.LAT_LNG));
-            autocompleteFragment.setOnPlaceSelectedListener(new
-                    MapsPlaceSelectionListener(TAG, binding.getRoot(), getContext(), map));
+            autocompleteFragmentOrigin.setOnPlaceSelectedListener(new
+                    MapsPlaceSelectionListener(TAG, binding.getRoot(), this, true));
+
+            assert autocompleteFragmentDestination!= null;
+            autocompleteFragmentDestination.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,
+                    Place.Field.LAT_LNG));
+            autocompleteFragmentDestination.setOnPlaceSelectedListener(new
+                    MapsPlaceSelectionListener(TAG, binding.getRoot(), this, false));
 
             Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
 
@@ -184,7 +239,7 @@ public class HomeFragment extends Fragment
         try {
             if (locationPermissionGranted) {
                 Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(new LocationResultOnCompleteListener(TAG, map));
+                locationResult.addOnCompleteListener(new LocationResultOnCompleteListener(TAG, map, this));
             } else {
                 Snackbar.make(binding.getRoot(), getString(R.string.maps_no_permissions_err),
                         Snackbar.LENGTH_SHORT).show();
@@ -199,9 +254,7 @@ public class HomeFragment extends Fragment
     public void onMapLongClick(LatLng latLng) {
         Snackbar.make(binding.getRoot(), getString(R.string.set_destination),
                 Snackbar.LENGTH_SHORT).show();
-        destination = latLng;
-        Marker marker = map.addMarker(new MarkerOptions()
-                .position(destination));
+        setDestination(latLng);
     }
 
 }

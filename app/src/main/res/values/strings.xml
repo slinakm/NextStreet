@@ -35,13 +35,12 @@
     <string name="toast_match_password">Passwords must match</string>
     <string name="set_destination">Set destination!</string>
     <string name="set_origin">Set origin!</string>
-    <string name="toast_desc_empt">Description can not be empty</string>
-    <string name="toast_img_empt">Every request must have an image!</string>
+    <string name="toast_desc_empt">Description should not be empty :(</string>
+    <string name="toast_img_empt">Every request should have an image!</string>
     <string name="toast_dest_empt">Every request must have an origin and an ending destination!</string>
     <string name="toast_save_err">Error while saving!</string>
     <string name="toast_save_succ">Success!</string>
     <string name="snackbar_dismiss">Dismiss</string>
-
     <string name="compose_description">Description</string>
     <string name="empty_string"/>
     <string name="compose_camera">Submit picture of package contents</string>
@@ -51,6 +50,7 @@
     <string name="maps_onplace_err">Couldn\'t choose place</string>
     <string name="maps_no_permissions_err">Permission not granted to go to current location</string>
     <string name="testing">testing</string>
+
     <string name="destination">Destination</string>
     <string name="origin">Origin</string>
 </resources>

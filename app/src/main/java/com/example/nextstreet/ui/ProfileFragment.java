@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.nextstreet.databinding.FragmentProfileBinding;
-import com.example.nextstreet.listeners.DismissOnClickListener;
+import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.example.nextstreet.login.LoginActivity;
 import com.parse.ParseUser;
 

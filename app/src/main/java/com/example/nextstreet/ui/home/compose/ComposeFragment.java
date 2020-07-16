@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui.home;
+package com.example.nextstreet.ui.home.compose;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,14 +18,16 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeBinding;
-import com.example.nextstreet.listeners.DismissOnClickListener;
-import com.example.nextstreet.listeners.TextObserver;
+import com.example.nextstreet.ui.BitmapManipulation;
+import com.example.nextstreet.ui.CameraOnClickListener;
+import com.example.nextstreet.ui.home.HomeFragment;
+import com.example.nextstreet.utilities.DismissOnClickListener;
+import com.example.nextstreet.utilities.TextObserver;
 import com.example.nextstreet.models.PackageRequest;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 

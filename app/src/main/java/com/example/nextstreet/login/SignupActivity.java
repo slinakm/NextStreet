@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ActivitySignupBinding;
-import com.example.nextstreet.listeners.TextObserver;
+import com.example.nextstreet.utilities.TextObserver;
 import com.parse.ParseUser;
 
 public class SignupActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.example.nextstreet.listeners;
+package com.example.nextstreet.utilities;
 
 import android.util.Log;
 import android.view.View;

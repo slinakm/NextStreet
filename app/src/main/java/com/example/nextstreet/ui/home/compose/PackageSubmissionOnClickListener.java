@@ -1,8 +1,6 @@
-package com.example.nextstreet.ui.home;
+package com.example.nextstreet.ui.home.compose;
 
 import android.view.View;
-
-import java.io.File;
 
 public class PackageSubmissionOnClickListener implements View.OnClickListener{
 

@@ -10,17 +10,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 public class LocationResultOnCompleteListener implements OnCompleteListener<Location>{
 
     private String TAG;
     private GoogleMap map;
     private Location lastKnownLocation;
+    private HomeFragment fragment;
     private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
 
-    protected LocationResultOnCompleteListener(String TAG, GoogleMap map) {
+    protected LocationResultOnCompleteListener(String TAG, GoogleMap map, HomeFragment fragment) {
         this.TAG = TAG;
         this.map = map;
+        this.fragment = fragment;
     }
 
     @Override
@@ -29,10 +32,12 @@ public class LocationResultOnCompleteListener implements OnCompleteListener<Loca
             // Set the map's camera position to the current location of the device.
             lastKnownLocation = task.getResult();
             if (lastKnownLocation != null) {
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(lastKnownLocation.getLatitude(),
-                                lastKnownLocation.getLongitude()), HomeFragment.DEFAULT_ZOOM));
+                LatLng latLng = new LatLng(lastKnownLocation.getLatitude(),
+                        lastKnownLocation.getLongitude());
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng
+                        , HomeFragment.DEFAULT_ZOOM));
                 HomeFragment.setLastKnownLocation(lastKnownLocation);
+                fragment.setOrigin(latLng);
             }
         } else {
             Log.d(TAG, "Current location is null. Using defaults.");

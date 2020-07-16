@@ -1,8 +1,7 @@
-package com.example.nextstreet.listeners;
+package com.example.nextstreet.utilities;
 
 import android.app.Activity;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
