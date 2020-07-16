@@ -3,12 +3,10 @@ package com.example.nextstreet.ui.home;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,9 +15,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.example.nextstreet.BuildConfig;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
+import com.example.nextstreet.models.PackageRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,6 +36,9 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.Arrays;
 
@@ -70,6 +73,8 @@ public class HomeFragment extends Fragment
     private Marker markerDestination;
     private GoogleMap map;
 
+    private static PackageRequest currRequest;
+
     protected static void setLastKnownLocation(Location lastKnownLocation) {
         HomeFragment.lastKnownLocation = lastKnownLocation;
     }
@@ -79,8 +84,18 @@ public class HomeFragment extends Fragment
     }
 
     public static LatLng getOrigin() {
-        origin = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+        if (lastKnownLocation != null) {
+            origin = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+        }
         return origin;
+    }
+
+    protected static boolean hasCurrRequest() {
+        return currRequest != null;
+    }
+
+    protected static PackageRequest getCurrRequest() {
+        return currRequest;
     }
 
     protected void setOrigin(LatLng newPlace) {
@@ -169,12 +184,24 @@ public class HomeFragment extends Fragment
 
             Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
 
+            queryMostRecentPackage();
+        } else {
+            Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void respondToQuery(PackageRequest request) {
+        boolean currRequestExists = (request != null);
+
+        if (currRequestExists) {
+            Log.i(TAG, "respondToQuery: " + request.getParseUser(PackageRequest.KEY_USER).getUsername());
+            this.currRequest = request;
+            setMapToCurrRequest(request);
+        } else {
+            this.currRequest = null;
             getLocationPermission();
             updateLocationUI();
             getDeviceLocation();
-
-        } else {
-            Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -255,6 +282,43 @@ public class HomeFragment extends Fragment
         Snackbar.make(binding.getRoot(), getString(R.string.set_destination),
                 Snackbar.LENGTH_SHORT).show();
         setDestination(latLng);
+    }
+
+    private void queryMostRecentPackage() {
+        ParseQuery<PackageRequest> query = ParseQuery.getQuery(PackageRequest.class);
+        query.orderByDescending(PackageRequest.KEY_CREATEDAT);
+        query.include(PackageRequest.KEY_USER);
+        query.include(PackageRequest.KEY_IMAGE);
+        query.include(PackageRequest.KEY_DESCRIPTION);
+        query.include(PackageRequest.KEY_ORIGIN);
+        query.include(PackageRequest.KEY_DRIVER);
+        query.include(PackageRequest.KEY_DESTINATION);
+        ParseUser currUser = ParseUser.getCurrentUser();
+        Log.d(TAG, "queryMostRecentPackage: currUser = " + currUser.getUsername());
+        query.whereEqualTo(PackageRequest.KEY_USER, currUser);
+
+        query.setLimit(3);
+        query.findInBackground(new RequestQueryCallback(TAG, this));
+    }
+
+    private void setMapToCurrRequest(PackageRequest request) {
+        Log.i(TAG, "setMapToCurrRequest: here! ");
+        ParseGeoPoint origin = request.getOrigin();
+        ParseGeoPoint destination = request.getDestination();
+        if (destination != null) {
+            Log.i(TAG, "setMapToCurrRequest: " + destination.getLatitude());
+
+            LatLng latlngOrigin = new LatLng(destination.getLatitude(),
+                    destination.getLongitude());
+            LatLng latlngDest = new LatLng(destination.getLatitude(),
+                    destination.getLongitude());
+
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latlngOrigin,
+                    HomeFragment.DEFAULT_ZOOM));
+
+            setMarkerDestination(latlngOrigin);
+            setMarkerOrigin(latlngDest);
+        }
     }
 
 }
