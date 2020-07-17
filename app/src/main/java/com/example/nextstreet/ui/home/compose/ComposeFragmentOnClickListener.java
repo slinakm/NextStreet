@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.nextstreet.ui.ProfileFragment;
+import com.example.nextstreet.ui.home.HomeFragment;
 
 public class ComposeFragmentOnClickListener implements View.OnClickListener {
 
@@ -22,7 +23,13 @@ public class ComposeFragmentOnClickListener implements View.OnClickListener {
     public void onClick(View view) {
         Log.d(TAG, "onClick: profilePic");
         FragmentManager fm = activity.getSupportFragmentManager();
-        ComposeFragment fragment = ComposeFragment.newInstance();
-        fragment.show(fm, ProfileFragment.class.getSimpleName());
+        if (HomeFragment.hasCurrRequest()) {
+            ComposeCurrentFragment fragment = ComposeCurrentFragment.newInstance(
+                    HomeFragment.getCurrRequest());
+            fragment.show(fm, ComposeCurrentFragment.class.getSimpleName());
+        } else {
+            ComposeFragment fragment = ComposeFragment.newInstance();
+            fragment.show(fm, ComposeFragment.class.getSimpleName());
+        }
     }
 }

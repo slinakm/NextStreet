@@ -91,11 +91,11 @@ public class HomeFragment extends Fragment
         return origin;
     }
 
-    protected static boolean hasCurrRequest() {
+    public static boolean hasCurrRequest() {
         return currRequest != null;
     }
 
-    protected static PackageRequest getCurrRequest() {
+    public static PackageRequest getCurrRequest() {
         return currRequest;
     }
 

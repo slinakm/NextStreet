@@ -18,6 +18,7 @@
     <dimen name="compose_top_margin">80dp</dimen>
 
     <dimen name="resized_post_image">150dp</dimen>
+    <integer name="rounded_corners">30</integer>
 
     <dimen name="bottom_fragment_margin">10dp</dimen>
     <dimen name="bottom_fragment_peak_height">56dp</dimen>
