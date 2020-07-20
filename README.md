@@ -38,8 +38,8 @@ An app that will allow users to send or receive local postal deliveries. Uber fo
    - [x] specifying ending destination with a long click on the map, and 
    - [x] setting the starting destination to a location other than the current location
 - [x] Ability to view package destination and starting location on a map.
-- [ ] Ability to view current request details, such as driver name.
-    - [ ] Double tap compose button to send a new request
+- [x] Ability to view current request details, such as driver name.
+    - [x] Double tap compose button to send a new request
     - [x] When viewing current request details, search fragments are animated to move upwards and disappear. 
 
 **Optional Nice-to-have Stories**
