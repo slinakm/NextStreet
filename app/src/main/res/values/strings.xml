@@ -1,4 +1,7 @@
 <resources>
+    <string name="facebook_app_id">3196493410406955</string>
+    <string name="fb_login_protocol_scheme">fb3196493410406955</string>
+
     <string name="app_name">NextStreet</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

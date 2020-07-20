@@ -74,4 +74,6 @@ dependencies {
 
     implementation "org.permissionsdispatcher:permissionsdispatcher:$permissionDispatcherVersion"
     annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:$permissionDispatcherVersion"
+
+    implementation 'com.facebook.android:facebook-login:5.15.3'
 }
