@@ -53,15 +53,16 @@
         android:textColor="@color/btn_scnd_text_color"
         app:layout_constraintEnd_toEndOf="@+id/etPassword"
         app:layout_constraintStart_toStartOf="@+id/etPassword"
-        app:layout_constraintTop_toBottomOf="@+id/btnFb" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/btnFb"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/login_vertical_spacing"
         app:layout_constraintEnd_toEndOf="@+id/btnSignup"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/btnSignup"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSignup" />
 </androidx.constraintlayout.widget.ConstraintLayout>
