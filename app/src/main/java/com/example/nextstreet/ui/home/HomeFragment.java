@@ -198,21 +198,6 @@ public class HomeFragment extends Fragment
         }
     }
 
-    protected void respondToQuery(PackageRequest request) {
-        boolean currRequestExists = (request != null);
-
-        if (currRequestExists) {
-            Log.i(TAG, "respondToQuery: " + request.getParseUser(PackageRequest.KEY_USER).getUsername());
-            this.currRequest = request;
-            setMapToCurrRequest(request);
-        } else {
-            this.currRequest = null;
-            getLocationPermission();
-            updateLocationUI();
-            getDeviceLocation();
-        }
-    }
-
     /**
      * Request location permission, so that we can get the location of the
      * device. The result of the permission request is handled by a callback,
@@ -309,6 +294,25 @@ public class HomeFragment extends Fragment
         query.findInBackground(new RequestQueryCallback(TAG, this));
     }
 
+    /**
+     * Called by RequestQueryCallback to handle changes.
+     * @param request Package request from Parse.
+     */
+    protected void respondToQuery(PackageRequest request) {
+        boolean currRequestExists = (request != null);
+
+        if (currRequestExists) {
+            Log.i(TAG, "respondToQuery: " + request.getParseUser(PackageRequest.KEY_USER).getUsername());
+            currRequest = request;
+            setMapToCurrRequest(request);
+        } else {
+            currRequest = null;
+            getLocationPermission();
+            updateLocationUI();
+            getDeviceLocation();
+        }
+    }
+
     private void setMapToCurrRequest(PackageRequest request) {
         Log.i(TAG, "setMapToCurrRequest: here! ");
         ParseGeoPoint origin = request.getOrigin();
@@ -339,4 +343,9 @@ public class HomeFragment extends Fragment
         }
     }
 
+    @Override
+    public void onStop() {
+        currRequest = null;
+        super.onStop();
+    }
 }
