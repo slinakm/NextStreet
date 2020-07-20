@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">@color/medium_grey</color>
     <color name="colorAccent">@color/black</color>
 
+    <color name="colorSecondary">@color/blue_grey</color>
+
     <color name="btn_color">@color/blue_grey</color>
     <color name="btn_text_color">@color/text_primary</color>
 
