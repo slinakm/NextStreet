@@ -18,12 +18,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeBinding;
+import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.ui.BitmapManipulation;
 import com.example.nextstreet.ui.CameraOnClickListener;
 import com.example.nextstreet.ui.home.HomeFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.example.nextstreet.utilities.TextObserver;
-import com.example.nextstreet.models.PackageRequest;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -37,139 +37,142 @@ import static android.app.Activity.RESULT_OK;
 
 public class ComposeFragment extends DialogFragment {
 
-    private static final String TAG = ComposeFragment.class.getSimpleName();
-    private static final String photoFileName = "photo.jpg";
+  private static final String TAG = ComposeFragment.class.getSimpleName();
+  private static final String photoFileName = "photo.jpg";
 
-    private FragmentComposeBinding binding;
-    private ComposeViewModel composeViewModel;
+  private FragmentComposeBinding binding;
+  private ComposeViewModel composeViewModel;
 
-    private CameraOnClickListener cameraOnClickListener;
-    private File photoFile;
-    private LatLng dest;
-    private LatLng origin;
+  private CameraOnClickListener cameraOnClickListener;
+  private File photoFile;
+  private LatLng dest;
+  private LatLng origin;
 
-    public static ComposeFragment newInstance() {
-        Bundle args = new Bundle();
+  public static ComposeFragment newInstance() {
+    Bundle args = new Bundle();
 
-        ComposeFragment fragment = new ComposeFragment();
-        fragment.setArguments(args);
-        return fragment;
+    ComposeFragment fragment = new ComposeFragment();
+    fragment.setArguments(args);
+    return fragment;
+  }
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
+
+  public View onCreateView(
+      @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    composeViewModel = ViewModelProviders.of(this).get(ComposeViewModel.class);
+    binding = FragmentComposeBinding.inflate(getLayoutInflater());
+
+    return binding.getRoot();
+  }
+
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    composeViewModel
+        .getDescription()
+        .observe(getViewLifecycleOwner(), new TextObserver(binding.etDescription));
+
+    dest = HomeFragment.getDestination();
+    origin = HomeFragment.getOrigin();
+    if (dest != null) {
+      binding.tvDestination.setText(dest.toString());
+    }
+    if (origin != null) {
+      binding.tvOrigin.setText(origin.toString());
     }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        composeViewModel =
-                ViewModelProviders.of(this).get(ComposeViewModel.class);
-        binding = FragmentComposeBinding.inflate(getLayoutInflater());
+    binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
+    cameraOnClickListener = new CameraOnClickListener(TAG, getActivity(), this, photoFileName);
+    binding.btnCamera.setOnClickListener(cameraOnClickListener);
+    binding.btnSubmit.setOnClickListener(
+        new PackageSubmissionOnClickListener(TAG, ParseUser.getCurrentUser().getUsername(), this));
+  }
 
-        return binding.getRoot();
+  @Override
+  public void onResume() {
+    super.onResume();
+
+    getDialog()
+        .getWindow()
+        .setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (requestCode == BitmapManipulation.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+      File tempPhotoFile = cameraOnClickListener.getPhotoFile();
+
+      if (resultCode == RESULT_OK && tempPhotoFile != null) {
+        Bitmap takenImage = BitmapFactory.decodeFile(tempPhotoFile.getAbsolutePath());
+
+        Bitmap resizedBitmap =
+            BitmapManipulation.scaleToFitWidth(
+                takenImage, (int) getResources().getDimension((R.dimen.resized_post_image)));
+
+        binding.ivPackage.setImageBitmap(resizedBitmap);
+        binding.ivPackage.setVisibility(View.VISIBLE);
+
+        photoFile =
+            BitmapManipulation.writeResizedBitmap(
+                getContext(), photoFileName, resizedBitmap, "resized", TAG);
+      } else {
+        Snackbar.make(
+                binding.getRoot(),
+                getString(R.string.toast_camera_err),
+                BaseTransientBottomBar.LENGTH_SHORT)
+            .show();
+      }
     }
+  }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        composeViewModel.getDescription().observe(getViewLifecycleOwner(),
-                new TextObserver(binding.etDescription));
+  protected void checkPostable() {
+    binding.pbLoading.setVisibility(ProgressBar.VISIBLE);
 
-        dest = HomeFragment.getDestination();
-        origin = HomeFragment.getOrigin();
-        if (dest != null) {
-            binding.tvDestination.setText(dest.toString());
-        }
-        if (origin != null) {
-            binding.tvOrigin.setText(origin.toString());
-        }
+    String desc = binding.etDescription.getText().toString();
 
-        binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
-        cameraOnClickListener = new CameraOnClickListener(TAG, getActivity(),
-                this, photoFileName);
-        binding.btnCamera.setOnClickListener(cameraOnClickListener);
-        binding.btnSubmit.setOnClickListener(new PackageSubmissionOnClickListener(TAG,
-                ParseUser.getCurrentUser().getUsername(), this));
+    Log.d(TAG, "checkPostable: destination =" + dest);
+    Log.d(TAG, "checkPostable: origin" + origin);
+
+    if (dest == null || origin == null) {
+      Toast.makeText(getContext(), R.string.toast_dest_empt, Toast.LENGTH_SHORT).show();
+      binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
+    } else {
+      if (desc.isEmpty()) {
+        Snackbar.make(binding.getRoot(), R.string.toast_desc_empt, Snackbar.LENGTH_LONG).show();
+      } else if (photoFile == null || binding.ivPackage.getDrawable() == null) {
+        Snackbar.make(binding.getRoot(), R.string.toast_img_empt, Snackbar.LENGTH_LONG).show();
+      }
+      ParseUser currUser = ParseUser.getCurrentUser();
+      saveRequest(desc, photoFile, currUser);
     }
+  }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+  private void saveRequest(String desc, File file, ParseUser currUser) {
 
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT);
-    }
+    PackageRequest request = new PackageRequest(file, desc, origin, dest, currUser);
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == BitmapManipulation.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            File tempPhotoFile = cameraOnClickListener.getPhotoFile();
-
-            if (resultCode == RESULT_OK
-                    && tempPhotoFile != null) {
-                Bitmap takenImage = BitmapFactory.decodeFile(tempPhotoFile.getAbsolutePath());
-
-                Bitmap resizedBitmap = BitmapManipulation.scaleToFitWidth(takenImage,
-                        (int) getResources().getDimension((R.dimen.resized_post_image)));
-
-                binding.ivPackage.setImageBitmap(resizedBitmap);
-                binding.ivPackage.setVisibility(View.VISIBLE);
-
-                photoFile =
-                        BitmapManipulation.writeResizedBitmap(getContext(), photoFileName,
-                                resizedBitmap, "resized", TAG);
-            } else {
-                Snackbar.make(binding.getRoot(), getString(R.string.toast_camera_err),
-                        BaseTransientBottomBar.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    protected void checkPostable() {
-        binding.pbLoading.setVisibility(ProgressBar.VISIBLE);
-
-        String desc = binding.etDescription.getText().toString();
-
-        Log.d(TAG, "checkPostable: destination =" + dest);
-        Log.d(TAG, "checkPostable: origin" + origin);
-
-        if (dest == null
-                || origin == null) {
-            Toast.makeText(getContext(),
-                    R.string.toast_dest_empt, Toast.LENGTH_SHORT).show();
+    request.saveInBackground(
+        new SaveCallback() {
+          @Override
+          public void done(ParseException e) {
             binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
-        } else {
-            if (desc.isEmpty()) {
-                Snackbar.make(binding.getRoot(), R.string.toast_desc_empt,
-                        Snackbar.LENGTH_LONG).show();
-            } else if (photoFile == null
-                    || binding.ivPackage.getDrawable() == null) {
-                Snackbar.make(binding.getRoot(), R.string.toast_img_empt,
-                        Snackbar.LENGTH_LONG).show();
+
+            if (e != null) {
+              Log.e(TAG, "done: Error while saving request", e);
+              Toast.makeText(getContext(), getString(R.string.toast_save_err), Toast.LENGTH_SHORT)
+                  .show();
+            } else {
+              Log.i(TAG, "done: Request save was successful!");
+              Toast.makeText(getContext(), getString(R.string.toast_save_succ), Toast.LENGTH_SHORT)
+                  .show();
             }
-            ParseUser currUser = ParseUser.getCurrentUser();
-            saveRequest(desc, photoFile, currUser);
-        }
-    }
-
-    private void saveRequest(String desc, File file, ParseUser currUser) {
-
-        PackageRequest request = new PackageRequest(file, desc, origin, dest, currUser);
-
-        request.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
-
-                if (e != null) {
-                    Log.e(TAG, "done: Error while saving request", e);
-                    Toast.makeText(getContext(), getString(R.string.toast_save_err),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.i(TAG, "done: Request save was successful!");
-                    Toast.makeText(getContext(), getString(R.string.toast_save_succ),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
+          }
         });
-    }
-
+  }
 }

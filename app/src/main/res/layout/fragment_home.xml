@@ -7,6 +7,10 @@
     android:animateLayoutChanges="true"
     tools:context=".ui.home.HomeFragment">
 
+    <View
+        android:id="@+id/start_view"
+        android:transitionName="shared_element_container" />
+
 <!--    <TextView-->
 <!--        android:id="@+id/text_home"-->
 <!--        android:layout_width="match_parent"-->

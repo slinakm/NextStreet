@@ -8,19 +8,19 @@ import java.io.File;
 
 public class ComposeViewModel extends ViewModel {
 
-    private MutableLiveData<String> description;
-    private MutableLiveData<File> image;
+  private MutableLiveData<String> description;
+  private MutableLiveData<File> image;
 
-    public ComposeViewModel() {
-        description = new MutableLiveData<>();
-        image = new MutableLiveData<>();
-    }
+  public ComposeViewModel() {
+    description = new MutableLiveData<>();
+    image = new MutableLiveData<>();
+  }
 
-    public LiveData<String> getDescription() {
-        return description;
-    }
+  public LiveData<String> getDescription() {
+    return description;
+  }
 
-    public LiveData<File> getImage() {
-        return image;
-    }
+  public LiveData<File> getImage() {
+    return image;
+  }
 }

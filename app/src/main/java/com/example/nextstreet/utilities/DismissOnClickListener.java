@@ -5,18 +5,18 @@ import android.view.View;
 
 import androidx.fragment.app.DialogFragment;
 
-public class DismissOnClickListener implements View.OnClickListener{
+public class DismissOnClickListener implements View.OnClickListener {
 
-    private String TAG;
-    private DialogFragment fragment;
+  private String TAG;
+  private DialogFragment fragment;
 
-    public DismissOnClickListener(String TAG, DialogFragment fragment) {
-        this.TAG = TAG;
-        this.fragment = fragment;
-    }
+  public DismissOnClickListener(String TAG, DialogFragment fragment) {
+    this.TAG = TAG;
+    this.fragment = fragment;
+  }
 
-    public void onClick(View view) {
-        Log.i(TAG, "onClick: dialog fragment dismissed");
-        fragment.dismiss();
-    }
+  public void onClick(View view) {
+    Log.i(TAG, "onClick: dialog fragment dismissed");
+    fragment.dismiss();
+  }
 }
