@@ -42,30 +42,11 @@ public class MainActivity extends AppCompatActivity {
     setSupportActionBar(toolbar);
 
     FloatingActionButton fab = findViewById(R.id.fab);
-    fab.setOnClickListener(new ComposeFragmentOnClickListener(TAG, this));
+    fab.setOnClickListener(new ComposeFragmentOnClickListener(this));
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     NavigationView navigationView = findViewById(R.id.nav_view);
-
-    // Set current user information
-    ParseUser currUser = ParseUser.getCurrentUser();
-    View headerView = navigationView.getHeaderView(0);
-    TextView name = headerView.findViewById(R.id.tvName);
-    String strName =
-        (String) currUser.get(SignupActivity.KEY_FIRSTNAME)
-            + " "
-            + (String) currUser.get(SignupActivity.KEY_FIRSTNAME);
-    name.setText(strName);
-    TextView username = headerView.findViewById(R.id.tvUsername);
-    String strUsername = currUser.getUsername();
-    username.setText(strUsername);
-    ImageView profilePic = headerView.findViewById(R.id.ivProfilePic);
-    profilePic.setOnClickListener(new ProfileFragmentOnClickListener(this));
-    ParseFile image = currUser.getParseFile(SignupActivity.KEY_PROFILEPIC);
-    if (image != null) {
-      Glide.with(binding.getRoot()).load(image.getUrl()).into(profilePic);
-    }
-
+    setUpUser(navigationView);
     // Passing each menu ID as a set of Ids because each
     // menu should be considered as top level destinations.
     mAppBarConfiguration =
@@ -75,6 +56,30 @@ public class MainActivity extends AppCompatActivity {
     NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
     NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
     NavigationUI.setupWithNavController(navigationView, navController);
+  }
+
+  private void setUpUser(NavigationView navigationView) {
+    ParseUser currUser = ParseUser.getCurrentUser();
+    View headerView = navigationView.getHeaderView(0);
+
+    TextView name = headerView.findViewById(R.id.tvName);
+    String strName =
+            (String) currUser.get(SignupActivity.KEY_FIRSTNAME)
+                    + " "
+                    + (String) currUser.get(SignupActivity.KEY_FIRSTNAME);
+    name.setText(strName);
+
+    TextView username = headerView.findViewById(R.id.tvUsername);
+    String strUsername = currUser.getUsername();
+    username.setText(strUsername);
+
+    ImageView profilePic = headerView.findViewById(R.id.ivProfilePic);
+    profilePic.setOnClickListener(new ProfileFragmentOnClickListener(this));
+    ParseFile image = currUser.getParseFile(SignupActivity.KEY_PROFILEPIC);
+
+    if (image != null) {
+      Glide.with(binding.getRoot()).load(image.getUrl()).into(profilePic);
+    }
   }
 
   @Override

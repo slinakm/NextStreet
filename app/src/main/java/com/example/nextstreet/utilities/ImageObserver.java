@@ -16,7 +16,7 @@ public class ImageObserver implements Observer<File> {
   private final Activity activity;
   private final RequestOptions requestOptions;
 
-  public ImageObserver(ImageView imageViewToObserve, Activity activity, RequestOptions requestOptions) {
+  public ImageObserver(ImageView imageViewToObserve, Activity activity, @Nullable RequestOptions requestOptions) {
     this.imageViewToObserve = imageViewToObserve;
     this.activity = activity;
     this.requestOptions = requestOptions;
@@ -24,6 +24,10 @@ public class ImageObserver implements Observer<File> {
 
   @Override
   public void onChanged(@Nullable File f) {
-    Glide.with(activity).load(f).apply(requestOptions).into(imageViewToObserve);
+    if (requestOptions == null) {
+      Glide.with(activity).load(f).into(imageViewToObserve);
+    } else {
+      Glide.with(activity).load(f).apply(requestOptions).into(imageViewToObserve);
+    }
   }
 }

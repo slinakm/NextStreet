@@ -10,17 +10,16 @@ import com.example.nextstreet.ui.home.HomeFragment;
 
 public class ComposeFragmentOnClickListener implements View.OnClickListener {
 
-  private final String TAG;
+  private final String TAG = ComposeFragmentOnClickListener.class.getSimpleName();
   private final AppCompatActivity activity;
 
-  public ComposeFragmentOnClickListener(String TAG, AppCompatActivity activity) {
-    this.TAG = TAG;
+  public ComposeFragmentOnClickListener(AppCompatActivity activity) {
     this.activity = activity;
   }
 
   @Override
   public void onClick(View view) {
-    Log.d(TAG, "onClick: profilePic");
+    Log.d(TAG, "onClick to open compose fragment");
 
     FragmentManager fm = activity.getSupportFragmentManager();
     if (HomeFragment.hasCurrRequest()) {
