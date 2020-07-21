@@ -171,7 +171,7 @@ public class ComposeFragment extends DialogFragment implements CameraLauncher {
     File photoFile = getPhotoFileUri(photoFileName);
 
     Uri fileProvider =
-            FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider.NextStreet", photoFile);
+            FileProvider.getUriForFile(getContext(), getString(R.string.file_authority), photoFile);
     intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
     if (intent.resolveActivity(getContext().getPackageManager()) != null) {
@@ -188,6 +188,7 @@ public class ComposeFragment extends DialogFragment implements CameraLauncher {
 
     if (requestCode == BitmapManipulation.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
       File tempPhotoFile = cameraOnClickListener.getPhotoFile();
+      Log.i(TAG, "onActivityResult: taking photo");
 
       if (resultCode == RESULT_OK && tempPhotoFile != null) {
         Log.i(TAG, "onActivityResult: took photo");
@@ -240,7 +241,7 @@ public class ComposeFragment extends DialogFragment implements CameraLauncher {
       fos.write(bytes.toByteArray());
       fos.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      Log.e(TAG, "writeResizedBitmap: error writing image to new file", e);
     }
     return resizedFile;
   }
@@ -251,7 +252,6 @@ public class ComposeFragment extends DialogFragment implements CameraLauncher {
     try {
       // check version of Android on device
       if(Build.VERSION.SDK_INT > 27){
-        // on newer versions of Android, use the new decodeBitmap method
         ImageDecoder.Source source = ImageDecoder.createSource(context.getContentResolver(), photoUri);
         image = ImageDecoder.decodeBitmap(source);
       } else {
@@ -259,7 +259,7 @@ public class ComposeFragment extends DialogFragment implements CameraLauncher {
         image = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photoUri);
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      Log.e(TAG, "loadFromUri: error loading image from file", e);
     }
     return image;
   }

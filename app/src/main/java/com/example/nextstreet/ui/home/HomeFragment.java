@@ -235,6 +235,7 @@ public class HomeFragment extends Fragment
     if (map == null) {
       return;
     }
+
     try {
       if (locationPermissionGranted) {
         map.setMyLocationEnabled(true);
@@ -246,7 +247,7 @@ public class HomeFragment extends Fragment
         getLocationPermission();
       }
     } catch (SecurityException e) {
-      Log.e("Exception: %s", e.getMessage());
+      Log.e(TAG, "updateLocationUI: security exception getting map data", e);
     }
   }
 
@@ -268,7 +269,7 @@ public class HomeFragment extends Fragment
         Log.d(TAG, "getDeviceLocation: Location Permission not granted", null);
       }
     } catch (SecurityException e) {
-      Log.e("Exception: %s", e.getMessage(), e);
+      Log.e(TAG, "getDeviceLocation: security exception getting device location", e);
     }
   }
 

@@ -27,6 +27,7 @@ import java.io.IOException;
  */
 
 public class BitmapManipulation {
+    public static final String TAG = BitmapManipulation.class.getSimpleName();
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
     public final static int PICK_PHOTO_CODE = 1046;
 
@@ -106,7 +107,7 @@ public class BitmapManipulation {
         try {
             exif = new ExifInterface(photoFilePath);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "rotateBitmapOrientation: error reading file", e);
         }
         String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
         int orientation = orientString != null ?
@@ -191,7 +192,7 @@ public class BitmapManipulation {
             fos.write(bytes.toByteArray());
             fos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "writeResizedBitmap: error writing file", e);
         }
         return resizedFile;
     }
@@ -233,7 +234,7 @@ public class BitmapManipulation {
                 image = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photoUri);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "loadFromUri: error reading image from file", e);
         }
         return image;
     }
