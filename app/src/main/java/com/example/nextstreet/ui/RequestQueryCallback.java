@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui.home;
+package com.example.nextstreet.ui;
 
 import android.util.Log;
 
@@ -13,7 +13,7 @@ public class RequestQueryCallback implements FindCallback<PackageRequest> {
   private static final String TAG = RequestQueryCallback.class.getSimpleName();
   private final QueryResponder responder;
 
-  protected RequestQueryCallback(QueryResponder responder) {
+  public RequestQueryCallback(QueryResponder responder) {
     this.responder = responder;
   }
 
@@ -25,12 +25,7 @@ public class RequestQueryCallback implements FindCallback<PackageRequest> {
         Log.e(TAG, "queryPosts: Issue getting posts", e);
       }
 
-      if (posts.size() != 0) {
-        PackageRequest request = posts.get(0);
-        Log.i(TAG, "received post" + request);
-
-        responder.respondToQuery(request);
-      }
+      responder.respondToQuery(posts);
     }
   }
 }

@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView profilePic = headerView.findViewById(R.id.ivProfilePic);
     profilePic.setOnClickListener(new ProfileFragmentOnClickListener(this));
+    username.setOnClickListener(new ProfileFragmentOnClickListener(this));
+    name.setOnClickListener(new ProfileFragmentOnClickListener(this));
     ParseFile image = currUser.getParseFile(SignupActivity.KEY_PROFILEPIC);
 
     if (image != null) {

@@ -18,6 +18,8 @@ import com.example.nextstreet.BuildConfig;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.example.nextstreet.models.PackageRequest;
+import com.example.nextstreet.ui.QueryResponder;
+import com.example.nextstreet.ui.RequestQueryCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -40,6 +42,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Google maps manipulation based on https://developers.google.com/maps/documentation/android-sdk/
@@ -266,7 +269,7 @@ public class HomeFragment extends Fragment
                 getString(R.string.maps_no_permissions_err),
                 Snackbar.LENGTH_SHORT)
             .show();
-        Log.d(TAG, "getDeviceLocation: Location Permission not granted", null);
+        Log.d(TAG, "getDeviceLocation: Location Permission not granted");
       }
     } catch (SecurityException e) {
       Log.e(TAG, "getDeviceLocation: security exception getting device location", e);
@@ -289,20 +292,26 @@ public class HomeFragment extends Fragment
     query.include(PackageRequest.KEY_ORIGIN);
     query.include(PackageRequest.KEY_DRIVER);
     query.include(PackageRequest.KEY_DESTINATION);
+    query.include(PackageRequest.KEY_ISFULFILLED);
+
     ParseUser currUser = ParseUser.getCurrentUser();
     Log.d(TAG, "queryMostRecentPackage: currUser = " + currUser.getUsername());
     query.whereEqualTo(PackageRequest.KEY_USER, currUser);
+    query.whereEqualTo(PackageRequest.KEY_ISFULFILLED, false);
 
     query.setLimit(3);
     query.findInBackground(new RequestQueryCallback(this));
   }
 
   @Override
-  public void respondToQuery(PackageRequest request) {
-    boolean currRequestExists = (request != null);
+  public void respondToQuery(List<PackageRequest> requests) {
+    boolean currRequestExists = (requests != null && requests.size() != 0);
 
     if (currRequestExists) {
-      Log.i(TAG, "respondToQuery: " + request.getParseUser(PackageRequest.KEY_USER).getUsername());
+      PackageRequest request = requests.get(0);
+      Log.i(TAG, "respondToQuery: "
+              + request.getParseUser(PackageRequest.KEY_USER).getUsername() + ", received "
+              + request);
       currRequest = request;
       setMapToCurrRequest(request);
     } else {

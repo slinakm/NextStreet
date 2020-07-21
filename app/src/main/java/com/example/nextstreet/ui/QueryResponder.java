@@ -1,13 +1,15 @@
-package com.example.nextstreet.ui.home;
+package com.example.nextstreet.ui;
 
 import com.example.nextstreet.models.PackageRequest;
+
+import java.util.List;
 
 public interface QueryResponder {
 
     /**
      * Called by RequestQueryCallback to handle changes.
      *
-     * @param request Package request from Parse.
+     * @param requests Package request from Parse.
      */
-    void respondToQuery(PackageRequest request);
+    void respondToQuery(List<PackageRequest> requests);
 }
