@@ -46,7 +46,7 @@ import java.util.Arrays;
  * current-place-tutorial#get-the-location-of-the-android-device-and-position-the-map
  */
 public class HomeFragment extends Fragment
-    implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
+    implements QueryResponder, OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
   private static final String TAG = HomeFragment.class.getSimpleName();
 
@@ -290,15 +290,11 @@ public class HomeFragment extends Fragment
     query.whereEqualTo(PackageRequest.KEY_USER, currUser);
 
     query.setLimit(3);
-    query.findInBackground(new RequestQueryCallback(TAG, this));
+    query.findInBackground(new RequestQueryCallback(this));
   }
 
-  /**
-   * Called by RequestQueryCallback to handle changes.
-   *
-   * @param request Package request from Parse.
-   */
-  protected void respondToQuery(PackageRequest request) {
+  @Override
+  public void respondToQuery(PackageRequest request) {
     boolean currRequestExists = (request != null);
 
     if (currRequestExists) {

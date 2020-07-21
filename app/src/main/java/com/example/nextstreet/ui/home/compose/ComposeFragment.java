@@ -87,8 +87,8 @@ public class ComposeFragment extends DialogFragment {
 
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
     cameraOnClickListener = new CameraOnClickListener(TAG, getActivity(), this, photoFileName);
-    binding.btnCamera.setOnClickListener(cameraOnClickListener);
-    binding.btnSubmit.setOnClickListener(
+    binding.cameraButton.setOnClickListener(cameraOnClickListener);
+    binding.submitButton.setOnClickListener(
         new PackageSubmissionOnClickListener(TAG, ParseUser.getCurrentUser().getUsername(), this));
   }
 

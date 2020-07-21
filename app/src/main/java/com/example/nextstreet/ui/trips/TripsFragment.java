@@ -28,7 +28,6 @@ public class TripsFragment extends Fragment {
 
     rvPackages = binding.rvPackages;
     rvPackages.setLayoutManager(new LinearLayoutManager(getContext()));
-    rvPackages.setAdapter(new TripsAdapter());
 
     return binding.getRoot();
   }

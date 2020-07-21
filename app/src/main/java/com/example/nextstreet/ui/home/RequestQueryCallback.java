@@ -11,10 +11,10 @@ import java.util.List;
 public class RequestQueryCallback implements FindCallback<PackageRequest> {
 
   private final String TAG = RequestQueryCallback.class.getSimpleName();
-  private final HomeFragment fragment;
+  private final QueryResponder responder;
 
-  protected RequestQueryCallback(HomeFragment fragment) {
-    this.fragment = fragment;
+  protected RequestQueryCallback(QueryResponder responder) {
+    this.responder = responder;
   }
 
   @Override
@@ -29,7 +29,7 @@ public class RequestQueryCallback implements FindCallback<PackageRequest> {
         PackageRequest request = posts.get(0);
         Log.i(TAG, "received post" + request);
 
-        fragment.respondToQuery(request);
+        responder.respondToQuery(request);
       }
     }
   }
