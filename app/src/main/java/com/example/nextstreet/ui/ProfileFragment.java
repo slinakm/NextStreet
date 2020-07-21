@@ -41,7 +41,7 @@ public class ProfileFragment extends DialogFragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     binding.logoutButton.setOnClickListener(new LogoutOnClickListener());
-    binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
+    binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
   }
 
   @Override

@@ -6,14 +6,14 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 public class TextObserver implements Observer<String> {
-  private TextView tv;
+  private final TextView textViewToObserve;
 
-  public TextObserver(TextView tv) {
-    this.tv = tv;
+  public TextObserver(TextView textViewToObserve) {
+    this.textViewToObserve = textViewToObserve;
   }
 
   @Override
-  public void onChanged(@Nullable String s) {
-    tv.setText(s);
+  public void onChanged(@Nullable String updatedString) {
+    textViewToObserve.setText(updatedString);
   }
 }

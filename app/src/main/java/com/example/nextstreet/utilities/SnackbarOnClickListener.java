@@ -5,14 +5,14 @@ import android.view.View;
 import com.google.android.material.snackbar.Snackbar;
 
 public class SnackbarOnClickListener implements View.OnClickListener {
-  private String s;
+  private final String stringToDisplay;
 
-  public SnackbarOnClickListener(String s) {
-    this.s = s;
+  public SnackbarOnClickListener(String stringToDisplay) {
+    this.stringToDisplay = stringToDisplay;
   }
 
   @Override
   public void onClick(View view) {
-    Snackbar.make(view, s, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    Snackbar.make(view, stringToDisplay, Snackbar.LENGTH_LONG).show();
   }
 }

@@ -8,11 +8,10 @@ import androidx.fragment.app.FragmentManager;
 
 public class ProfileFragmentOnClickListener implements View.OnClickListener {
 
-  private String TAG;
-  private AppCompatActivity activity;
+  private static final String TAG = ProfileFragmentOnClickListener.class.getSimpleName();
+  private final AppCompatActivity activity;
 
-  public ProfileFragmentOnClickListener(String TAG, AppCompatActivity activity) {
-    this.TAG = TAG;
+  public ProfileFragmentOnClickListener(AppCompatActivity activity) {
     this.activity = activity;
   }
 

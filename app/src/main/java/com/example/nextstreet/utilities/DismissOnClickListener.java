@@ -7,11 +7,10 @@ import androidx.fragment.app.DialogFragment;
 
 public class DismissOnClickListener implements View.OnClickListener {
 
-  private String TAG;
-  private DialogFragment fragment;
+  private static final String TAG = DismissOnClickListener.class.getSimpleName();
+  private final DialogFragment fragment;
 
-  public DismissOnClickListener(String TAG, DialogFragment fragment) {
-    this.TAG = TAG;
+  public DismissOnClickListener(DialogFragment fragment) {
     this.fragment = fragment;
   }
 

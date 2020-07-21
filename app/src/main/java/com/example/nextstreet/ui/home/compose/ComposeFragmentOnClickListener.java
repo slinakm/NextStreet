@@ -10,8 +10,8 @@ import com.example.nextstreet.ui.home.HomeFragment;
 
 public class ComposeFragmentOnClickListener implements View.OnClickListener {
 
-  private String TAG;
-  private AppCompatActivity activity;
+  private final String TAG;
+  private final AppCompatActivity activity;
 
   public ComposeFragmentOnClickListener(String TAG, AppCompatActivity activity) {
     this.TAG = TAG;

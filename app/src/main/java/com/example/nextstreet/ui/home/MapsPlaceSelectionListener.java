@@ -13,14 +13,12 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MapsPlaceSelectionListener implements PlaceSelectionListener {
 
-  private boolean isOrigin;
-  private String TAG;
-  private View view;
-  private HomeFragment fragment;
+  private static final String TAG = MapsPlaceSelectionListener.class.getSimpleName();
+  private final boolean isOrigin;
+  private final View view;
+  private final HomeFragment fragment;
 
-  protected MapsPlaceSelectionListener(
-      String TAG, View view, HomeFragment fragment, boolean isOrigin) {
-    this.TAG = TAG;
+  protected MapsPlaceSelectionListener(View view, HomeFragment fragment, boolean isOrigin) {
     this.view = view;
     this.fragment = fragment;
     this.isOrigin = isOrigin;

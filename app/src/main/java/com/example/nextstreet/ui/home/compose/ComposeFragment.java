@@ -85,11 +85,11 @@ public class ComposeFragment extends DialogFragment {
       binding.tvOrigin.setText(origin.toString());
     }
 
-    binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
-    cameraOnClickListener = new CameraOnClickListener(TAG, getActivity(), this, photoFileName);
+    binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
+    cameraOnClickListener = new CameraOnClickListener(getActivity(), this, photoFileName);
     binding.cameraButton.setOnClickListener(cameraOnClickListener);
     binding.submitButton.setOnClickListener(
-        new PackageSubmissionOnClickListener(TAG, ParseUser.getCurrentUser().getUsername(), this));
+        new PackageSubmissionOnClickListener(ParseUser.getCurrentUser().getUsername(), this));
   }
 
   @Override
@@ -131,7 +131,7 @@ public class ComposeFragment extends DialogFragment {
     }
   }
 
-  protected void checkPostable() {
+  void checkPostable() {
     binding.pbLoading.setVisibility(ProgressBar.VISIBLE);
 
     String desc = binding.etDescription.getText().toString();

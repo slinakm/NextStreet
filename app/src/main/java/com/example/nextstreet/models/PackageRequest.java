@@ -15,6 +15,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 @ParseClassName("PackageRequest")
 public class PackageRequest extends ParseObject {
 
@@ -30,7 +32,7 @@ public class PackageRequest extends ParseObject {
     // Set up empty constructor to register as ParseObject subclass
     public PackageRequest(){}
 
-    public PackageRequest(File image, String description,
+    public PackageRequest(@Nullable File image, @Nullable String description,
                           LatLng origin, LatLng destination, ParseUser user){
         if (image != null) {
             put(KEY_IMAGE, image);

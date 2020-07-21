@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     String strUsername = currUser.getUsername();
     username.setText(strUsername);
     ImageView profilePic = headerView.findViewById(R.id.ivProfilePic);
-    profilePic.setOnClickListener(new ProfileFragmentOnClickListener(TAG, this));
+    profilePic.setOnClickListener(new ProfileFragmentOnClickListener(this));
     ParseFile image = currUser.getParseFile(SignupActivity.KEY_PROFILEPIC);
     if (image != null) {
       Glide.with(binding.getRoot()).load(image.getUrl()).into(profilePic);

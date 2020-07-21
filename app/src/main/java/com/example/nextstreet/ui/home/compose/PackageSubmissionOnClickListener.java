@@ -4,11 +4,10 @@ import android.view.View;
 
 public class PackageSubmissionOnClickListener implements View.OnClickListener {
 
-  private String TAG;
-  private ComposeFragment fragment;
+  private final String TAG = PackageSubmissionOnClickListener.class.getSimpleName();
+  private final ComposeFragment fragment;
 
-  public PackageSubmissionOnClickListener(String TAG, String username, ComposeFragment fragment) {
-    this.TAG = TAG;
+  public PackageSubmissionOnClickListener(String username, ComposeFragment fragment) {
     this.fragment = fragment;
   }
 

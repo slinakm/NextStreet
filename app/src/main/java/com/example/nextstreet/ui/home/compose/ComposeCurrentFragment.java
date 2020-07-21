@@ -68,6 +68,6 @@ public class ComposeCurrentFragment extends DialogFragment {
           .into(binding.ivPackage);
     }
 
-    binding.ivCancel.setOnClickListener(new DismissOnClickListener(TAG, this));
+    binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
   }
 }

@@ -184,13 +184,13 @@ public class HomeFragment extends Fragment
     autocompleteFragmentOrigin.setPlaceFields(
         Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
     autocompleteFragmentOrigin.setOnPlaceSelectedListener(
-        new MapsPlaceSelectionListener(TAG, binding.getRoot(), this, true));
+        new MapsPlaceSelectionListener(binding.getRoot(), this, true));
 
     Preconditions.checkNotNull(autocompleteFragmentDestination, "autocompleteFragmentDestination is unexpectedly null");
     autocompleteFragmentDestination.setPlaceFields(
         Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
     autocompleteFragmentDestination.setOnPlaceSelectedListener(
-        new MapsPlaceSelectionListener(TAG, binding.getRoot(), this, false));
+        new MapsPlaceSelectionListener(binding.getRoot(), this, false));
 
     Snackbar.make(binding.getRoot(), "Map Fragment was loaded properly!",
             Snackbar.LENGTH_SHORT).show();
@@ -258,7 +258,7 @@ public class HomeFragment extends Fragment
     try {
       if (locationPermissionGranted) {
         Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-        locationResult.addOnCompleteListener(new LocationResultOnCompleteListener(TAG, map, this));
+        locationResult.addOnCompleteListener(new LocationResultOnCompleteListener(map, this));
       } else {
         Snackbar.make(
                 binding.getRoot(),

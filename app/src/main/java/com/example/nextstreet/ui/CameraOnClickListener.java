@@ -10,15 +10,13 @@ import java.io.File;
 
 public class CameraOnClickListener implements View.OnClickListener {
 
-  private String TAG;
-  private Activity activity;
-  private Fragment fragment;
-  private String photoFileName;
+  private static final String TAG = CameraOnClickListener.class.getSimpleName();
+  private final Activity activity;
+  private final Fragment fragment;
+  private final String photoFileName;
   private File photoFile;
 
-  public CameraOnClickListener(
-      String TAG, Activity activity, Fragment fragment, String photoFileName) {
-    this.TAG = TAG;
+  public CameraOnClickListener(Activity activity, Fragment fragment, String photoFileName) {
     this.activity = activity;
     this.fragment = fragment;
     this.photoFileName = photoFileName;

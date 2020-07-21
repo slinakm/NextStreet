@@ -13,14 +13,13 @@ import com.google.android.gms.tasks.Task;
 
 public class LocationResultOnCompleteListener implements OnCompleteListener<Location> {
 
-  private String TAG;
-  private GoogleMap map;
+  private static final String TAG = LocationResultOnCompleteListener.class.getSimpleName();
+  private final GoogleMap map;
+  private final HomeFragment fragment;
   private Location lastKnownLocation;
-  private HomeFragment fragment;
   private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
 
-  protected LocationResultOnCompleteListener(String TAG, GoogleMap map, HomeFragment fragment) {
-    this.TAG = TAG;
+  protected LocationResultOnCompleteListener(GoogleMap map, HomeFragment fragment) {
     this.map = map;
     this.fragment = fragment;
   }

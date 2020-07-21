@@ -10,7 +10,7 @@ import java.util.List;
 
 public class RequestQueryCallback implements FindCallback<PackageRequest> {
 
-  private final String TAG = RequestQueryCallback.class.getSimpleName();
+  private static final String TAG = RequestQueryCallback.class.getSimpleName();
   private final QueryResponder responder;
 
   protected RequestQueryCallback(QueryResponder responder) {
