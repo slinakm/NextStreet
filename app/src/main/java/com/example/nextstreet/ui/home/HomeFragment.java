@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -35,6 +34,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.base.Preconditions;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -53,6 +53,8 @@ public class HomeFragment extends Fragment
   private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
   protected static final int DEFAULT_ZOOM = 15;
 
+  private static PackageRequest currRequest;
+
   private static Location lastKnownLocation;
   private static LatLng destination;
   private static LatLng origin;
@@ -65,11 +67,11 @@ public class HomeFragment extends Fragment
   private FusedLocationProviderClient fusedLocationProviderClient;
   private AutocompleteSupportFragment autocompleteFragmentOrigin;
   private AutocompleteSupportFragment autocompleteFragmentDestination;
-  private Marker markerOrigin;
-  private Marker markerDestination;
   private GoogleMap map;
 
-  private static PackageRequest currRequest;
+  private Marker markerOrigin;
+  private Marker markerDestination;
+
 
   protected static void setLastKnownLocation(Location lastKnownLocation) {
     HomeFragment.lastKnownLocation = lastKnownLocation;
@@ -97,24 +99,25 @@ public class HomeFragment extends Fragment
   protected void setOrigin(LatLng newPlace) {
     map.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
     origin = newPlace;
-    assert newPlace != null;
+    Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
     setMarkerOrigin(newPlace);
   }
 
   protected void setOriginNoCamera(LatLng newPlace) {
     origin = newPlace;
-    assert newPlace != null;
+    Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
     setMarkerOrigin(newPlace);
   }
 
   protected void setDestination(LatLng newPlace) {
     map.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
     destination = newPlace;
-    assert newPlace != null;
+    Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
     setMarkerDestination(newPlace);
   }
 
   private void setMarkerOrigin(LatLng latLng) {
+
     MarkerOptions marker =
         new MarkerOptions().position(latLng).title(getString(R.string.origin)).flat(true);
     Marker markerOrigin = map.addMarker(marker);
@@ -148,7 +151,7 @@ public class HomeFragment extends Fragment
     SupportMapFragment mMapFragment =
         (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
     Log.i(TAG, "onCreateView: " + mMapFragment);
-    assert mMapFragment != null;
+    Preconditions.checkNotNull(mMapFragment, "mMapFragment is unexpectedly null");
     mMapFragment.getMapAsync(this);
 
     Places.initialize(getActivity().getApplicationContext(), BuildConfig.MAPS_API_KEY);
@@ -177,13 +180,13 @@ public class HomeFragment extends Fragment
     // Map is ready
     map.setOnMapLongClickListener(this);
 
-    assert autocompleteFragmentOrigin != null;
+    Preconditions.checkNotNull(autocompleteFragmentOrigin, "autocompleteFragmentOrigin is unexpectedly null");
     autocompleteFragmentOrigin.setPlaceFields(
         Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
     autocompleteFragmentOrigin.setOnPlaceSelectedListener(
         new MapsPlaceSelectionListener(TAG, binding.getRoot(), this, true));
 
-    assert autocompleteFragmentDestination != null;
+    Preconditions.checkNotNull(autocompleteFragmentDestination, "autocompleteFragmentDestination is unexpectedly null");
     autocompleteFragmentDestination.setPlaceFields(
         Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
     autocompleteFragmentDestination.setOnPlaceSelectedListener(

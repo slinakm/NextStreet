@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.nextstreet.BuildConfig;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.common.base.Preconditions;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -54,10 +55,10 @@ public class PackageRequest extends ParseObject {
 
         if (destination == null) {
             put(KEY_DESTINATION, new ArrayList<ParseGeoPoint>());
-            throw new AssertionError("Assertion failed: " + TAG
+            throw new IllegalStateException(TAG
                     + "getDestination: destination list should not be null");
         } else if (destination.size() == 0) {
-            throw new AssertionError("Assertion failed: " + TAG
+            throw new IllegalStateException(TAG
                     + "getDestination: destination list should not be empty");
         }
 
