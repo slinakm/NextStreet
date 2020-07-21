@@ -48,10 +48,10 @@ public class LoginActivity extends AppCompatActivity {
     loginViewModel.getUsername().observe(this, new TextObserver(binding.etUsername));
     loginViewModel.getPassword().observe(this, new TextObserver(binding.etPassword));
 
-    binding.btnLogin.setOnClickListener(new LoginOnClickListener());
-    binding.btnSignup.setOnClickListener(new SignupOnClickListener());
+    binding.loginButton.setOnClickListener(new LoginOnClickListener());
+    binding.signupButton.setOnClickListener(new SignupOnClickListener());
 
-    binding.btnFb.setReadPermissions(Arrays.asList(EMAIL));
+    binding.fbSignupButton.setReadPermissions(Arrays.asList(EMAIL));
 
     LoginManager.getInstance().registerCallback(callbackManager, new FBLoginCallback(this));
   }

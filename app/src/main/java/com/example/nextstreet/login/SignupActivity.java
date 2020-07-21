@@ -32,7 +32,7 @@ public class SignupActivity extends AppCompatActivity {
     binding = ActivitySignupBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
 
-    binding.btnSignup.setOnClickListener(new SignupOnClickListener());
+    binding.signupButton.setOnClickListener(new SignupOnClickListener());
 
     signupViewModel.getUsername().observe(this, new TextObserver(binding.etUsername));
     signupViewModel.getPassword().observe(this, new TextObserver(binding.etPassword));

@@ -7,23 +7,6 @@
     android:animateLayoutChanges="true"
     tools:context=".ui.home.HomeFragment">
 
-    <View
-        android:id="@+id/start_view"
-        android:transitionName="shared_element_container" />
-
-<!--    <TextView-->
-<!--        android:id="@+id/text_home"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:layout_marginEnd="8dp"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textSize="20sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
     <fragment
         android:id="@+id/autocomplete_fragment_origin"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
@@ -49,8 +32,4 @@
         app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment_destination"
         tools:context=".MapsActivity"
         tools:layout_editor_absoluteX="16dp" />
-
-<!--    <include-->
-<!--        android:id="@+id/home_fragment_bottom_sheet"-->
-<!--        layout="@layout/bottom_sheet_compose"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
