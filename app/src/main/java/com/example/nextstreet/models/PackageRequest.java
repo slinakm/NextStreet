@@ -1,5 +1,8 @@
 package com.example.nextstreet.models;
 
+import android.util.Log;
+
+import com.example.nextstreet.BuildConfig;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
@@ -9,6 +12,7 @@ import com.parse.ParseUser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 @ParseClassName("PackageRequest")
 public class PackageRequest extends ParseObject {
@@ -46,7 +50,17 @@ public class PackageRequest extends ParseObject {
     }
 
     public ParseGeoPoint getDestination() {
-        ArrayList<ParseGeoPoint> destination = (ArrayList<ParseGeoPoint>) get(KEY_DESTINATION);
+        List<ParseGeoPoint> destination = (ArrayList<ParseGeoPoint>) get(KEY_DESTINATION);
+
+        if (destination == null) {
+            put(KEY_DESTINATION, new ArrayList<ParseGeoPoint>());
+            throw new AssertionError("Assertion failed: " + TAG
+                    + "getDestination: destination list should not be null");
+        } else if (destination.size() == 0) {
+            throw new AssertionError("Assertion failed: " + TAG
+                    + "getDestination: destination list should not be empty");
+        }
+
         return destination.get(0);
     }
 

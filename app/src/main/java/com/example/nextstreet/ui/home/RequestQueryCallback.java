@@ -10,11 +10,10 @@ import java.util.List;
 
 public class RequestQueryCallback implements FindCallback<PackageRequest> {
 
-  private String TAG;
-  private HomeFragment fragment;
+  private final String TAG = RequestQueryCallback.class.getSimpleName();
+  private final HomeFragment fragment;
 
-  protected RequestQueryCallback(String TAG, HomeFragment fragment) {
-    this.TAG = TAG;
+  protected RequestQueryCallback(HomeFragment fragment) {
     this.fragment = fragment;
   }
 

@@ -170,28 +170,29 @@ public class HomeFragment extends Fragment
   @Override
   public void onMapReady(GoogleMap googleMap) {
     map = googleMap;
-    if (map != null) {
-      // Map is ready
-      map.setOnMapLongClickListener(this);
-
-      assert autocompleteFragmentOrigin != null;
-      autocompleteFragmentOrigin.setPlaceFields(
-          Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-      autocompleteFragmentOrigin.setOnPlaceSelectedListener(
-          new MapsPlaceSelectionListener(TAG, binding.getRoot(), this, true));
-
-      assert autocompleteFragmentDestination != null;
-      autocompleteFragmentDestination.setPlaceFields(
-          Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-      autocompleteFragmentDestination.setOnPlaceSelectedListener(
-          new MapsPlaceSelectionListener(TAG, binding.getRoot(), this, false));
-
-      Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
-
-      queryMostRecentPackage();
-    } else {
-      Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
+    if (map == null) {
+      Snackbar.make(binding.getRoot(), "Error - Map was null!!", Snackbar.LENGTH_SHORT).show();
+      return;
     }
+    // Map is ready
+    map.setOnMapLongClickListener(this);
+
+    assert autocompleteFragmentOrigin != null;
+    autocompleteFragmentOrigin.setPlaceFields(
+        Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+    autocompleteFragmentOrigin.setOnPlaceSelectedListener(
+        new MapsPlaceSelectionListener(TAG, binding.getRoot(), this, true));
+
+    assert autocompleteFragmentDestination != null;
+    autocompleteFragmentDestination.setPlaceFields(
+        Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+    autocompleteFragmentDestination.setOnPlaceSelectedListener(
+        new MapsPlaceSelectionListener(TAG, binding.getRoot(), this, false));
+
+    Snackbar.make(binding.getRoot(), "Map Fragment was loaded properly!",
+            Snackbar.LENGTH_SHORT).show();
+
+    queryMostRecentPackage();
   }
 
   /**
@@ -316,28 +317,31 @@ public class HomeFragment extends Fragment
     Log.i(TAG, "setMapToCurrRequest: here! ");
     ParseGeoPoint origin = request.getOrigin();
     ParseGeoPoint destination = request.getDestination();
-    if (destination != null) {
-      Log.i(TAG, "setMapToCurrRequest: " + destination.getLatitude());
 
-      LatLng latlngOrigin = new LatLng(origin.getLatitude(), origin.getLongitude());
-      LatLng latlngDest = new LatLng(destination.getLatitude(), destination.getLongitude());
-
-      View originView = autocompleteFragmentOrigin.getView();
-      originView
-          .animate()
-          .translationYBy(-originView.getHeight())
-          .setDuration(200)
-          .setListener(new DismissAnimatorListenerAdapter(originView));
-      View destinationView = autocompleteFragmentDestination.getView();
-      destinationView
-          .animate()
-          .translationYBy(-destinationView.getHeight() - originView.getHeight())
-          .setDuration(400)
-          .setListener(new DismissAnimatorListenerAdapter(destinationView));
-
-      setOriginNoCamera(latlngOrigin);
-      setDestination(latlngDest);
+    if (destination == null) {
+      return;
     }
+
+    Log.i(TAG, "setMapToCurrRequest: " + destination.getLatitude());
+
+    LatLng latlngOrigin = new LatLng(origin.getLatitude(), origin.getLongitude());
+    LatLng latlngDest = new LatLng(destination.getLatitude(), destination.getLongitude());
+
+    View originView = autocompleteFragmentOrigin.getView();
+    originView
+        .animate()
+        .translationYBy(-originView.getHeight())
+        .setDuration(200)
+        .setListener(new DismissAnimatorListenerAdapter(originView));
+    View destinationView = autocompleteFragmentDestination.getView();
+    destinationView
+        .animate()
+        .translationYBy(-destinationView.getHeight() - originView.getHeight())
+        .setDuration(400)
+        .setListener(new DismissAnimatorListenerAdapter(destinationView));
+
+    setOriginNoCamera(latlngOrigin);
+    setDestination(latlngDest);
   }
 
   @Override
