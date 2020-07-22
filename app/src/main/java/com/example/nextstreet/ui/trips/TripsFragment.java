@@ -32,6 +32,7 @@ public class TripsFragment extends Fragment implements QueryResponder {
   private TripsViewModel tripsViewModel;
 
   private RecyclerView rvPackages;
+  private TripsAdapter adapter;
 
   public View onCreateView(LayoutInflater inflater,
                            ViewGroup container,
@@ -48,7 +49,8 @@ public class TripsFragment extends Fragment implements QueryResponder {
 
     rvPackages = binding.rvPackages;
     rvPackages.setLayoutManager(new LinearLayoutManager(getContext()));
-    rvPackages.setAdapter(new TripsAdapter(getActivity(), requests));
+    adapter = new TripsAdapter(getActivity(), requests);
+    rvPackages.setAdapter(adapter);
 
     queryMostRecentPackage();
   }
@@ -78,5 +80,7 @@ public class TripsFragment extends Fragment implements QueryResponder {
     for (PackageRequest request: requests) {
       Log.i(TAG, "respondToQuery: received " + request);
     }
+    this.requests.addAll(requests);
+    this.adapter.notifyDataSetChanged();
   }
 }

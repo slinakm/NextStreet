@@ -1,5 +1,6 @@
 package com.example.nextstreet.models;
 
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.example.nextstreet.BuildConfig;
@@ -13,6 +14,7 @@ import com.parse.ParseUser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -66,6 +68,19 @@ public class PackageRequest extends ParseObject {
         }
 
         return destination.get(0);
+    }
+
+    public String getRelativeTimeAgo() {
+        return getRelativeTime(getCreatedAt());
+    }
+
+    private String getRelativeTime(Date date) {
+        String relativeDate = "";
+        long dateMillis = date.getTime();
+        relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+
+        return relativeDate;
     }
 
     public String getDescription() {

@@ -7,36 +7,34 @@
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="@dimen/card_margins">
 
     <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvDestination"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/destination"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.673"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvOrigin" />
-
         <TextView
-            android:id="@+id/tvOrigin"
+            android:id="@+id/destinationTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/card_vertical_spacing"
+            android:text="@string/destination"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/originTextView"
+            app:layout_constraintTop_toBottomOf="@+id/originTextView" />
+
+        <TextView
+            android:id="@+id/originTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/card_vertical_spacing"
             android:text="@string/origin"
-            app:layout_constraintBottom_toBottomOf="@+id/ivImage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.334"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
+            app:layout_constraintBottom_toBottomOf="@+id/packageImageView"
+            app:layout_constraintStart_toStartOf="@+id/descriptionTextView"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
 
         <ImageView
-            android:id="@+id/ivImage"
+            android:id="@+id/packageImageView"
             android:layout_width="78dp"
             android:layout_height="70dp"
             android:layout_marginStart="16dp"
@@ -46,33 +44,32 @@
             tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tvDescription"
+        android:id="@+id/descriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         tools:text="Description"
-        app:layout_constraintStart_toEndOf="@+id/ivImage"
+        app:layout_constraintStart_toEndOf="@+id/packageImageView"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        tools:text="xx miles"
-        app:layout_constraintStart_toEndOf="@+id/tvDescription"
-        app:layout_constraintTop_toTopOf="@+id/tvDescription" />
+        <TextView
+            android:id="@+id/distanceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            app:layout_constraintEnd_toStartOf="@+id/timeTextView"
+            app:layout_constraintTop_toTopOf="@+id/timeTextView"
+            tools:text="xx miles" />
 
-    <TextView
-        android:id="@+id/tvTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="16dp"
-        tools:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/tvDistance"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

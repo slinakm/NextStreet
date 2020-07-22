@@ -52,13 +52,13 @@ public class ComposeCurrentFragment extends DialogFragment {
     dest = HomeFragment.getDestination();
     origin = HomeFragment.getOrigin();
     if (dest != null) {
-      binding.tvDestination.setText(dest.toString());
+      binding.descriptionTextView.setText(dest.toString());
     }
     if (origin != null) {
-      binding.tvOrigin.setText(origin.toString());
+      binding.originTextView.setText(origin.toString());
     }
 
-    binding.tvDescription.setText(request.getDescription());
+    binding.descriptionTextView.setText(request.getDescription());
 
     ParseFile image = request.getImage();
     if (image != null) {

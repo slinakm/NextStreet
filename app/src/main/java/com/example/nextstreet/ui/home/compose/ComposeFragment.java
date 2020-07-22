@@ -94,10 +94,10 @@ public class ComposeFragment extends DialogFragment implements CameraLauncher {
     dest = HomeFragment.getDestination();
     origin = HomeFragment.getOrigin();
     if (dest != null) {
-      binding.tvDestination.setText(dest.toString());
+      binding.destinationTextView.setText(dest.toString());
     }
     if (origin != null) {
-      binding.tvOrigin.setText(origin.toString());
+      binding.originTextView.setText(origin.toString());
     }
 
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));

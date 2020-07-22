@@ -3,6 +3,7 @@ package com.example.nextstreet.ui.trips;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,16 +63,17 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     }
 
     private void bind(PackageRequest request) {
-      binding.tvDescription.setText(request.getDescription());
+      binding.descriptionTextView.setText(request.getDescription());
 
       ParseGeoPoint destination = request.getDestination();
       ParseGeoPoint origin = request.getOrigin();
       Preconditions.checkNotNull(destination, "Destination should not be null");
       Preconditions.checkNotNull(origin, "Origin should not be null");
 
-      binding.tvOrigin.setText(new LatLng(origin.getLatitude(), origin.getLongitude()).toString());
-      binding.tvDestination.setText(new LatLng(destination.getLatitude(), destination.getLongitude()).toString());
-      binding.tvDistance.setText(
+      binding.originTextView.setText(new LatLng(origin.getLatitude(), origin.getLongitude()).toString());
+      binding.destinationTextView.setText(new LatLng(destination.getLatitude(), destination.getLongitude()).toString());
+      binding.timeTextView.setText(request.getRelativeTimeAgo());
+      binding.distanceTextView.setText(
           MessageFormat.format(
               "{0} {1}",
               (int) origin.distanceInMilesTo(destination),
@@ -79,11 +81,14 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
 
       ParseFile image = request.getImage();
       if (image != null) {
+        binding.packageImageView.setVisibility(View.VISIBLE);
         Glide.with(context)
                 .load(image.getUrl())
                 .transform(new RoundedCorners(context.getResources()
                         .getInteger(R.integer.rounded_corners)))
-                .into(binding.ivImage);
+                .into(binding.packageImageView);
+      } else {
+        binding.packageImageView.setVisibility(View.GONE);
       }
     }
   }

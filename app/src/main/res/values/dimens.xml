@@ -25,4 +25,12 @@
 
     <integer name="description_ems">10</integer>
     <integer name="description_number_of_lines">3</integer>
+
+    <dimen name="card_margins">10dp</dimen>
+    <dimen name="card_vertical_margins">10dp</dimen>
+    <dimen name="card_horizontal_margins">10dp</dimen>
+    <dimen name="card_vertical_spacing">10dp</dimen>
+
+    <integer name="autocompleteFragmentOrigin_time_disappearing">200</integer>
+    <integer name="autocompleteFragmentDestination_time_disappearing">400</integer>
 </resources>

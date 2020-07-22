@@ -7,17 +7,17 @@
 
 
     <TextView
-        android:id="@+id/tvDestination"
+        android:id="@+id/destinationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/destination"
         android:layout_margin="@dimen/compose_vertical_spacing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvOrigin" />
+        app:layout_constraintTop_toBottomOf="@id/originTextView" />
 
     <TextView
-        android:id="@+id/tvOrigin"
+        android:id="@+id/originTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/compose_top_margin"
@@ -39,7 +39,7 @@
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
     <TextView
-        android:id="@+id/tvDescription"
+        android:id="@+id/descriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/compose_vertical_spacing"
@@ -48,7 +48,7 @@
         android:ems="@integer/description_ems"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDestination" />
+        app:layout_constraintTop_toBottomOf="@+id/destinationTextView" />
 
 
     <ImageView
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/tvDescription"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/compose_vertical_spacing"

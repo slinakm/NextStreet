@@ -6,17 +6,17 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tvDestination"
+        android:id="@+id/destinationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/destination"
         android:layout_margin="@dimen/compose_vertical_spacing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvOrigin" />
+        app:layout_constraintTop_toBottomOf="@id/originTextView" />
 
     <TextView
-        android:id="@+id/tvOrigin"
+        android:id="@+id/originTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/compose_top_margin"
@@ -49,7 +49,7 @@
         android:lines="@integer/description_number_of_lines"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDestination" />
+        app:layout_constraintTop_toBottomOf="@+id/destinationTextView" />
 
 
     <ImageView
