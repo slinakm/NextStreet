@@ -8,6 +8,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -28,10 +31,10 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
 
   private static final String TAG = TripsAdapter.class.getSimpleName();
 
-  private final Activity context;
+  private final AppCompatActivity context;
   private final List<PackageRequest> packageRequests;
 
-  protected TripsAdapter(Activity context, List<PackageRequest> packageRequests) {
+  protected TripsAdapter(AppCompatActivity context, List<PackageRequest> packageRequests) {
     this.context = context;
     this.packageRequests = packageRequests;
   }
@@ -94,17 +97,23 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
         binding.packageImageView.setVisibility(View.GONE);
       }
 
-      setupOnClickListener();
+      setupOnClickListener(request);
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setupOnClickListener() {
+    private void setupOnClickListener(final PackageRequest request) {
       binding.getRoot()
           .setOnTouchListener(
               new OnDoubleTapListener(context) {
                 @Override
                 public void onDoubleTap(MotionEvent e) {
                   Log.i(TAG, "onDoubleTap: double tap performed");
+                  FragmentManager fm = context.getSupportFragmentManager();
+                  
+                  DetailsFragment detailsFragment =
+                          DetailsFragment.newInstance(request);
+
+                  detailsFragment.show(fm, DetailsFragment.class.getSimpleName());
                 }
               });
     }

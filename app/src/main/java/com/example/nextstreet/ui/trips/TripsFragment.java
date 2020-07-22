@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,7 +50,8 @@ public class TripsFragment extends Fragment implements QueryResponder {
 
     rvPackages = binding.rvPackages;
     rvPackages.setLayoutManager(new LinearLayoutManager(getContext()));
-    adapter = new TripsAdapter(getActivity(), requests);
+    AppCompatActivity appCompatActivityOfThis = (AppCompatActivity) getActivity();
+    adapter = new TripsAdapter(appCompatActivityOfThis, requests);
     rvPackages.setAdapter(adapter);
 
     queryMostRecentPackage();
