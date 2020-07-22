@@ -52,7 +52,7 @@ public class ComposeCurrentFragment extends DialogFragment {
     dest = HomeFragment.getDestination();
     origin = HomeFragment.getOrigin();
     if (dest != null) {
-      binding.descriptionTextView.setText(dest.toString());
+      binding.destinationTextView.setText(dest.toString());
     }
     if (origin != null) {
       binding.originTextView.setText(origin.toString());
