@@ -337,17 +337,22 @@ public class HomeFragment extends Fragment
     LatLng latlngDest = new LatLng(destination.getLatitude(), destination.getLongitude());
 
     View originView = autocompleteFragmentOrigin.getView();
-    originView
-        .animate()
-        .translationYBy(-originView.getHeight())
-        .setDuration(200)
-        .setListener(new DismissAnimatorListenerAdapter(originView));
+    if (originView != null) {
+      originView
+              .animate()
+              .translationYBy(-originView.getHeight())
+              .setDuration(getResources().getInteger(R.integer.autocompleteFragmentOrigin_time_disappearing))
+              .setListener(new DismissAnimatorListenerAdapter(originView));
+    }
+
     View destinationView = autocompleteFragmentDestination.getView();
-    destinationView
-        .animate()
-        .translationYBy(-destinationView.getHeight() - originView.getHeight())
-        .setDuration(400)
-        .setListener(new DismissAnimatorListenerAdapter(destinationView));
+    if (destinationView != null) {
+      destinationView
+              .animate()
+              .translationYBy(-destinationView.getHeight() - originView.getHeight())
+              .setDuration(getResources().getInteger(R.integer.autocompleteFragmentDestination_time_disappearing))
+              .setListener(new DismissAnimatorListenerAdapter(destinationView));
+    }
 
     setOriginNoCamera(latlngOrigin);
     setDestination(latlngDest);
