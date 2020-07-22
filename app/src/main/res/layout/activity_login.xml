@@ -65,4 +65,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/signupButton"
         app:layout_constraintTop_toBottomOf="@+id/signupButton" />
+
+    <ImageView
+        android:id="@+id/backImageView"
+        android:layout_width="@dimen/back_icon_size"
+        android:layout_height="@dimen/back_icon_size"
+        android:layout_marginStart="@dimen/back_icon_side_margin"
+        android:layout_marginTop="@dimen/back_icon_side_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/abc_vector_test"
+        android:tint="@color/back_icon_color"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

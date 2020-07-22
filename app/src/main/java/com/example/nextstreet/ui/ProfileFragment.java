@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.nextstreet.databinding.FragmentProfileBinding;
 import com.example.nextstreet.login.LoginActivity;
+import com.example.nextstreet.login.StartActivity;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.parse.ParseUser;
 
@@ -60,7 +61,7 @@ public class ProfileFragment extends DialogFragment {
 
       ParseUser.logOut();
 
-      Intent i = new Intent(ProfileFragment.this.getContext(), LoginActivity.class);
+      Intent i = new Intent(ProfileFragment.this.getContext(), StartActivity.class);
       getContext().startActivity(i);
       getActivity().finish();
     }

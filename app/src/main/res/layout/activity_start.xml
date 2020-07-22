@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/start_margin"
         android:backgroundTint="@color/btn_color"
-        android:text="@string/login_loginButton"
+        android:text="@string/start_driverButton"
         android:textColor="@color/btn_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/start_margin"
         android:backgroundTint="@color/btn_scnd_color"
-        android:text="@string/login_signUpButton"
+        android:text="@string/start_userButton"
         android:textColor="@color/btn_scnd_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/driverButton" />

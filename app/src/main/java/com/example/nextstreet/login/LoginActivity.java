@@ -50,10 +50,16 @@ public class LoginActivity extends AppCompatActivity {
 
     binding.loginButton.setOnClickListener(new LoginOnClickListener());
     binding.signupButton.setOnClickListener(new SignupOnClickListener());
+    binding.backImageView.setOnClickListener(new BackOnClickListener());
 
     binding.fbSignupButton.setReadPermissions(Arrays.asList(EMAIL));
 
     LoginManager.getInstance().registerCallback(callbackManager, new FBLoginCallback(this));
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
   }
 
   private class SignupOnClickListener implements View.OnClickListener {
@@ -73,6 +79,15 @@ public class LoginActivity extends AppCompatActivity {
     }
   }
 
+  private class BackOnClickListener implements View.OnClickListener {
+    @Override
+    public void onClick(View view) {
+      Log.i(TAG, "backOnClickListener onClick: ");
+
+      finish();
+    }
+  }
+
   private void loginUser(String username, String password) {
     Log.i(TAG, "loginUser: " + username);
 
@@ -86,9 +101,14 @@ public class LoginActivity extends AppCompatActivity {
     super.onActivityResult(requestCode, resultCode, data);
   }
 
-  private void goActivity(Class c) {
-    Intent i = new Intent(this, c);
+  private void goActivity(Class classToGoTo) {
+    Intent i = new Intent(this, classToGoTo);
     startActivity(i);
     finish();
+  }
+
+  @Override
+  public void finish() {
+    super.finish();
   }
 }

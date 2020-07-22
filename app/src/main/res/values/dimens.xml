@@ -13,6 +13,10 @@
     <dimen name="cancel_icon_top_margin">5dp</dimen>
     <dimen name="cancel_icon_side_margin">5dp</dimen>
 
+    <dimen name="back_icon_top_margin">@dimen/cancel_icon_top_margin</dimen>
+    <dimen name="back_icon_side_margin">@dimen/cancel_icon_side_margin</dimen>
+    <dimen name="back_icon_size">38dp</dimen>
+
     <dimen name="compose_side_margins">50dp</dimen>
     <dimen name="compose_vertical_spacing">20dp</dimen>
     <dimen name="compose_top_margin">80dp</dimen>
