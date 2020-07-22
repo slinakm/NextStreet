@@ -2,6 +2,7 @@ package com.example.nextstreet.ui.trips;
 
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,27 +22,44 @@ import com.example.nextstreet.databinding.FragmentComposeBinding;
 import com.example.nextstreet.databinding.FragmentDetailsBinding;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.ui.CameraOnClickListener;
+import com.example.nextstreet.ui.home.DismissAnimatorListenerAdapter;
 import com.example.nextstreet.ui.home.HomeFragment;
+import com.example.nextstreet.ui.home.MapsPlaceSelectionListener;
 import com.example.nextstreet.ui.home.compose.ComposeFragment;
 import com.example.nextstreet.ui.home.compose.ComposeViewModel;
 import com.example.nextstreet.ui.home.compose.PackageSubmissionOnClickListener;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.example.nextstreet.utilities.TextObserver;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 
-public class DetailsFragment extends DialogFragment {
+public class DetailsFragment extends DialogFragment implements OnMapReadyCallback {
 
     private static final String TAG = DetailsFragment.class.getSimpleName();
 
     private FragmentDetailsBinding binding;
 
     private PackageRequest request;
+    private GoogleMap map;
+    private LatLng destination;
+    private LatLng origin;
+
+    private Marker markerOrigin;
+    private Marker markerDestination;
 
     public static DetailsFragment newInstance(PackageRequest request) {
         Bundle args = new Bundle();
@@ -96,6 +114,7 @@ public class DetailsFragment extends DialogFragment {
         }
 
         binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
+        setMapToCurrRequest();
     }
 
     @Override
@@ -105,5 +124,72 @@ public class DetailsFragment extends DialogFragment {
         getDialog()
                 .getWindow()
                 .setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        if (map == null) {
+            Snackbar.make(binding.getRoot(), "Error - Map was null!!", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+    }
+
+    private void setMapToCurrRequest() {
+        Log.i(TAG, "setMapToCurrRequest: here! ");
+        ParseGeoPoint origin = request.getOrigin();
+        ParseGeoPoint destination = request.getDestination();
+
+        if (destination == null) {
+            return;
+        }
+
+        Log.i(TAG, "setMapToCurrRequest: " + destination.getLatitude());
+
+        LatLng latlngOrigin = new LatLng(origin.getLatitude(), origin.getLongitude());
+        LatLng latlngDest = new LatLng(destination.getLatitude(), destination.getLongitude());
+
+        setOriginNoCamera(latlngOrigin);
+        setDestination(latlngDest);
+    }
+
+    protected void setOriginNoCamera(LatLng newPlace) {
+        origin = newPlace;
+        Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
+        setMarkerOrigin(newPlace);
+    }
+
+    protected void setDestination(LatLng newPlace) {
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
+        destination = newPlace;
+        Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
+        setMarkerDestination(newPlace);
+    }
+
+    private void setMarkerOrigin(LatLng latLng) {
+
+        MarkerOptions marker =
+                new MarkerOptions().position(latLng).title(getString(R.string.origin)).flat(true);
+        Marker markerOrigin = map.addMarker(marker);
+
+        if (this.markerOrigin != null) {
+            this.markerOrigin.remove();
+        }
+        this.markerOrigin = markerOrigin;
+    }
+
+    private void setMarkerDestination(LatLng latLng) {
+        MarkerOptions marker =
+                new MarkerOptions()
+                        .position(latLng)
+                        .title(getString(R.string.destination))
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .flat(true);
+        Marker markerDestination = map.addMarker(marker);
+
+        if (this.markerDestination != null) {
+            this.markerDestination.remove();
+        }
+        this.markerDestination = markerDestination;
     }
 }

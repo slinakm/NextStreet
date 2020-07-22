@@ -51,10 +51,10 @@ import java.util.List;
 public class HomeFragment extends Fragment
     implements QueryResponder, OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
+  public static final int DEFAULT_ZOOM = 20;
   private static final String TAG = HomeFragment.class.getSimpleName();
 
   private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-  protected static final int DEFAULT_ZOOM = 15;
 
   private static PackageRequest currRequest;
 
