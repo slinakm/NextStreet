@@ -1,11 +1,18 @@
 package com.example.nextstreet.ui.home.compose;
 
+import android.animation.Animator;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,15 +21,19 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -79,14 +90,94 @@ public class ComposeFragment extends DialogFragment implements CameraLauncher {
   public View onCreateView(
       @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     composeViewModel = ViewModelProviders.of(this).get(ComposeViewModel.class);
-    binding = FragmentComposeBinding.inflate(getLayoutInflater());
+    binding = FragmentComposeBinding.inflate(getLayoutInflater(), container, false);
+
+    binding.getRoot().setVisibility(View.INVISIBLE);
+
+    binding.getRoot().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+      @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+      @Override
+      public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                 int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        v.removeOnLayoutChangeListener(this);
+        setUpForShowAnimation(binding.getRoot());
+      }
+    });
 
     return binding.getRoot();
+  }
+
+  private void setUpForShowAnimation(final View root) {
+    Log.i(TAG, "setUpForShowAnimation: ");
+    AlertDialog.Builder builder =  new AlertDialog.Builder(getActivity());
+    builder.setView(root)
+            .setCancelable(false);
+
+    Dialog dialog = getDialog();
+
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+    dialog.show();
+    animateShowingFragment(root);
+  }
+
+  /**
+   * A method where a view is revealed circularly from the bottom left corner.
+   * @param viewToAnimate, the view to animate and reveal
+   */
+  private void animateShowingFragment(View viewToAnimate) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      Log.i(TAG, "animateShowingFragment: animating");
+
+      // get the center for the clipping circle
+      int cx = viewToAnimate.getWidth();
+      int cy = viewToAnimate.getHeight();
+
+      // get the final radius for the clipping circle
+      float finalRadius = (float) Math.hypot(cx, cy);
+
+      // create the animator for this view (the start radius is zero)
+      Animator anim = ViewAnimationUtils.createCircularReveal(viewToAnimate, cx, cy, 0f, finalRadius);
+      anim.setDuration(getResources().getInteger(R.integer.composeFragment_time_appearing));
+      anim.setInterpolator(new FastOutSlowInInterpolator());
+
+      startColorAnimation(viewToAnimate, getResources().getColor(R.color.animation_start_color),
+              getResources().getColor(R.color.animation_end_color), getResources().getInteger(R.integer.composeFragment_time_appearing));
+      // make the view visible and start the animation
+      viewToAnimate.setVisibility(View.VISIBLE);
+      anim.start();
+
+    } else {
+      // set the view to invisible without a circular reveal animation below Lollipop
+      viewToAnimate.setVisibility(View.VISIBLE);
+    }
+  }
+
+  /**
+   * A method to animate a growing circle during reveal transitions.
+   * @param viewToAnimate, the view to animate is set final since it is accessed in inner class
+   * @param startColor, start color for animation
+   * @param endColor, ending color for animation
+   * @param duration, length of animation
+   */
+  private void startColorAnimation(final View viewToAnimate, @ColorInt int startColor,
+                                   @ColorInt int endColor, int duration) {
+    ValueAnimator anim = new ValueAnimator();
+    anim.setIntValues(startColor, endColor);
+    anim.setEvaluator(new ArgbEvaluator());
+    anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator valueAnimator) {
+        viewToAnimate.setBackgroundColor((Integer) valueAnimator.getAnimatedValue());
+      }
+    });
+    anim.setDuration(duration);
+    anim.start();
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+
     composeViewModel
         .getDescription()
         .observe(getViewLifecycleOwner(), new TextObserver(binding.etDescription));
