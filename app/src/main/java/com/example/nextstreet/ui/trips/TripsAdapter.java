@@ -1,8 +1,10 @@
 package com.example.nextstreet.ui.trips;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ItemRequestBinding;
 import com.example.nextstreet.models.PackageRequest;
+import com.example.nextstreet.utilities.OnDoubleTapListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.common.base.Preconditions;
 import com.parse.ParseFile;
@@ -90,6 +93,20 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
       } else {
         binding.packageImageView.setVisibility(View.GONE);
       }
+
+      setupOnClickListener();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupOnClickListener() {
+      binding.getRoot()
+          .setOnTouchListener(
+              new OnDoubleTapListener(context) {
+                @Override
+                public void onDoubleTap(MotionEvent e) {
+                  Log.i(TAG, "onDoubleTap: double tap performed");
+                }
+              });
     }
   }
 }

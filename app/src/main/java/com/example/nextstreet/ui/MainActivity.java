@@ -1,8 +1,11 @@
 package com.example.nextstreet.ui;
 
+import android.animation.Animator;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    FloatingActionButton fab = findViewById(R.id.fab);
-    fab.setOnClickListener(new ComposeFragmentOnClickListener(this));
+    FloatingActionButton composeFloatingActionButton = findViewById(R.id.fab);
+    composeFloatingActionButton.setOnClickListener(new ComposeFragmentOnClickListener(this));
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     NavigationView navigationView = findViewById(R.id.nav_view);
