@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui;
+package com.example.nextstreet.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.nextstreet.databinding.FragmentProfileBinding;
-import com.example.nextstreet.login.LoginActivity;
 import com.example.nextstreet.login.StartActivity;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.parse.ParseUser;

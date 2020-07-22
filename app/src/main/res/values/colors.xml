@@ -1,25 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/dark_grey</color>
-    <color name="colorPrimaryDark">@color/medium_grey</color>
-    <color name="colorAccent">@color/black</color>
 
-    <color name="colorSecondary">@color/blue_grey</color>
+    <color name="primaryColor">#004d40</color>
+    <color name="primaryLightColor">#39796b</color>
+    <color name="primaryDarkColor">#00251a</color>
+    <color name="secondaryColor">#1a237e</color>
+    <color name="secondaryLightColor">#534bae</color>
+    <color name="secondaryDarkColor">@color/primaryDarkColor</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
 
-    <color name="btn_color">@color/blue_grey</color>
+    <color name="accentPrimaryColor">#91d843</color>
+    <color name="accentPrimaryLightColor">#c5ff75</color>
+    <color name="accentPrimaryDarkColor">#5ea600</color>
+    <color name="accentSecondaryColor">#009688</color>
+    <color name="accentSecondaryLightColor">#52c7b8</color>
+    <color name="accentSecondaryDarkColor">#00675b</color>
+    <color name="accentPrimaryTextColor">#000000</color>
+    <color name="accentSecondaryTextColor">#000000</color>
+    <color name="colorAccent">@color/secondaryLightColor</color>
+
+    <color name="text_primary">@color/primaryTextColor</color>
+    <color name="text_secondary">@color/secondaryTextColor</color>
+
+    <color name="animation_start_color">@color/secondaryLightColor</color>
+    <color name="animation_end_color">@color/white</color>
+
+    <color name="btn_color">@color/secondaryColor</color>
     <color name="btn_text_color">@color/text_primary</color>
 
-    <color name="btn_scnd_color">@color/light_blue_grey</color>
+    <color name="btn_scnd_color">@color/secondaryLightColor</color>
     <color name="btn_scnd_text_color">@color/text_primary</color>
 
-    <color name="icon_color">@color/dark_blue_grey</color>
+    <color name="icon_color">@color/secondaryDarkColor</color>
     <color name="icon_text_color">@color/text_primary</color>
 
-    <color name="back_icon_color">@color/dark_blue_grey</color>
+    <color name="back_icon_color">@color/secondaryDarkColor</color>
     <color name="bottom_fragment_background">@color/white</color>
-
-    <color name="text_primary">@color/white</color>
-    <color name="text_secondary">@color/light_grey</color>
 
     <color name="white">#ffffff</color>
     <color name="light_grey">#90a4ae</color>

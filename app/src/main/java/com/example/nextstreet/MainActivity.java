@@ -1,11 +1,8 @@
-package com.example.nextstreet.ui;
+package com.example.nextstreet;
 
-import android.animation.Animator;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,10 +15,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
-import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ActivityMainBinding;
 import com.example.nextstreet.login.SignupActivity;
-import com.example.nextstreet.ui.home.compose.ComposeFragmentOnClickListener;
+import com.example.nextstreet.compose.ComposeFragmentOnClickListener;
+import com.example.nextstreet.profile.ProfileFragmentOnClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.parse.ParseFile;

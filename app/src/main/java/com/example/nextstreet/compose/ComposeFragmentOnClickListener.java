@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui.home.compose;
+package com.example.nextstreet.compose;
 
 import android.util.Log;
 import android.view.View;
@@ -6,7 +6,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.nextstreet.ui.home.HomeFragment;
+import com.example.nextstreet.home.HomeFragment;
 
 public class ComposeFragmentOnClickListener implements View.OnClickListener {
 

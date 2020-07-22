@@ -1,8 +1,6 @@
-package com.example.nextstreet.ui.trips;
+package com.example.nextstreet.trips;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -109,7 +106,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
                 public void onDoubleTap(MotionEvent e) {
                   Log.i(TAG, "onDoubleTap: double tap performed");
                   FragmentManager fm = context.getSupportFragmentManager();
-                  
+
                   DetailsFragment detailsFragment =
                           DetailsFragment.newInstance(request);
 

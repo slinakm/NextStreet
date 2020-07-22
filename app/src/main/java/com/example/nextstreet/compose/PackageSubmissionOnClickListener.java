@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui.home.compose;
+package com.example.nextstreet.compose;
 
 import android.view.View;
 

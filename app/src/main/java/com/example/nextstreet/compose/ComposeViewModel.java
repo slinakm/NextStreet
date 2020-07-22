@@ -1,10 +1,8 @@
-package com.example.nextstreet.ui.home.compose;
+package com.example.nextstreet.compose;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import java.io.File;
 
 public class ComposeViewModel extends ViewModel {
 

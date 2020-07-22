@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui;
+package com.example.nextstreet.compose;
 
 import android.app.Activity;
 import android.content.Context;

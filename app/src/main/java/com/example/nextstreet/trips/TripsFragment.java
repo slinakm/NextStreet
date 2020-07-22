@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui.trips;
+package com.example.nextstreet.trips;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -16,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nextstreet.databinding.FragmentTripsBinding;
 import com.example.nextstreet.models.PackageRequest;
-import com.example.nextstreet.ui.QueryResponder;
-import com.example.nextstreet.ui.RequestQueryCallback;
+import com.example.nextstreet.home.QueryResponder;
+import com.example.nextstreet.home.RequestQueryCallback;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 

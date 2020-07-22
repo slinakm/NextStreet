@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui.home.compose;
+package com.example.nextstreet.compose;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,12 +14,13 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeCurrentBinding;
 import com.example.nextstreet.models.PackageRequest;
-import com.example.nextstreet.ui.home.HomeFragment;
+import com.example.nextstreet.home.HomeFragment;
+import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseFile;
 
-public class ComposeCurrentFragment extends DialogFragment {
+public class ComposeCurrentFragment  extends CircularRevealDialogFragment {
 
   private static final String TAG = ComposeFragment.class.getSimpleName();
 
@@ -42,6 +43,9 @@ public class ComposeCurrentFragment extends DialogFragment {
       @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentComposeCurrentBinding.inflate(getLayoutInflater());
     request = (PackageRequest) getArguments().get(PackageRequest.class.getSimpleName());
+
+    super.setUpOnLayoutListener(binding.getRoot(), true);
+
     return binding.getRoot();
   }
 

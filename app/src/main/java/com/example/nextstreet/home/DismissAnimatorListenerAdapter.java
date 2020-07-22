@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui.home;
+package com.example.nextstreet.home;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

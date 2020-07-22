@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.nextstreet.databinding.ActivityLoginBinding;
-import com.example.nextstreet.ui.MainActivity;
+import com.example.nextstreet.MainActivity;
 import com.example.nextstreet.utilities.TextObserver;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;

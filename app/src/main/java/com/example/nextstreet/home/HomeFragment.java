@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui.home;
+package com.example.nextstreet.home;
 
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -18,8 +18,6 @@ import com.example.nextstreet.BuildConfig;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.example.nextstreet.models.PackageRequest;
-import com.example.nextstreet.ui.QueryResponder;
-import com.example.nextstreet.ui.RequestQueryCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;

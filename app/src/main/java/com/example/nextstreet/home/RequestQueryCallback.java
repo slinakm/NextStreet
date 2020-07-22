@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui;
+package com.example.nextstreet.home;
 
 import android.util.Log;
 

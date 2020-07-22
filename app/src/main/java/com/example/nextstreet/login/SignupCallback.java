@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.nextstreet.R;
-import com.example.nextstreet.ui.MainActivity;
+import com.example.nextstreet.MainActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.ParseUser;

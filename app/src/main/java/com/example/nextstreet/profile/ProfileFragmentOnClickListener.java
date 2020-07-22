@@ -1,4 +1,4 @@
-package com.example.nextstreet.ui;
+package com.example.nextstreet.profile;
 
 import android.util.Log;
 import android.view.View;

@@ -10,23 +10,25 @@
         android:id="@+id/driverButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/start_margin"
+        android:layout_margin="@dimen/start_margin"
         android:backgroundTint="@color/btn_color"
         android:text="@string/start_driverButton"
         android:textColor="@color/btn_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="@dimen/start_margin"/>
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/userButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/start_margin"
-        android:backgroundTint="@color/btn_scnd_color"
+        android:layout_marginStart="@dimen/start_margin"
+        android:backgroundTint="@color/btn_color"
         android:text="@string/start_userButton"
-        android:textColor="@color/btn_scnd_text_color"
+        android:textColor="@color/btn_text_color"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/driverButton" />
 
     <ImageView
@@ -40,5 +42,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
