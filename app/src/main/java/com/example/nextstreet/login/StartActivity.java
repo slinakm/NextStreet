@@ -15,6 +15,7 @@ public class StartActivity extends AppCompatActivity {
   private static final String TAG = StartActivity.class.getSimpleName();
   private ActivityStartBinding binding;
 
+  //TODO: go automatically to home if user already logged in
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
