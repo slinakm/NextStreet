@@ -27,7 +27,6 @@ public class LoginCallback implements LogInCallback {
   @Override
   public void done(ParseUser user, ParseException e) {
     if (e != null) {
-      // TODO: State whether user has wrong username/password or not
       Log.e(TAG, "loginUser: issue with login", e);
 
       Snackbar.make(view, R.string.toast_login_err, Snackbar.LENGTH_SHORT).show();
