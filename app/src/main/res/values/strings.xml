@@ -17,6 +17,8 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_trips">Trips</string>
+    <string name="driver_menu_requests">Requests</string>
+    <string name="driver_menu_profile">Profile</string>
 
     <string name="login_loginButton">Log in</string>
     <string name="login_signUpButton">Sign Up</string>
@@ -64,4 +66,6 @@
 
     <string name="start_driverButton">Driver</string>
     <string name="start_userButton">User</string>
+    <string name="this_is_driver_request_view">This is driver request view.</string>
+    <string name="this_is_profile_fragment">This is profile fragment</string>
 </resources>
