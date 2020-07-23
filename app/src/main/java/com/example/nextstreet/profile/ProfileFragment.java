@@ -40,7 +40,7 @@ public class ProfileFragment extends DialogFragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    binding.logoutButton.setOnClickListener(new LogoutOnClickListener());
+    binding.logoutButton.setOnClickListener(new LogoutOnClickListener(getActivity()));
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
   }
 
@@ -53,16 +53,4 @@ public class ProfileFragment extends DialogFragment {
         .setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
   }
 
-  /** Logout button */
-  private class LogoutOnClickListener implements View.OnClickListener {
-    public void onClick(View view) {
-      Log.i(TAG, "onClick: submit button was clicked by user");
-
-      ParseUser.logOut();
-
-      Intent i = new Intent(ProfileFragment.this.getContext(), StartActivity.class);
-      getContext().startActivity(i);
-      getActivity().finish();
-    }
-  }
 }

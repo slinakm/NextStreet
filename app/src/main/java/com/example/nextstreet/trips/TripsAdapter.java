@@ -31,7 +31,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
   private final AppCompatActivity context;
   private final List<PackageRequest> packageRequests;
 
-  protected TripsAdapter(AppCompatActivity context, List<PackageRequest> packageRequests) {
+  TripsAdapter(AppCompatActivity context, List<PackageRequest> packageRequests) {
     this.context = context;
     this.packageRequests = packageRequests;
   }
