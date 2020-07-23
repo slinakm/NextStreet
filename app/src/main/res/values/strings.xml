@@ -31,6 +31,9 @@
     <string name="login_last_name">Last Name *</string>
 
     <string name="toast_login_err">Issue with login</string>
+    <string name="toast_login_noUsers">Wrong username or password</string>
+    <string name="toast_login_userScreenWrong">Must log in as a Driver</string>
+    <string name="toast_login_driverScreenWrong">Must log in as a User</string>
     <string name="toast_login_succ">Success!</string>
     <string name="toast_success">Success!</string>
     <string name="toast_signup_err">Could not sign up</string>
