@@ -2,6 +2,7 @@ package com.example.nextstreet;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -17,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.base.Preconditions;
 
 public class DriverMainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -32,6 +34,7 @@ public class DriverMainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Toolbar toolbar = findViewById(R.id.driver_toolbar);
+        toolbar.setNavigationIcon(null);
         setSupportActionBar(toolbar);
 
         BottomNavigationView navigationView = findViewById(R.id.nav_driver_view);
@@ -42,5 +45,10 @@ public class DriverMainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_driver_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        ActionBar actionBar = getSupportActionBar();
+        Preconditions.checkNotNull(actionBar);
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
     }
 }

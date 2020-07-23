@@ -4,16 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/driver_navigation"
-    app:startDestination="@id/driverRequestsFragment">
+    app:startDestination="@id/nav_driver_requests">
 
     <fragment
-        android:id="@+id/driverRequestsFragment"
+        android:id="@+id/nav_driver_requests"
         android:name="com.example.nextstreet.DriverRequestsFragment"
         android:label="DriverRequestsFragment"
         tools:layout="@layout/fragment_driver_requests" />
 
     <fragment
-        android:id="@+id/driverProfileFragment"
+        android:id="@+id/nav_driver_profile"
         android:name="com.example.nextstreet.DriverProfileFragment"
         android:label="DriverProfileFragment"
         tools:layout="@layout/fragment_driver_profile" />

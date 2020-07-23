@@ -144,7 +144,7 @@ public class HomeFragment extends Fragment
   }
 
   public View onCreateView(
-      @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+          LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
     binding = FragmentHomeBinding.inflate(getLayoutInflater());
 
