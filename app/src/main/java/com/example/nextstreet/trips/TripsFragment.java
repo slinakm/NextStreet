@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nextstreet.databinding.FragmentTripsBinding;
-import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.home.QueryResponder;
 import com.example.nextstreet.home.RequestQueryCallback;
+import com.example.nextstreet.models.PackageRequest;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -34,9 +34,8 @@ public class TripsFragment extends Fragment implements QueryResponder {
   private RecyclerView rvPackages;
   private TripsAdapter adapter;
 
-  public View onCreateView(LayoutInflater inflater,
-                           ViewGroup container,
-                           Bundle savedInstanceState) {
+  public View onCreateView(
+      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     tripsViewModel = ViewModelProviders.of(this).get(TripsViewModel.class);
 
     binding = FragmentTripsBinding.inflate(getLayoutInflater());
@@ -78,7 +77,7 @@ public class TripsFragment extends Fragment implements QueryResponder {
 
   @Override
   public void respondToQuery(List<PackageRequest> requests) {
-    for (PackageRequest request: requests) {
+    for (PackageRequest request : requests) {
       Log.i(TAG, "respondToQuery: received " + request);
     }
     this.requests.addAll(requests);

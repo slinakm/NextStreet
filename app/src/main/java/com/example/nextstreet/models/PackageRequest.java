@@ -1,11 +1,8 @@
 package com.example.nextstreet.models;
 
 import android.text.format.DateUtils;
-import android.util.Log;
 
-import com.example.nextstreet.BuildConfig;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.common.base.Preconditions;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -22,72 +19,76 @@ import javax.annotation.Nullable;
 @ParseClassName("PackageRequest")
 public class PackageRequest extends ParseObject {
 
-    public static final String TAG = PackageRequest.class.getSimpleName();
-    public static final String KEY_USER = "user";
-    public static final String KEY_DRIVER = "driver";
-    public static final String KEY_IMAGE = "image";
-    public static final String KEY_DESCRIPTION = "description";
-    public static final String KEY_ORIGIN = "origin";
-    public static final String KEY_DESTINATION = "destination";
-    public static final String KEY_CREATEDAT = "createdAt";
-    public static final String KEY_ISFULFILLED = "isFulfilled";
+  public static final String TAG = PackageRequest.class.getSimpleName();
+  public static final String KEY_USER = "user";
+  public static final String KEY_DRIVER = "driver";
+  public static final String KEY_IMAGE = "image";
+  public static final String KEY_DESCRIPTION = "description";
+  public static final String KEY_ORIGIN = "origin";
+  public static final String KEY_DESTINATION = "destination";
+  public static final String KEY_CREATEDAT = "createdAt";
+  public static final String KEY_ISFULFILLED = "isFulfilled";
 
-    // Set up empty constructor to register as ParseObject subclass
-    public PackageRequest(){}
+  // Set up empty constructor to register as ParseObject subclass
+  public PackageRequest() {}
 
-    public PackageRequest(@Nullable File image, @Nullable String description,
-                          LatLng origin, LatLng destination, ParseUser user){
-        if (image != null) {
-            put(KEY_IMAGE, image);
-        }
-        if (description != null) {
-            put(KEY_DESCRIPTION, description);
-        }
-        put(KEY_ORIGIN, new ParseGeoPoint(origin.latitude, origin.longitude));
-        ParseGeoPoint destGeoPoint= new ParseGeoPoint(destination.latitude, destination.longitude);
-        ArrayList<ParseGeoPoint> geoPointArrayList = new ArrayList<ParseGeoPoint>();
-        geoPointArrayList.add(destGeoPoint);
-        put(KEY_DESTINATION, geoPointArrayList);
-        put(KEY_USER, user);
+  public PackageRequest(
+      @Nullable File image,
+      @Nullable String description,
+      LatLng origin,
+      LatLng destination,
+      ParseUser user) {
+    if (image != null) {
+      put(KEY_IMAGE, image);
+    }
+    if (description != null) {
+      put(KEY_DESCRIPTION, description);
+    }
+    put(KEY_ORIGIN, new ParseGeoPoint(origin.latitude, origin.longitude));
+    ParseGeoPoint destGeoPoint = new ParseGeoPoint(destination.latitude, destination.longitude);
+    ArrayList<ParseGeoPoint> geoPointArrayList = new ArrayList<ParseGeoPoint>();
+    geoPointArrayList.add(destGeoPoint);
+    put(KEY_DESTINATION, geoPointArrayList);
+    put(KEY_USER, user);
+  }
+
+  public ParseGeoPoint getOrigin() {
+    return getParseGeoPoint(KEY_ORIGIN);
+  }
+
+  public ParseGeoPoint getDestination() {
+    List<ParseGeoPoint> destination = (ArrayList<ParseGeoPoint>) get(KEY_DESTINATION);
+
+    if (destination == null) {
+      put(KEY_DESTINATION, new ArrayList<ParseGeoPoint>());
+      throw new IllegalStateException(TAG + "getDestination: destination list should not be null");
+    } else if (destination.size() == 0) {
+      throw new IllegalStateException(TAG + "getDestination: destination list should not be empty");
     }
 
-    public ParseGeoPoint getOrigin() {
-        return getParseGeoPoint(KEY_ORIGIN);
-    }
+    return destination.get(0);
+  }
 
-    public ParseGeoPoint getDestination() {
-        List<ParseGeoPoint> destination = (ArrayList<ParseGeoPoint>) get(KEY_DESTINATION);
+  public String getRelativeTimeAgo() {
+    return getRelativeTime(getCreatedAt());
+  }
 
-        if (destination == null) {
-            put(KEY_DESTINATION, new ArrayList<ParseGeoPoint>());
-            throw new IllegalStateException(TAG
-                    + "getDestination: destination list should not be null");
-        } else if (destination.size() == 0) {
-            throw new IllegalStateException(TAG
-                    + "getDestination: destination list should not be empty");
-        }
+  private String getRelativeTime(Date date) {
+    String relativeDate = "";
+    long dateMillis = date.getTime();
+    relativeDate =
+        DateUtils.getRelativeTimeSpanString(
+                dateMillis, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)
+            .toString();
 
-        return destination.get(0);
-    }
+    return relativeDate;
+  }
 
-    public String getRelativeTimeAgo() {
-        return getRelativeTime(getCreatedAt());
-    }
+  public String getDescription() {
+    return getString(KEY_DESCRIPTION);
+  }
 
-    private String getRelativeTime(Date date) {
-        String relativeDate = "";
-        long dateMillis = date.getTime();
-        relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-
-        return relativeDate;
-    }
-
-    public String getDescription() {
-        return getString(KEY_DESCRIPTION);
-    }
-
-    public ParseFile getImage() {
-        return getParseFile(KEY_IMAGE);
-    }
+  public ParseFile getImage() {
+    return getParseFile(KEY_IMAGE);
+  }
 }

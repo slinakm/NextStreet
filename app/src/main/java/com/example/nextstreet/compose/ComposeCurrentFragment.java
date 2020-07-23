@@ -7,20 +7,19 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeCurrentBinding;
-import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.home.HomeFragment;
+import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseFile;
 
-public class ComposeCurrentFragment  extends CircularRevealDialogFragment {
+public class ComposeCurrentFragment extends CircularRevealDialogFragment {
 
   private static final String TAG = ComposeFragment.class.getSimpleName();
 

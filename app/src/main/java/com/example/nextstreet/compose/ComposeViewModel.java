@@ -15,5 +15,4 @@ public class ComposeViewModel extends ViewModel {
   public LiveData<String> getDescription() {
     return description;
   }
-
 }

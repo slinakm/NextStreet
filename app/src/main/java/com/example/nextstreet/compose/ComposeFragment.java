@@ -1,13 +1,10 @@
 package com.example.nextstreet.compose;
 
-import android.annotation.TargetApi;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,14 +19,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeBinding;
-import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.home.HomeFragment;
+import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.example.nextstreet.utilities.TextObserver;
@@ -82,7 +78,6 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
 
     return binding.getRoot();
   }
-
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -172,7 +167,7 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
     File photoFile = getPhotoFileUri(photoFileName);
 
     Uri fileProvider =
-            FileProvider.getUriForFile(getContext(), getString(R.string.file_authority), photoFile);
+        FileProvider.getUriForFile(getContext(), getString(R.string.file_authority), photoFile);
     intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
     if (intent.resolveActivity(getContext().getPackageManager()) != null) {
@@ -196,32 +191,29 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
         Bitmap takenImage = BitmapFactory.decodeFile(tempPhotoFile.getAbsolutePath());
 
         Bitmap resizedBitmap =
-                BitmapManipulation.scaleToFitWidth(
-                        takenImage, (int) getResources().getDimension((R.dimen.resized_post_image)));
+            BitmapManipulation.scaleToFitWidth(
+                takenImage, (int) getResources().getDimension((R.dimen.resized_post_image)));
 
         binding.ivPackage.setImageBitmap(resizedBitmap);
         binding.ivPackage.setVisibility(View.VISIBLE);
 
-        photoFile =
-                writeResizedBitmap(photoFileName, resizedBitmap, "resized");
+        photoFile = writeResizedBitmap(photoFileName, resizedBitmap, "resized");
       } else {
         Snackbar.make(
                 binding.getRoot(),
                 getString(R.string.toast_camera_err),
                 BaseTransientBottomBar.LENGTH_SHORT)
-                .show();
+            .show();
       }
     }
   }
 
   @Override
   public File getPhotoFileUri(String photoFileName) {
-    File mediaStorageDir = new File(
-            getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            TAG);
+    File mediaStorageDir =
+        new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
 
-    if (!mediaStorageDir.exists()
-            && !mediaStorageDir.mkdirs()) {
+    if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
       Log.d(TAG, "getPhotoFileUri: failed to create directory");
     }
 
@@ -252,8 +244,9 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
     Bitmap image = null;
     try {
       // check version of Android on device
-      if(Build.VERSION.SDK_INT > 27){
-        ImageDecoder.Source source = ImageDecoder.createSource(context.getContentResolver(), photoUri);
+      if (Build.VERSION.SDK_INT > 27) {
+        ImageDecoder.Source source =
+            ImageDecoder.createSource(context.getContentResolver(), photoUri);
         image = ImageDecoder.decodeBitmap(source);
       } else {
         // support older versions of Android by using getBitmap

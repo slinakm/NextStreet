@@ -16,7 +16,8 @@ public class ImageObserver implements Observer<File> {
   private final Activity activity;
   private final RequestOptions requestOptions;
 
-  public ImageObserver(ImageView imageViewToObserve, Activity activity, @Nullable RequestOptions requestOptions) {
+  public ImageObserver(
+      ImageView imageViewToObserve, Activity activity, @Nullable RequestOptions requestOptions) {
     this.imageViewToObserve = imageViewToObserve;
     this.activity = activity;
     this.requestOptions = requestOptions;

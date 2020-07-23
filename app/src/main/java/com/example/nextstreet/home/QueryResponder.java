@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface QueryResponder {
 
-    /**
-     * Called by RequestQueryCallback to handle changes.
-     *
-     * @param requests Package request from Parse.
-     */
-    void respondToQuery(List<PackageRequest> requests);
+  /**
+   * Called by RequestQueryCallback to handle changes.
+   *
+   * @param requests Package request from Parse.
+   */
+  void respondToQuery(List<PackageRequest> requests);
 }

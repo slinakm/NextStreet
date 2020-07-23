@@ -7,35 +7,34 @@ import android.view.View;
 
 public class OnDoubleTapListener implements View.OnTouchListener {
 
-    private GestureDetector gestureDetector;
+  private GestureDetector gestureDetector;
 
-    public OnDoubleTapListener(Context c) {
-        gestureDetector = new GestureDetector(c, new GestureListener());
+  public OnDoubleTapListener(Context c) {
+    gestureDetector = new GestureDetector(c, new GestureListener());
+  }
+
+  public boolean onTouch(final View view, final MotionEvent motionEvent) {
+    if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+      view.performClick();
+    }
+    return gestureDetector.onTouchEvent(motionEvent);
+  }
+
+  private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+      return true;
     }
 
-    public boolean onTouch(final View view, final MotionEvent motionEvent) {
-        if (motionEvent.getAction()
-                == MotionEvent.ACTION_UP) {
-            view.performClick();
-        }
-        return gestureDetector.onTouchEvent(motionEvent);
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+      OnDoubleTapListener.this.onDoubleTap(e);
+      return super.onDoubleTap(e);
     }
+  }
 
-    private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
-        }
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            OnDoubleTapListener.this.onDoubleTap(e);
-            return super.onDoubleTap(e);
-        }
-    }
-
-    public void onDoubleTap(MotionEvent e) {
-        // To be overridden when implementing listener
-    }
+  public void onDoubleTap(MotionEvent e) {
+    // To be overridden when implementing listener
+  }
 }

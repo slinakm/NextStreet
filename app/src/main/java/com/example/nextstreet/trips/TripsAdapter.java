@@ -39,8 +39,8 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
   @Override
   public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     Log.i(TAG, "onCreateViewHolder: creating new viewholder");
-    ItemRequestBinding binding = ItemRequestBinding.inflate(context.getLayoutInflater(),
-            parent, false);
+    ItemRequestBinding binding =
+        ItemRequestBinding.inflate(context.getLayoutInflater(), parent, false);
     return new TripsAdapter.ViewHolder(binding);
   }
 
@@ -59,6 +59,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
   public class ViewHolder extends RecyclerView.ViewHolder {
 
     ItemRequestBinding binding;
+
     public ViewHolder(ItemRequestBinding binding) {
       super(binding.getRoot());
 
@@ -73,8 +74,10 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
       Preconditions.checkNotNull(destination, "Destination should not be null");
       Preconditions.checkNotNull(origin, "Origin should not be null");
 
-      binding.originTextView.setText(new LatLng(origin.getLatitude(), origin.getLongitude()).toString());
-      binding.destinationTextView.setText(new LatLng(destination.getLatitude(), destination.getLongitude()).toString());
+      binding.originTextView.setText(
+          new LatLng(origin.getLatitude(), origin.getLongitude()).toString());
+      binding.destinationTextView.setText(
+          new LatLng(destination.getLatitude(), destination.getLongitude()).toString());
       binding.timeTextView.setText(request.getRelativeTimeAgo());
       binding.distanceTextView.setText(
           MessageFormat.format(
@@ -86,10 +89,10 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
       if (image != null) {
         binding.packageImageView.setVisibility(View.VISIBLE);
         Glide.with(context)
-                .load(image.getUrl())
-                .transform(new RoundedCorners(context.getResources()
-                        .getInteger(R.integer.rounded_corners)))
-                .into(binding.packageImageView);
+            .load(image.getUrl())
+            .transform(
+                new RoundedCorners(context.getResources().getInteger(R.integer.rounded_corners)))
+            .into(binding.packageImageView);
       } else {
         binding.packageImageView.setVisibility(View.GONE);
       }
@@ -99,7 +102,8 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
 
     @SuppressLint("ClickableViewAccessibility")
     private void setupOnClickListener(final PackageRequest request) {
-      binding.getRoot()
+      binding
+          .getRoot()
           .setOnTouchListener(
               new OnDoubleTapListener(context) {
                 @Override
@@ -107,8 +111,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
                   Log.i(TAG, "onDoubleTap: double tap performed");
                   FragmentManager fm = context.getSupportFragmentManager();
 
-                  DetailsFragment detailsFragment =
-                          DetailsFragment.newInstance(request);
+                  DetailsFragment detailsFragment = DetailsFragment.newInstance(request);
 
                   detailsFragment.show(fm, DetailsFragment.class.getSimpleName());
                 }

@@ -4,9 +4,10 @@
     <color name="primaryColor">#004d40</color>
     <color name="primaryLightColor">#39796b</color>
     <color name="primaryDarkColor">#00251a</color>
-    <color name="secondaryColor">#1a237e</color>
+    <color name="secondaryColor">@color/primaryColor</color>
+    <color name="secondaryTrueColor">#1a237e</color>
     <color name="secondaryLightColor">#534bae</color>
-    <color name="secondaryDarkColor">@color/primaryDarkColor</color>
+    <color name="secondaryDarkColor">#000051</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
 
@@ -26,7 +27,7 @@
     <color name="animation_start_color">@color/secondaryLightColor</color>
     <color name="animation_end_color">@color/white</color>
 
-    <color name="btn_color">@color/secondaryColor</color>
+    <color name="btn_color">@color/secondaryTrueColor</color>
     <color name="btn_text_color">@color/text_primary</color>
 
     <color name="btn_scnd_color">@color/secondaryLightColor</color>

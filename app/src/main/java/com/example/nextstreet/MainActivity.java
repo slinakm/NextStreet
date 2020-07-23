@@ -15,9 +15,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
+import com.example.nextstreet.compose.ComposeFragmentOnClickListener;
 import com.example.nextstreet.databinding.ActivityMainBinding;
 import com.example.nextstreet.login.SignupActivity;
-import com.example.nextstreet.compose.ComposeFragmentOnClickListener;
 import com.example.nextstreet.profile.ProfileFragmentOnClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
     TextView name = headerView.findViewById(R.id.tvName);
     String strName =
-            (String) currUser.get(SignupActivity.KEY_FIRSTNAME)
-                    + " "
-                    + (String) currUser.get(SignupActivity.KEY_FIRSTNAME);
+        (String) currUser.get(SignupActivity.KEY_FIRSTNAME)
+            + " "
+            + (String) currUser.get(SignupActivity.KEY_FIRSTNAME);
     name.setText(strName);
 
     TextView username = headerView.findViewById(R.id.tvUsername);

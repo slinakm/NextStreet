@@ -12,10 +12,10 @@ import com.example.nextstreet.databinding.ActivityStartBinding;
 
 public class StartActivity extends AppCompatActivity {
 
-    private static final String TAG = StartActivity.class.getSimpleName();
-    private ActivityStartBinding binding;
+  private static final String TAG = StartActivity.class.getSimpleName();
+  private ActivityStartBinding binding;
 
-    @Override
+  @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     binding = ActivityStartBinding.inflate(getLayoutInflater());
@@ -25,23 +25,24 @@ public class StartActivity extends AppCompatActivity {
     binding.userButton.setOnClickListener(new StartActivity.UserOnClickListener());
   }
 
-    private class DriverOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            Log.i(TAG, "signupOnClickListener onClick: ");
-        }
+  private class DriverOnClickListener implements View.OnClickListener {
+    @Override
+    public void onClick(View view) {
+      Log.i(TAG, "signupOnClickListener onClick: chose driver");
+      goActivity(DriverLoginActivity.class);
     }
+  }
 
-    private class UserOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            Log.i(TAG, "loginOnClickListener onClick: ");
-            goActivity(LoginActivity.class);
-        }
+  private class UserOnClickListener implements View.OnClickListener {
+    @Override
+    public void onClick(View view) {
+      Log.i(TAG, "loginOnClickListener onClick: chose user");
+      goActivity(LoginActivity.class);
     }
+  }
 
-    private void goActivity(Class c) {
-        Intent i = new Intent(this, c);
-        startActivity(i);
-    }
+  private void goActivity(Class c) {
+    Intent i = new Intent(this, c);
+    startActivity(i);
+  }
 }

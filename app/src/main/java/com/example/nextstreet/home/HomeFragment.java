@@ -73,7 +73,6 @@ public class HomeFragment extends Fragment
   private Marker markerOrigin;
   private Marker markerDestination;
 
-
   protected static void setLastKnownLocation(Location lastKnownLocation) {
     HomeFragment.lastKnownLocation = lastKnownLocation;
   }
@@ -181,20 +180,22 @@ public class HomeFragment extends Fragment
     // Map is ready
     map.setOnMapLongClickListener(this);
 
-    Preconditions.checkNotNull(autocompleteFragmentOrigin, "autocompleteFragmentOrigin is unexpectedly null");
+    Preconditions.checkNotNull(
+        autocompleteFragmentOrigin, "autocompleteFragmentOrigin is unexpectedly null");
     autocompleteFragmentOrigin.setPlaceFields(
         Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
     autocompleteFragmentOrigin.setOnPlaceSelectedListener(
         new MapsPlaceSelectionListener(binding.getRoot(), this, true));
 
-    Preconditions.checkNotNull(autocompleteFragmentDestination, "autocompleteFragmentDestination is unexpectedly null");
+    Preconditions.checkNotNull(
+        autocompleteFragmentDestination, "autocompleteFragmentDestination is unexpectedly null");
     autocompleteFragmentDestination.setPlaceFields(
         Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
     autocompleteFragmentDestination.setOnPlaceSelectedListener(
         new MapsPlaceSelectionListener(binding.getRoot(), this, false));
 
-    Snackbar.make(binding.getRoot(), "Map Fragment was loaded properly!",
-            Snackbar.LENGTH_SHORT).show();
+    Snackbar.make(binding.getRoot(), "Map Fragment was loaded properly!", Snackbar.LENGTH_SHORT)
+        .show();
 
     queryMostRecentPackage();
   }
@@ -307,8 +308,11 @@ public class HomeFragment extends Fragment
 
     if (currRequestExists) {
       PackageRequest request = requests.get(0);
-      Log.i(TAG, "respondToQuery: "
-              + request.getParseUser(PackageRequest.KEY_USER).getUsername() + ", received "
+      Log.i(
+          TAG,
+          "respondToQuery: "
+              + request.getParseUser(PackageRequest.KEY_USER).getUsername()
+              + ", received "
               + request);
       currRequest = request;
       setMapToCurrRequest(request);
@@ -337,19 +341,22 @@ public class HomeFragment extends Fragment
     View originView = autocompleteFragmentOrigin.getView();
     if (originView != null) {
       originView
-              .animate()
-              .translationYBy(-originView.getHeight())
-              .setDuration(getResources().getInteger(R.integer.autocompleteFragmentOrigin_time_disappearing))
-              .setListener(new DismissAnimatorListenerAdapter(originView));
+          .animate()
+          .translationYBy(-originView.getHeight())
+          .setDuration(
+              getResources().getInteger(R.integer.autocompleteFragmentOrigin_time_disappearing))
+          .setListener(new DismissAnimatorListenerAdapter(originView));
     }
 
     View destinationView = autocompleteFragmentDestination.getView();
     if (destinationView != null) {
       destinationView
-              .animate()
-              .translationYBy(-destinationView.getHeight() - originView.getHeight())
-              .setDuration(getResources().getInteger(R.integer.autocompleteFragmentDestination_time_disappearing))
-              .setListener(new DismissAnimatorListenerAdapter(destinationView));
+          .animate()
+          .translationYBy(-destinationView.getHeight() - originView.getHeight())
+          .setDuration(
+              getResources()
+                  .getInteger(R.integer.autocompleteFragmentDestination_time_disappearing))
+          .setListener(new DismissAnimatorListenerAdapter(destinationView));
     }
 
     setOriginNoCamera(latlngOrigin);

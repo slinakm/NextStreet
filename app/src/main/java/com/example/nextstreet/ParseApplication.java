@@ -34,7 +34,7 @@ public class ParseApplication extends Application {
                 getString(
                     R.string
                         .client_key)) // set explicitly unless clientKey is explicitly configured on
-                                      // Parse server
+            // Parse server
             .clientBuilder(builder)
             .server(getString(R.string.server_url))
             .build());
