@@ -74,6 +74,9 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".login.DriverSignupActivity"
             android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".DriverMainActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

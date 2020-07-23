@@ -58,7 +58,7 @@ public abstract class SignupAbstractActivity extends AppCompatActivity {
             user.setEmail(email);
         }
 
-        user.signUpInBackground(new SignupCallback(getTAG(), binding.getRoot(), this, username, password));
+        user.signUpInBackground(new SignupCallback(getTAG(), binding.getRoot(), this, username, password, isDriver));
     }
 
     private class SignupOnClickListener implements View.OnClickListener {

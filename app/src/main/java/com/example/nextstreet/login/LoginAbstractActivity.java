@@ -113,7 +113,8 @@ public abstract class LoginAbstractActivity extends AppCompatActivity {
       if (checkExistingUsers(foundUsers)) {
         Log.i(getTAG(), "loginUser: check was ok, now logging in " + username);
         ParseUser.logInInBackground(
-                username, password, new LoginCallback(getTAG(), getBinding().getRoot(), this));
+                username, password, new LoginCallback(getTAG(), getBinding().getRoot(), this,
+                        isDriver()));
       }
     } catch (ParseException e) {
       Log.e(getTAG(), "loginUser: error finding " + username + " in query", e);
