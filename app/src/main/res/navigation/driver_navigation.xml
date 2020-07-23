@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/driver_navigation"
+    app:startDestination="@id/driverRequestsFragment">
+
+    <fragment
+        android:id="@+id/driverRequestsFragment"
+        android:name="com.example.nextstreet.DriverRequestsFragment"
+        android:label="DriverRequestsFragment"
+        tools:layout="@layout/fragment_driver_requests" />
+
+    <fragment
+        android:id="@+id/driverProfileFragment"
+        android:name="com.example.nextstreet.DriverProfileFragment"
+        android:label="DriverProfileFragment"
+        tools:layout="@layout/fragment_driver_profile" />
+</navigation>
