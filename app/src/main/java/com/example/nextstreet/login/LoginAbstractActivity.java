@@ -13,6 +13,7 @@ import com.example.nextstreet.MainActivity;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ActivityLoginBinding;
 import com.example.nextstreet.utilities.TextObserver;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
 import com.google.android.material.snackbar.Snackbar;
@@ -31,8 +32,6 @@ public abstract class LoginAbstractActivity extends AppCompatActivity {
   private static final String FB_EMAIL = "email";
   private final CallbackManager callbackManager = CallbackManager.Factory.create();
 
-  protected abstract boolean isLoggedIn();
-
   protected abstract Boolean isDriver();
 
   protected abstract String getTAG();
@@ -47,6 +46,26 @@ public abstract class LoginAbstractActivity extends AppCompatActivity {
 
   ActivityLoginBinding getBinding() {
     return binding;
+  }
+
+  private boolean isLoggedIn() {
+    AccessToken accessToken = AccessToken.getCurrentAccessToken();
+    boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+    ParseUser currUser = ParseUser.getCurrentUser();
+
+    if (currUser == null)  {
+      return false;
+    }
+
+    boolean currUserIsDriver = (boolean) currUser.get(KEY_ISDRIVER);
+
+    if (currUserIsDriver && isDriver()) {
+      return true;
+    } else if (!currUserIsDriver && !isDriver()) {
+      return true;
+    }
+
+    return false;
   }
 
   @Override

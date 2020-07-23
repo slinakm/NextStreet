@@ -41,9 +41,4 @@ public class DriverLoginActivity extends LoginAbstractActivity {
         return Boolean.TRUE;
     }
 
-    @Override
-    protected boolean isLoggedIn() {
-        return false;
-    }
-
 }

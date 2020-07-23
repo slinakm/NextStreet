@@ -43,14 +43,4 @@ public class LoginActivity extends LoginAbstractActivity {
   protected void goToSignup() {
     goActivity(SignupActivity.class);
   }
-
-  // TODO: Set up isLoggedIn method to make sure that
-  //  logged in individuals are in the right screen.
-  @Override
-  protected boolean isLoggedIn() {
-    AccessToken accessToken = AccessToken.getCurrentAccessToken();
-    boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
-    return ParseUser.getCurrentUser() != null || isLoggedIn;
-  }
 }

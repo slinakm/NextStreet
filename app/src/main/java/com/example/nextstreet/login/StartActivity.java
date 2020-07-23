@@ -8,7 +8,10 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.nextstreet.DriverMainActivity;
+import com.example.nextstreet.MainActivity;
 import com.example.nextstreet.databinding.ActivityStartBinding;
+import com.parse.ParseUser;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -21,6 +24,8 @@ public class StartActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     binding = ActivityStartBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
+
+    isLogedIn();
 
     binding.driverButton.setOnClickListener(new StartActivity.DriverOnClickListener());
     binding.userButton.setOnClickListener(new StartActivity.UserOnClickListener());
@@ -39,6 +44,24 @@ public class StartActivity extends AppCompatActivity {
     public void onClick(View view) {
       Log.i(TAG, "loginOnClickListener onClick: chose user");
       goActivity(LoginActivity.class);
+    }
+  }
+
+  private boolean isLogedIn() {
+    ParseUser currUser = ParseUser.getCurrentUser();
+
+    if (currUser == null)  {
+      return false;
+    }
+
+    boolean currUserIsDriver = (boolean) currUser.get(LoginAbstractActivity.KEY_ISDRIVER);
+
+    if (currUserIsDriver) {
+      goActivity(DriverMainActivity.class);
+      return true;
+    } else {
+      goActivity(MainActivity.class);
+      return true;
     }
   }
 
