@@ -67,6 +67,8 @@ public abstract class LoginAbstractActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             Log.i(getTAG(), "signupOnClickListener onClick: ");
+
+            signUpUser();
         }
     }
 

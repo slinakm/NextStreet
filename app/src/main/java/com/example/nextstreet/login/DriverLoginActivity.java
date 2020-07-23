@@ -13,7 +13,6 @@ import com.parse.ParseUser;
 public class DriverLoginActivity extends LoginAbstractActivity {
 
     private static final String TAG = DriverLoginActivity.class.getSimpleName();
-    private ActivityLoginBinding binding;
 
     @Override
     protected String getTAG() {
