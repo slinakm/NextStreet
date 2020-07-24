@@ -16,11 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nextstreet.R;
+import com.example.nextstreet.databinding.ContentDriverDetailsBinding;
+import com.example.nextstreet.databinding.ContentDriverRequestsBinding;
 import com.example.nextstreet.databinding.FragmentDriverRequestsBinding;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.example.nextstreet.home.HomeFragment;
 import com.example.nextstreet.home.QueryResponder;
 import com.example.nextstreet.models.PackageRequest;
+import com.google.common.base.Preconditions;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -35,8 +38,8 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     private final List<PackageRequest> requests = new ArrayList<>();
     private final Set<PackageRequest> rejectedRequests = new HashSet<>();
     private FragmentDriverRequestsBinding binding;
-    private View layoutDriverRequests;
-    private View layoutDriverDetails;
+    private ContentDriverRequestsBinding layoutDriverRequests;
+    private ContentDriverDetailsBinding layoutDriverDetails;
     private DriverRequestsAdapter adapter;
 
     @Nullable
@@ -46,10 +49,11 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
         super.onCreateView(inflater, container, savedInstanceState);
 
         binding = FragmentDriverRequestsBinding.inflate(getLayoutInflater());
-        layoutDriverRequests = (CoordinatorLayout)
-                getActivity().findViewById(R.id.layout_driver_requests);
-        layoutDriverDetails= (CoordinatorLayout)
-                getActivity().findViewById(R.id.layout_driver_details);
+        layoutDriverRequests = binding.layoutDriverRequests;
+        layoutDriverDetails = binding.layoutDriverDetails;
+
+        Preconditions.checkNotNull(layoutDriverDetails);
+        Preconditions.checkNotNull(layoutDriverRequests);
 
         return binding.getRoot();
     }
@@ -58,7 +62,7 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (layoutDriverRequests.getVisibility() == View.VISIBLE) {
+        if (layoutDriverRequests.getRoot().getVisibility() == View.VISIBLE) {
             setUpRecyclerView();
         } else {
             setUpDetailsPage();
@@ -68,7 +72,7 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     }
 
     private void setUpRecyclerView() {
-        RecyclerView requestsRecyclerView = layoutDriverRequests.
+        RecyclerView requestsRecyclerView = layoutDriverRequests.getRoot().
                 findViewById(R.id.requestsRecyclerView);
         requestsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         AppCompatActivity appCompatActivityOfThis = (AppCompatActivity) getActivity();
@@ -77,16 +81,16 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     }
 
     private void setUpDetailsPage() {
-        layoutDriverDetails.findViewById(R.id.card);
+        layoutDriverDetails.getRoot().findViewById(R.id.card);
     }
 
     void switchLayouts() {
-        if (layoutDriverRequests.getVisibility() == View.VISIBLE) {
-            layoutDriverRequests.setVisibility(View.GONE);
-            layoutDriverDetails.setVisibility(View.VISIBLE);
+        if (layoutDriverRequests.getRoot().getVisibility() == View.VISIBLE) {
+            layoutDriverRequests.getRoot().setVisibility(View.GONE);
+            layoutDriverDetails.getRoot().setVisibility(View.VISIBLE);
         } else {
-            layoutDriverRequests.setVisibility(View.VISIBLE);
-            layoutDriverDetails.setVisibility(View.GONE);
+            layoutDriverRequests.getRoot().setVisibility(View.VISIBLE);
+            layoutDriverDetails.getRoot().setVisibility(View.GONE);
         }
     }
 
