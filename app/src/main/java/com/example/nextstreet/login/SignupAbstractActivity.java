@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ActivitySignupBinding;
+import com.example.nextstreet.utilities.BackOnClickListener;
+import com.example.nextstreet.utilities.BackResponder;
 import com.example.nextstreet.utilities.TextObserver;
 import com.parse.ParseUser;
 
-public abstract class SignupAbstractActivity extends AppCompatActivity {
+public abstract class SignupAbstractActivity extends AppCompatActivity implements BackResponder {
 
     public static final String KEY_FIRSTNAME = "firstName";
     public static final String KEY_LASTNAME = "lastName";
@@ -37,11 +39,19 @@ public abstract class SignupAbstractActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.signupButton.setOnClickListener(new SignupOnClickListener());
+        binding.backImageView.setOnClickListener(new BackOnClickListener(this));
 
         signupViewModel.getUsername().observe(this, new TextObserver(binding.etUsername));
         signupViewModel.getPassword().observe(this, new TextObserver(binding.etPassword));
         signupViewModel.getPasswordAgain().observe(this, new TextObserver(binding.etPassword2));
         signupViewModel.getEmail().observe(this, new TextObserver(binding.etEmail));
+    }
+
+    @Override
+    public void goBack() {
+        Log.i(getTAG(), "backOnClickListener onClick: go back");
+
+        finish();
     }
 
     private void signupUser(

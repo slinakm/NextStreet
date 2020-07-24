@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.nextstreet.MainActivity;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ActivityLoginBinding;
+import com.example.nextstreet.utilities.BackOnClickListener;
+import com.example.nextstreet.utilities.BackResponder;
 import com.example.nextstreet.utilities.TextObserver;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -23,7 +25,7 @@ import com.parse.ParseUser;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class LoginAbstractActivity extends AppCompatActivity {
+public abstract class LoginAbstractActivity extends AppCompatActivity implements BackResponder {
 
   protected static final String KEY_PASSWORD = "password";
   protected static final String KEY_USERNAME = "username";
@@ -85,11 +87,18 @@ public abstract class LoginAbstractActivity extends AppCompatActivity {
 
     binding.loginButton.setOnClickListener(new LoginOnClickListener());
     binding.signupButton.setOnClickListener(new SignupOnClickListener());
-    binding.backImageView.setOnClickListener(new BackOnClickListener());
+    binding.backImageView.setOnClickListener(new BackOnClickListener(this));
 
     binding.fbSignupButton.setReadPermissions(Arrays.asList(FB_EMAIL));
 
     LoginManager.getInstance().registerCallback(callbackManager, new FBLoginCallback(this));
+  }
+
+  @Override
+  public void goBack() {
+    Log.i(getTAG(), "backOnClickListener onClick: ");
+
+    finish();
   }
 
   private class SignupOnClickListener implements View.OnClickListener {
@@ -110,14 +119,7 @@ public abstract class LoginAbstractActivity extends AppCompatActivity {
     }
   }
 
-  private class BackOnClickListener implements View.OnClickListener {
-    @Override
-    public void onClick(View view) {
-      Log.i(getTAG(), "backOnClickListener onClick: ");
 
-      finish();
-    }
-  }
 
   private void loginUser(String username, String password) {
     Log.i(getTAG(), "loginUser: " + username);
