@@ -9,10 +9,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentDriverRequestsBinding;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.example.nextstreet.home.HomeFragment;
@@ -32,6 +35,8 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     private final List<PackageRequest> requests = new ArrayList<>();
     private final Set<PackageRequest> rejectedRequests = new HashSet<>();
     private FragmentDriverRequestsBinding binding;
+    private View layoutDriverRequests;
+    private View layoutDriverDetails;
     private DriverRequestsAdapter adapter;
 
     @Nullable
@@ -41,6 +46,11 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
         super.onCreateView(inflater, container, savedInstanceState);
 
         binding = FragmentDriverRequestsBinding.inflate(getLayoutInflater());
+        layoutDriverRequests = (CoordinatorLayout)
+                getActivity().findViewById(R.id.layout_driver_requests);
+        layoutDriverDetails= (CoordinatorLayout)
+                getActivity().findViewById(R.id.layout_driver_details);
+
         return binding.getRoot();
     }
 
@@ -48,12 +58,36 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.requestsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        AppCompatActivity appCompatActivityOfThis = (AppCompatActivity) getActivity();
-        adapter = new DriverRequestsAdapter(appCompatActivityOfThis, requests, rejectedRequests);
-        binding.requestsRecyclerView.setAdapter(adapter);
+        if (layoutDriverRequests.getVisibility() == View.VISIBLE) {
+            setUpRecyclerView();
+        } else {
+            setUpDetailsPage();
+        }
 
         queryMostRecentPackage();
+    }
+
+    private void setUpRecyclerView() {
+        RecyclerView requestsRecyclerView = layoutDriverRequests.
+                findViewById(R.id.requestsRecyclerView);
+        requestsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        AppCompatActivity appCompatActivityOfThis = (AppCompatActivity) getActivity();
+        adapter = new DriverRequestsAdapter(appCompatActivityOfThis, requests, rejectedRequests);
+        requestsRecyclerView.setAdapter(adapter);
+    }
+
+    private void setUpDetailsPage() {
+        layoutDriverDetails.findViewById(R.id.card);
+    }
+
+    void switchLayouts() {
+        if (layoutDriverRequests.getVisibility() == View.VISIBLE) {
+            layoutDriverRequests.setVisibility(View.GONE);
+            layoutDriverDetails.setVisibility(View.VISIBLE);
+        } else {
+            layoutDriverRequests.setVisibility(View.VISIBLE);
+            layoutDriverDetails.setVisibility(View.GONE);
+        }
     }
 
     private void queryMostRecentPackage() {
