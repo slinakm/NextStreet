@@ -18,12 +18,17 @@ import com.example.nextstreet.databinding.ItemRequestBinding;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.OnDoubleTapListener;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 
+import org.xmlpull.v1.sax2.Driver;
+
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAdapter.ViewHolder> {
 
@@ -31,10 +36,13 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
 
     private final AppCompatActivity context;
     private final List<PackageRequest> packageRequests;
+    private final Set<PackageRequest> rejectedRequests;
 
-    DriverRequestsAdapter(AppCompatActivity context, List<PackageRequest> packageRequests) {
+    DriverRequestsAdapter(AppCompatActivity context, List<PackageRequest> packageRequests,
+                          Set<PackageRequest> rejectedRequests) {
         this.context = context;
         this.packageRequests = packageRequests;
+        this.rejectedRequests = rejectedRequests;
     }
 
     @Override
@@ -55,6 +63,11 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
     public int getItemCount() {
         Log.i(TAG, "getItemCount");
         return packageRequests.size();
+    }
+
+    void addAll(List<PackageRequest> requestsToAdd) {
+        this.packageRequests.addAll(requestsToAdd);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -120,16 +133,28 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
             binding.yesImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.i(TAG, "onClick: the 'yes' image view was pressed on the request"
+                            + request.getObjectId());
                     request.put(PackageRequest.KEY_ISFULFILLED, true);
+                    Snackbar.make(view,
+                            DriverRequestsAdapter.this.context.getResources()
+                                    .getText(R.string.driver_adapter_selected),
+                            Snackbar.LENGTH_LONG).show();
                 }
             });
 
-            //TODO: set up a list of requests that were rejected
-            binding.noImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                }
-            });
+      binding.noImageView.setOnClickListener(
+          new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              Log.i(TAG, "onClick: the 'no' image view was pressed on the request"
+                      + request.getObjectId());
+              rejectedRequests.add(request);
+              int indexOfRemovedPackage = packageRequests.indexOf(request);
+              packageRequests.remove(indexOfRemovedPackage);
+              DriverRequestsAdapter.this.notifyItemRemoved(indexOfRemovedPackage);
+            }
+          });
         }
     }
 }

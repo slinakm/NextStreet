@@ -29,15 +29,12 @@ public class TripsFragment extends Fragment implements QueryResponder {
 
   private final List<PackageRequest> requests = new ArrayList<>();
   private FragmentTripsBinding binding;
-  private TripsViewModel tripsViewModel;
 
   private RecyclerView rvPackages;
   private TripsAdapter adapter;
 
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    tripsViewModel = ViewModelProviders.of(this).get(TripsViewModel.class);
-
     binding = FragmentTripsBinding.inflate(getLayoutInflater());
     return binding.getRoot();
   }

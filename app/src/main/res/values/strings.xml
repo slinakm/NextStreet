@@ -68,4 +68,6 @@
     <string name="start_userButton">User</string>
     <string name="this_is_driver_request_view">This is driver request view.</string>
     <string name="this_is_profile_fragment">This is profile fragment.</string>
+
+    <string name="driver_adapter_selected">Selected</string>
 </resources>
