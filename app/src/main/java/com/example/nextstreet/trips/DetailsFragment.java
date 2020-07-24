@@ -9,14 +9,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.nextstreet.R;
+import com.example.nextstreet.databinding.ContentDetailBinding;
 import com.example.nextstreet.databinding.FragmentDetailsBinding;
+import com.example.nextstreet.databinding.ItemRequestBinding;
 import com.example.nextstreet.home.HomeFragment;
 import com.example.nextstreet.models.PackageRequest;
+import com.example.nextstreet.utilities.DetailsMaterialCard;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,8 +44,6 @@ public class DetailsFragment extends DialogFragment implements OnMapReadyCallbac
 
   private PackageRequest request;
   private GoogleMap map;
-  private LatLng destination;
-  private LatLng origin;
 
   private Marker markerOrigin;
   private Marker markerDestination;
@@ -68,40 +70,9 @@ public class DetailsFragment extends DialogFragment implements OnMapReadyCallbac
 
     request = (PackageRequest) getArguments().get(PackageRequest.class.getSimpleName());
 
-    TextView descriptionTextView = getActivity().findViewById(R.id.descriptionTextView);
-    descriptionTextView.setText(request.getDescription());
-
-    ParseGeoPoint destination = request.getDestination();
-    ParseGeoPoint origin = request.getOrigin();
-    Preconditions.checkNotNull(destination, "Destination should not be null");
-    Preconditions.checkNotNull(origin, "Origin should not be null");
-
-    binding.destinationTextView.setText(
-        new LatLng(destination.getLatitude(), destination.getLongitude()).toString());
-    binding.originTextView.setText(
-        new LatLng(origin.getLatitude(), origin.getLongitude()).toString());
-
-    binding.timeTextView.setText(request.getRelativeTimeAgo());
-    binding.distanceTextView.setText(
-        MessageFormat.format(
-            "{0} {1}",
-            (int) origin.distanceInMilesTo(destination),
-            getContext().getResources().getString(R.string.miles)));
-
-    ParseFile image = request.getImage();
-    if (image != null) {
-      binding.packageImageView.setVisibility(View.VISIBLE);
-      Glide.with(getContext())
-          .load(image.getUrl())
-          .transform(
-              new RoundedCorners(getContext().getResources().getInteger(R.integer.rounded_corners)))
-          .into(binding.packageImageView);
-    } else {
-      binding.packageImageView.setVisibility(View.GONE);
-    }
-
+    ContentDetailBinding layoutDetails = binding.layoutContentDetails;
+    DetailsMaterialCard.setUpCard(layoutDetails.card, request, getContext());
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
-    setMapToCurrRequest();
   }
 
   @Override
@@ -117,8 +88,9 @@ public class DetailsFragment extends DialogFragment implements OnMapReadyCallbac
   public void onMapReady(GoogleMap googleMap) {
     map = googleMap;
     if (map == null) {
-      Snackbar.make(binding.getRoot(), "Error - Map was null!!", Snackbar.LENGTH_SHORT).show();
-      return;
+      Snackbar.make(binding.getRoot(), "Error - Map was null!!", Snackbar.LENGTH_LONG).show();
+    } else {
+      setMapToCurrRequest();
     }
   }
 
@@ -141,14 +113,12 @@ public class DetailsFragment extends DialogFragment implements OnMapReadyCallbac
   }
 
   protected void setOriginNoCamera(LatLng newPlace) {
-    origin = newPlace;
     Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
     setMarkerOrigin(newPlace);
   }
 
   protected void setDestination(LatLng newPlace) {
     map.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
-    destination = newPlace;
     Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
     setMarkerDestination(newPlace);
   }

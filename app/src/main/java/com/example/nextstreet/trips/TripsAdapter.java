@@ -15,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ItemRequestBinding;
 import com.example.nextstreet.models.PackageRequest;
+import com.example.nextstreet.utilities.DetailsMaterialCard;
 import com.example.nextstreet.utilities.OnDoubleTapListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.common.base.Preconditions;
@@ -67,35 +68,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     }
 
     private void bind(PackageRequest request) {
-      binding.descriptionTextView.setText(request.getDescription());
-
-      ParseGeoPoint destination = request.getDestination();
-      ParseGeoPoint origin = request.getOrigin();
-      Preconditions.checkNotNull(destination, "Destination should not be null");
-      Preconditions.checkNotNull(origin, "Origin should not be null");
-
-      binding.originTextView.setText(
-          new LatLng(origin.getLatitude(), origin.getLongitude()).toString());
-      binding.destinationTextView.setText(
-          new LatLng(destination.getLatitude(), destination.getLongitude()).toString());
-      binding.timeTextView.setText(request.getRelativeTimeAgo());
-      binding.distanceTextView.setText(
-          MessageFormat.format(
-              "{0} {1}",
-              (int) origin.distanceInMilesTo(destination),
-              context.getResources().getString(R.string.miles)));
-
-      ParseFile image = request.getImage();
-      if (image != null) {
-        binding.packageImageView.setVisibility(View.VISIBLE);
-        Glide.with(context)
-            .load(image.getUrl())
-            .transform(
-                new RoundedCorners(context.getResources().getInteger(R.integer.rounded_corners)))
-            .into(binding.packageImageView);
-      } else {
-        binding.packageImageView.setVisibility(View.GONE);
-      }
+      DetailsMaterialCard.setUpCard(binding, request, context);
 
       setupOnClickListener(request);
     }
