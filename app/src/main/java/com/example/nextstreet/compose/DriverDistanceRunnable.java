@@ -33,75 +33,53 @@ import okhttp3.Response;
 public class DriverDistanceRunnable implements Runnable {
 
     private static final String TAG = DriverDistanceRunnable.class.getSimpleName();
-    private static final String KEY_ISDRIVER = "isDriver";
-    private static final String KEY_ISAVAILABLE = "isAvailable";
     private static final String KEY_HOME = "home";
 
     private LatLng dest;
     private LatLng origin;
     private View mainView; // this is for making Snackbar notifications during errors
+    private List<ParseUser> drivers;
 
-    DriverDistanceRunnable(LatLng origin, LatLng dest, View mainView) {
+    DriverDistanceRunnable(LatLng origin, LatLng dest, View mainView, List<ParseUser> drivers) {
         this.origin = origin;
         this.dest = dest;
         this.mainView = mainView;
+        this.drivers = drivers;
     }
 
     @Override
     public void run() {
-        queryAvailableDrivers();
-    }
+        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
-    void queryAvailableDrivers() {
-        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
-        query.include(KEY_HOME);
+        HashMap<ParseUser, Integer> distances = new HashMap<>();
+        for (ParseUser driver : drivers) {
+            ParseGeoPoint currDriverLocation = (ParseGeoPoint) driver.get(KEY_HOME);
+            Preconditions.checkNotNull(currDriverLocation);
+            int distance = getDistances(
+                    new LatLng(currDriverLocation.getLatitude(), currDriverLocation.getLongitude()),
+                    origin);
+            distances.put(driver, distance);
+        }
 
-        Log.d(TAG, "queryAvailableDrivers: querying");
-        query.whereEqualTo(KEY_ISDRIVER, true);
-        query.whereEqualTo(KEY_ISAVAILABLE, true);
+        for (ParseUser driver : drivers) {
+            Log.i(TAG, "done: received distances = " + distances.get(driver)
+                    + " from " + driver.getUsername());
+        }
 
-        query.findInBackground(new DriverQueryCallback());
-    }
-
-    private class DriverQueryCallback implements FindCallback<ParseUser> {
-
-        @Override
-        public void done(List<ParseUser> drivers, ParseException e) {
-            if (drivers != null) {
-                Log.d(TAG, "done query: drivers size = " + drivers.size());
-                if (e != null) {
-                    Log.e(TAG, "queryPosts: Issue getting drivers", e);
-                }
-
-                HashMap<ParseUser, Integer> distances = new HashMap<>();
-                for (ParseUser driver : drivers) {
-                    ParseGeoPoint currDriverLocation = (ParseGeoPoint) driver.get(KEY_HOME);
-                    Preconditions.checkNotNull(currDriverLocation);
-                    int distance = getDistances(
-                            new LatLng(currDriverLocation.getLatitude(), currDriverLocation.getLongitude()),
-                            origin);
-                    distances.put(driver, distance);
-                }
-
-                for (ParseUser driver : drivers) {
-                    Log.i(TAG, "done: received distances = " + distances.get(driver));
-                }
-
-                int minimum = Integer.MAX_VALUE;
-                ParseUser minDriver = drivers.get(0);
-                for (ParseUser driver : drivers) {
-                    int distance = distances.get(driver);
-                    if (distance < minimum) {
-                        minimum = distance;
-                        minDriver = driver;
-                    }
-                }
-
-                ComposeFragment.findDriver(minDriver);
+        int minimum = Integer.MAX_VALUE;
+        ParseUser minDriver = drivers.get(0);
+        for (ParseUser driver : drivers) {
+            int distance = distances.get(driver);
+            if (distance < minimum) {
+                minimum = distance;
+                minDriver = driver;
             }
         }
-    }
 
+    Log.i(TAG, "run: min driver = " + minDriver.getUsername());
+
+        ComposeFragment.findDriver(minDriver);
+    }
 
     // TODO: Set up a separate thread to run this code, then use okhttp synchronous
     private static final String KEY_ROWS_JSON_ARRAY = "rows";
@@ -174,7 +152,8 @@ public class DriverDistanceRunnable implements Runnable {
             JSONObject json = new JSONObject(responseData);
             Log.d(TAG, "onResponse: " + json);
             JSONArray rows = json.getJSONArray(KEY_ROWS_JSON_ARRAY);
-            JSONArray elements = (JSONArray) rows.get(0);
+            JSONObject rowObject = (JSONObject) rows.get(0);
+            JSONArray elements = (JSONArray) rowObject.get(KEY_ELEMENTS_JSON_ARRAY);
             // TODO: consider using different values from array (distance, duration, duration in traffic)
             JSONObject distances = (JSONObject) elements.get(0);
             JSONObject trueDuration = (JSONObject) distances.get(KEY_DURATION_ELEMENT);

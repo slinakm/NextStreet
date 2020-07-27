@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -152,9 +154,9 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
   }
 
   private void saveRequest(String desc, File file, ParseUser currUser) {
-    Runnable driverDistanceRunnable = new DriverDistanceRunnable(origin, dest, binding.getRoot());
 
-    driverDistanceRunnable.run();
+    queryAvailableDrivers();
+
     //    PackageRequest request = new PackageRequest(file, desc, origin, dest, currUser);
     //
     //    request.saveInBackground(
@@ -182,9 +184,45 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
     //        });
   }
 
-  static void findDriver(ParseUser driver) {
+  private static final String KEY_ISDRIVER = "isDriver";
+  private static final String KEY_ISAVAILABLE = "isAvailable";
+  private static final String KEY_HOME = "home";
+  private static final int LIMIT_QUERY = 5;
 
+  private void queryAvailableDrivers() {
+    ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
+    query.include(KEY_HOME);
+
+    Log.d(TAG, "queryAvailableDrivers: querying");
+    query.whereEqualTo(KEY_ISDRIVER, true);
+    query.whereEqualTo(KEY_ISAVAILABLE, true);
+    query.whereNear(KEY_HOME, new ParseGeoPoint(origin.latitude, origin.longitude));
+    query.setLimit(LIMIT_QUERY);
+    query.findInBackground(new DriverQueryCallback());
   }
+
+  private class DriverQueryCallback implements FindCallback<ParseUser> {
+
+    @Override
+    public void done(List<ParseUser> drivers, ParseException e) {
+      if (drivers != null) {
+        Log.d(TAG, "done query: drivers size = " + drivers.size());
+        if (e != null) {
+          Log.e(TAG,  "queryPosts: Issue getting drivers", e);
+        }
+
+        Runnable driverDistanceRunnable = new DriverDistanceRunnable(origin, dest,
+                binding.getRoot(), drivers);
+
+        HandlerThread handlerThread = new HandlerThread("HandlerThreadName");
+        handlerThread.start();
+        Handler handler = new Handler(handlerThread.getLooper());
+        handler.post(driverDistanceRunnable);
+      }
+    }
+  }
+
+  static void findDriver(ParseUser minDriver) {}
 
   @Override
   public File launchCamera() {
