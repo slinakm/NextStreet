@@ -220,34 +220,37 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
   @Override
   public void notifyOfThreadComplete(Runnable runnable, final ParseUser driver) {
     Log.i(TAG, "notifyOfThreadComplete: minDriver = " + driver.getUsername() + " " + minDriver);
+
+    //TODO: Set this up so that driver has to accept or reject
+    mostRecentRequest.put(PackageRequest.KEY_ISFULFILLED, true);
+    mostRecentRequest.put(PackageRequest.KEY_DRIVER, driver);
+    mostRecentRequest.saveInBackground(new SaveCallback() {
+      @Override
+      public void done(ParseException e) {
+        if (e != null) {
+          Log.e(TAG, "done: Error while saving request", e);
+          Snackbar.make(
+                  binding.getRoot(), getString(R.string.toast_save_err),
+                  Snackbar.LENGTH_LONG)
+                  .show();
+
+        } else {
+          Log.i(TAG, "done: Request save was successful!");
+          Snackbar.make(binding.getRoot(), R.string.toast_driver_succ, Snackbar.LENGTH_LONG)
+                  .show();
+        }
+      }
+    });
+
+    // TODO: update availability on driver's end, when driver is logged in
     driver.put(KEY_ISAVAILABLE, false);
     driver.saveInBackground(new SaveCallback() {
       @Override
       public void done(ParseException e) {
         if (e != null) {
-          Log.e(TAG, "done: Error while saving request", e);
+          Log.e(TAG, "done: Error while saving driver", e);
         } else {
-          Log.i(TAG, "done: Request save was successful!");
-          //TODO: Set this up so that driver has to accept or reject
-          mostRecentRequest.put(PackageRequest.KEY_ISFULFILLED, true);
-          mostRecentRequest.put(PackageRequest.KEY_DRIVER, driver);
-          mostRecentRequest.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-              if (e != null) {
-                Log.e(TAG, "done: Error while saving request", e);
-                Snackbar.make(
-                        binding.getRoot(), getString(R.string.toast_save_err),
-                        Snackbar.LENGTH_LONG)
-                        .show();
-
-              } else {
-                Log.i(TAG, "done: Request save was successful!");
-                Snackbar.make(binding.getRoot(), R.string.toast_driver_succ, Snackbar.LENGTH_LONG)
-                        .show();
-              }
-            }
-          });
+          Log.i(TAG, "done: Driver save was successful!");
         }
       }
     });
