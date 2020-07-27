@@ -179,7 +179,10 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
 
         driverDistanceRunnable.addListener(ComposeFragment.this);
 
-        driverDistanceRunnable.run();
+        HandlerThread handlerThread = new HandlerThread("HandlerThreadName");
+        handlerThread.start();
+        Handler handler = new Handler(handlerThread.getLooper());
+        handler.post(driverDistanceRunnable);
       }
     }
   }
@@ -187,12 +190,11 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
   // When Driver Distance Runnable Thread is done
   @Override
   public void notifyOfThreadComplete(Runnable runnable, ParseUser driver) {
-    Preconditions.checkNotNull(driver);
     Log.i(TAG, "notifyOfThreadComplete: minDriver = " + driver.getUsername() + " " + minDriver);
   }
 
   static void setMinDriver(ParseUser minDriver) {
-    Log.i(TAG, "setMinDriver: " + minDriver.getUsername());
+    Log.i(TAG, "notifyOfThreadComplete: minDriver = " + minDriver.getUsername() + " " + minDriver);
     ComposeFragment.minDriver = minDriver;
   }
 
