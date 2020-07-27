@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.sql.Driver;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -34,11 +36,15 @@ public class DriverDistanceRunnable implements Runnable {
 
     private static final String TAG = DriverDistanceRunnable.class.getSimpleName();
     private static final String KEY_HOME = "home";
+    private final Set<ThreadCompleteListener> listeners =
+            new CopyOnWriteArraySet<ThreadCompleteListener>();
+
 
     private LatLng dest;
     private LatLng origin;
     private View mainView; // this is for making Snackbar notifications during errors
     private List<ParseUser> drivers;
+    private ParseUser minDriver;
 
     DriverDistanceRunnable(LatLng origin, LatLng dest, View mainView, List<ParseUser> drivers) {
         this.origin = origin;
@@ -47,12 +53,37 @@ public class DriverDistanceRunnable implements Runnable {
         this.drivers = drivers;
     }
 
+    public void addListener(final ThreadCompleteListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(final ThreadCompleteListener listener) {
+        listeners.remove(listener);
+    }
+
+    private void notifyListeners() {
+        for (ThreadCompleteListener listener : listeners) {
+            Log.i(TAG, "notifyListeners: notifying " + listener.getClass().getSimpleName());
+            listener.notifyOfThreadComplete(this, minDriver);
+        }
+    }
+
     @Override
-    public void run() {
+    public final void run() {
+        try {
+            doRun();
+        } finally {
+            notifyListeners();
+        }
+    }
+
+    public void doRun() {
+    Log.d(TAG, "doRun: running");
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
         HashMap<ParseUser, Integer> distances = new HashMap<>();
         for (ParseUser driver : drivers) {
+            Log.d(TAG, "doRun: " + driver);
             ParseGeoPoint currDriverLocation = (ParseGeoPoint) driver.get(KEY_HOME);
             Preconditions.checkNotNull(currDriverLocation);
             int distance = getDistances(
@@ -76,9 +107,10 @@ public class DriverDistanceRunnable implements Runnable {
             }
         }
 
-    Log.i(TAG, "run: min driver = " + minDriver.getUsername());
+        Log.i(TAG, "run: min driver = " + minDriver.getUsername());
 
-        ComposeFragment.findDriver(minDriver);
+        ComposeFragment.setMinDriver(minDriver);
+        this.minDriver = minDriver;
     }
 
     // TODO: Set up a separate thread to run this code, then use okhttp synchronous

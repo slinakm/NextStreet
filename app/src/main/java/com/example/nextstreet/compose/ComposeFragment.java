@@ -35,36 +35,24 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ComposeFragment extends CircularRevealDialogFragment implements CameraLauncher {
+public class ComposeFragment extends CircularRevealDialogFragment implements CameraLauncher, ThreadCompleteListener {
 
   private static final String TAG = ComposeFragment.class.getSimpleName();
+
+  private static ParseUser minDriver;
 
   private FragmentComposeBinding binding;
   private ComposeViewModel composeViewModel;
@@ -85,6 +73,7 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    minDriver = null;
   }
 
   public View onCreateView(
@@ -156,32 +145,6 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
   private void saveRequest(String desc, File file, ParseUser currUser) {
 
     queryAvailableDrivers();
-
-    //    PackageRequest request = new PackageRequest(file, desc, origin, dest, currUser);
-    //
-    //    request.saveInBackground(
-    //        new SaveCallback() {
-    //          @Override
-    //          public void done(ParseException e) {
-    //            binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
-    //
-    //            if (e != null) {
-    //              Log.e(TAG, "done: Error while saving request", e);
-    //              Snackbar.make(
-    //                      binding.getRoot(), getString(R.string.toast_save_err),
-    // Snackbar.LENGTH_LONG)
-    //                  .show();
-    //
-    //            } else {
-    //              Log.i(TAG, "done: Request save was successful!");
-    //              Snackbar.make(
-    //                      binding.getRoot(), getString(R.string.toast_save_succ),
-    // Snackbar.LENGTH_LONG)
-    //                  .show();
-    //              queryAvailableDrivers();
-    //            }
-    //          }
-    //        });
   }
 
   private static final String KEY_ISDRIVER = "isDriver";
@@ -211,18 +174,27 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
           Log.e(TAG,  "queryPosts: Issue getting drivers", e);
         }
 
-        Runnable driverDistanceRunnable = new DriverDistanceRunnable(origin, dest,
-                binding.getRoot(), drivers);
+        DriverDistanceRunnable driverDistanceRunnable
+                = new DriverDistanceRunnable(origin, dest, binding.getRoot(), drivers);
 
-        HandlerThread handlerThread = new HandlerThread("HandlerThreadName");
-        handlerThread.start();
-        Handler handler = new Handler(handlerThread.getLooper());
-        handler.post(driverDistanceRunnable);
+        driverDistanceRunnable.addListener(ComposeFragment.this);
+
+        driverDistanceRunnable.run();
       }
     }
   }
 
-  static void findDriver(ParseUser minDriver) {}
+  // When Driver Distance Runnable Thread is done
+  @Override
+  public void notifyOfThreadComplete(Runnable runnable, ParseUser driver) {
+    Preconditions.checkNotNull(driver);
+    Log.i(TAG, "notifyOfThreadComplete: minDriver = " + driver.getUsername() + " " + minDriver);
+  }
+
+  static void setMinDriver(ParseUser minDriver) {
+    Log.i(TAG, "setMinDriver: " + minDriver.getUsername());
+    ComposeFragment.minDriver = minDriver;
+  }
 
   @Override
   public File launchCamera() {
