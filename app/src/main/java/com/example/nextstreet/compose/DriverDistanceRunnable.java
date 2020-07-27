@@ -164,8 +164,6 @@ public class DriverDistanceRunnable implements Runnable {
                     .show();
             throw new IOException("Unexpected code " + response);
         } else {
-            Snackbar.make(mainView, R.string.toast_driver_succ, Snackbar.LENGTH_LONG)
-                    .show();
             Log.i(TAG, "onResponse: result = " + " response = " + response);
             Headers responseHeaders = response.headers();
             for (int i = 0; i < responseHeaders.size(); i++) {

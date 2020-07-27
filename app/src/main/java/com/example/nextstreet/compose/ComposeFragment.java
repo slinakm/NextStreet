@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeBinding;
 import com.example.nextstreet.home.HomeFragment;
+import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.example.nextstreet.utilities.TextObserver;
@@ -35,10 +36,12 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,6 +59,7 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
 
   private FragmentComposeBinding binding;
   private ComposeViewModel composeViewModel;
+  //TODO: make sure compose fragment does change appearance after submitting
 
   private CameraOnClickListener cameraOnClickListener;
   private File photoFile;
@@ -142,9 +146,33 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
     }
   }
 
-  private void saveRequest(String desc, File file, ParseUser currUser) {
+  private PackageRequest mostRecentRequest;
 
-    queryAvailableDrivers();
+  private void saveRequest(String desc, File file, ParseUser currUser) {
+        mostRecentRequest = new PackageRequest(file, desc, origin, dest, currUser);
+
+        mostRecentRequest.saveInBackground(
+            new SaveCallback() {
+              @Override
+              public void done(ParseException e) {
+                binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
+
+                if (e != null) {
+                  Log.e(TAG, "done: Error while saving request", e);
+                  Snackbar.make(
+                          binding.getRoot(), getString(R.string.toast_save_err),
+     Snackbar.LENGTH_LONG)
+                      .show();
+
+                } else {
+                  Log.i(TAG, "done: Request save was successful!");
+                  Snackbar.make(
+                          binding.getRoot(), getString(R.string.toast_save_succ), Snackbar.LENGTH_LONG)
+                      .show();
+                  queryAvailableDrivers();
+                }
+              }
+            });
   }
 
   private static final String KEY_ISDRIVER = "isDriver";
@@ -155,6 +183,7 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
   private void queryAvailableDrivers() {
     ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
     query.include(KEY_HOME);
+    query.include(KEY_ISAVAILABLE);
 
     Log.d(TAG, "queryAvailableDrivers: querying");
     query.whereEqualTo(KEY_ISDRIVER, true);
@@ -189,12 +218,43 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
 
   // When Driver Distance Runnable Thread is done
   @Override
-  public void notifyOfThreadComplete(Runnable runnable, ParseUser driver) {
+  public void notifyOfThreadComplete(Runnable runnable, final ParseUser driver) {
     Log.i(TAG, "notifyOfThreadComplete: minDriver = " + driver.getUsername() + " " + minDriver);
+    driver.put(KEY_ISAVAILABLE, false);
+    driver.saveInBackground(new SaveCallback() {
+      @Override
+      public void done(ParseException e) {
+        if (e != null) {
+          Log.e(TAG, "done: Error while saving request", e);
+        } else {
+          Log.i(TAG, "done: Request save was successful!");
+          //TODO: Set this up so that driver has to accept or reject
+          mostRecentRequest.put(PackageRequest.KEY_ISFULFILLED, true);
+          mostRecentRequest.put(PackageRequest.KEY_DRIVER, driver);
+          mostRecentRequest.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+              if (e != null) {
+                Log.e(TAG, "done: Error while saving request", e);
+                Snackbar.make(
+                        binding.getRoot(), getString(R.string.toast_save_err),
+                        Snackbar.LENGTH_LONG)
+                        .show();
+
+              } else {
+                Log.i(TAG, "done: Request save was successful!");
+                Snackbar.make(binding.getRoot(), R.string.toast_driver_succ, Snackbar.LENGTH_LONG)
+                        .show();
+              }
+            }
+          });
+        }
+      }
+    });
   }
 
   static void setMinDriver(ParseUser minDriver) {
-    Log.i(TAG, "notifyOfThreadComplete: minDriver = " + minDriver.getUsername() + " " + minDriver);
+    Log.i(TAG, "setMinDriver: minDriver = " + minDriver.getUsername() + " " + minDriver);
     ComposeFragment.minDriver = minDriver;
   }
 

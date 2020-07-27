@@ -74,5 +74,6 @@
 
     <string name="driver_adapter_selected">Selected</string>
     <string name="set_as_active">Set as Active</string>
+    <string name="driver_name">No Driver Selected Yet</string>
 
 </resources>

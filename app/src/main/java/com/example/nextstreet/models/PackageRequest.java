@@ -90,6 +90,10 @@ public class PackageRequest extends ParseObject {
     return getString(KEY_DESCRIPTION);
   }
 
+  public ParseUser getDriver() {
+    return getParseUser(KEY_DRIVER);
+  }
+
   public ParseFile getImage() {
     return getParseFile(KEY_IMAGE);
   }

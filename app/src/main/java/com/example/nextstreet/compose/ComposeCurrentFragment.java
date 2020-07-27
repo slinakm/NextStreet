@@ -1,5 +1,6 @@
 package com.example.nextstreet.compose;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,11 @@ import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+
+import static com.example.nextstreet.login.SignupAbstractActivity.KEY_FIRSTNAME;
+import static com.example.nextstreet.login.SignupAbstractActivity.KEY_LASTNAME;
 
 public class ComposeCurrentFragment extends CircularRevealDialogFragment {
 
@@ -48,17 +54,26 @@ public class ComposeCurrentFragment extends CircularRevealDialogFragment {
     return binding.getRoot();
   }
 
+  //TODO: make sure to turn long click off when on this fragment
+
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    dest = HomeFragment.getDestination();
-    origin = HomeFragment.getOrigin();
+    ParseGeoPoint destGeopoint = request.getDestination();
+    dest = new LatLng(destGeopoint.getLatitude(), destGeopoint.getLongitude());
+    origin = new LatLng(destGeopoint.getLatitude(), destGeopoint.getLongitude());
     if (dest != null) {
       binding.destinationTextView.setText(dest.toString());
     }
     if (origin != null) {
       binding.originTextView.setText(origin.toString());
+    }
+
+    ParseUser driver = request.getDriver();
+    if (driver != null) {
+      binding.driverTextView.setText(String.format("%s %s", driver.get(KEY_FIRSTNAME),
+              driver.get(KEY_LASTNAME)));
     }
 
     binding.descriptionTextView.setText(request.getDescription());
