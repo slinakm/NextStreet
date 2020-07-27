@@ -59,8 +59,6 @@ public class DriverDistanceRunnable implements Runnable {
         Log.d(TAG, "queryAvailableDrivers: querying");
         query.whereEqualTo(KEY_ISDRIVER, true);
         query.whereEqualTo(KEY_ISAVAILABLE, true);
-        //    query.whereWithinMiles(KEY_HOME, new ParseGeoPoint(origin.latitude, origin.longitude),
-        //            getResources().getInteger(R.integer.range_of_drivers_miles));
 
         query.findInBackground(new DriverQueryCallback());
     }
@@ -83,6 +81,10 @@ public class DriverDistanceRunnable implements Runnable {
                             new LatLng(currDriverLocation.getLatitude(), currDriverLocation.getLongitude()),
                             origin);
                     distances.put(driver, distance);
+                }
+
+                for (ParseUser driver : drivers) {
+                    Log.i(TAG, "done: received distances = " + distances.get(driver));
                 }
 
                 int minimum = Integer.MAX_VALUE;
@@ -120,51 +122,51 @@ public class DriverDistanceRunnable implements Runnable {
                         + ","
                         + start.longitude
                         + "&destinations="
-                        + start.latitude
+                        + end.latitude
                         + ","
-                        + start.longitude
+                        + end.longitude
                         + "&departure_time=now"
                         + "&key="
                         + BuildConfig.MAPS_API_KEY;
 
         Log.d(TAG, "getDistances: " + url);
+
         final Request request = new Request.Builder().url(url).build();
 
-        client
-                .newCall(request)
-                .enqueue(new DriverDistanceCallback());
-    }
-
-    private class DriverDistanceCallback implements Callback {
-        @Override
-        public void onFailure(Call call, IOException e) {
+        int distance = ERROR_DISTANCE;
+        try {
+            Response response = client.newCall(request).execute();
+            distance = driverDistanceRequestResponse(response);
+        } catch (IOException e) {
             Snackbar.make(mainView, R.string.toast_http_err, Snackbar.LENGTH_LONG)
                     .show();
             Log.e(TAG, "onFailure: http request to Distance Matrix API failed with error", e);
         }
 
-        @Override
-        public void onResponse(Call call, final Response response) throws IOException {
-            if (!response.isSuccessful()) {
-                Log.d(
-                        TAG, "onResponse: Response was unexpectedly not successful with " + response);
-                Snackbar.make(mainView, R.string.toast_http_err, Snackbar.LENGTH_LONG)
-                        .show();
-                throw new IOException("Unexpected code " + response);
-            } else {
-                Snackbar.make(mainView, R.string.toast_driver_succ, Snackbar.LENGTH_LONG)
-                        .show();
-                Log.i(TAG, "onResponse: result = " + call.toString() + " response = " + response);
-                Headers responseHeaders = response.headers();
-                for (int i = 0; i < responseHeaders.size(); i++) {
-                    Log.d("DEBUG", responseHeaders.name(i) + ":" + responseHeaders.value(i));
-                }
+        return distance;
+    }
 
-                // TODO: move to GSON
-                getDistanceFromJSON(response);
+    private int driverDistanceRequestResponse(Response response) throws IOException {
+        if (!response.isSuccessful()) {
+            Log.d(
+                    TAG, "onResponse: Response was unexpectedly not successful with " + response);
+            Snackbar.make(mainView, R.string.toast_http_err, Snackbar.LENGTH_LONG)
+                    .show();
+            throw new IOException("Unexpected code " + response);
+        } else {
+            Snackbar.make(mainView, R.string.toast_driver_succ, Snackbar.LENGTH_LONG)
+                    .show();
+            Log.i(TAG, "onResponse: result = " + " response = " + response);
+            Headers responseHeaders = response.headers();
+            for (int i = 0; i < responseHeaders.size(); i++) {
+                Log.d("DEBUG", responseHeaders.name(i) + ":" + responseHeaders.value(i));
             }
+
+            // TODO: move to GSON
+            return getDistanceFromJSON(response);
         }
     }
+
 
     private int getDistanceFromJSON(Response response) {
         try {
