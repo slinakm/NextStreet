@@ -243,17 +243,6 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
     });
 
     // TODO: update availability on driver's end, when driver is logged in
-    driver.put(KEY_ISAVAILABLE, false);
-    driver.saveInBackground(new SaveCallback() {
-      @Override
-      public void done(ParseException e) {
-        if (e != null) {
-          Log.e(TAG, "done: Error while saving driver", e);
-        } else {
-          Log.i(TAG, "done: Driver save was successful!");
-        }
-      }
-    });
   }
 
   static void setMinDriver(ParseUser minDriver) {
