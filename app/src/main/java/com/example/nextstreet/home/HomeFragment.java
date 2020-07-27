@@ -296,7 +296,7 @@ public class HomeFragment extends Fragment
     ParseUser currUser = ParseUser.getCurrentUser();
     Log.d(TAG, "queryMostRecentPackage: currUser = " + currUser.getUsername());
     query.whereEqualTo(PackageRequest.KEY_USER, currUser);
-    query.whereEqualTo(PackageRequest.KEY_ISFULFILLED, false);
+    query.whereEqualTo(PackageRequest.KEY_ISDONE, false);
 
     query.setLimit(3);
     query.findInBackground(new RequestQueryCallback(this));

@@ -84,4 +84,5 @@ dependencies {
     annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:$permissionDispatcherVersion"
 
     implementation 'com.facebook.android:facebook-login:5.15.3'
+    implementation 'com.squareup.okhttp3:okhttp:4.1.0'
 }

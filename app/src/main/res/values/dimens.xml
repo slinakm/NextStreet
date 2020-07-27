@@ -43,4 +43,8 @@
     <integer name="composeFragment_time_appearing">700</integer>
 
     <dimen name="start_margin">20dp</dimen>
+
+    <dimen name="profile_vertical_spacing">20</dimen>
+
+    <integer name="range_of_drivers_miles">30</integer>
 </resources>

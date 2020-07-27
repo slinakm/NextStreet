@@ -26,6 +26,9 @@ public class CircularRevealDialogFragment extends DialogFragment {
    * To be called in OnCreateView to animate the entire fragment.
    *
    * @param viewToAnimate, the view to animate (should be the root view).
+   * @param animateEntireFragment, this determines whether a background color
+   *                               is also applied so that the entire fragment
+   *                               (and not just fragment contents) is animated.
    */
   protected void setUpOnLayoutListener(
       final View viewToAnimate, final boolean animateEntireFragment) {
@@ -79,11 +82,13 @@ public class CircularRevealDialogFragment extends DialogFragment {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       Log.i(TAG, "animateShowingFragment: animating");
 
-      // get the center for the clipping circle
+      // get the center for the clipping circle: if you want to change where the
+      // animation starts, change these two values
       int cx = viewToAnimate.getWidth();
       int cy = viewToAnimate.getHeight();
 
-      // get the final radius for the clipping circle
+      // get the final radius for the clipping circle: if you change cx and cy,
+      // change these just in case too
       float finalRadius = (float) Math.hypot(cx, cy);
 
       // create the animator for this view (the start radius is zero)
