@@ -76,4 +76,11 @@
     <string name="set_as_active">Set as Active</string>
     <string name="driver_name">No Driver Selected Yet</string>
 
+    <string name="channel_name">NextStreet</string>
+    <string name="channel_description">NextStreet Notifications on Request</string>
+
+    <string name="notification_package_title">Recent Package Request updated</string>
+    <string name="notification_newDriver_title">@string/notification_package_title</string>
+    <string name="notification_newDriver_description">Driver has been found!</string>
+
 </resources>
