@@ -250,6 +250,7 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
     ComposeFragment.minDriver = minDriver;
   }
 
+  // TODO: fix crashing bug when submitting with camera!!!!
   @Override
   public File launchCamera() {
     Log.i(TAG, "launchCamera: ");
