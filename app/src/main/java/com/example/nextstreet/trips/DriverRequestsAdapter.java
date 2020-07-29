@@ -119,17 +119,6 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
                       + request.getObjectId());
               request.put(PackageRequest.KEY_ISFULFILLED, true);
               request.saveInBackground();
-              ParseUser currUser = ParseUser.getCurrentUser();
-              currUser.put(KEY_ISAVAILABLE, false);
-              currUser.saveInBackground();
-              Snackbar.make(
-                      view,
-                      DriverRequestsAdapter.this
-                          .context
-                          .getResources()
-                          .getText(R.string.driver_adapter_selected),
-                      Snackbar.LENGTH_LONG)
-                  .show();
               switchLayouts();
             }
           });

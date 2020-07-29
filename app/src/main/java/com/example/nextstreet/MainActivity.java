@@ -94,8 +94,7 @@ public class MainActivity extends AppCompatActivity {
           @Override
           public void onEvent(ParseQuery<PackageRequest> query, PackageRequest requestReceived) {
             ParseUser driver = requestReceived.getParseUser(PackageRequest.KEY_DRIVER);
-            Log.i(TAG, "onEvent: new package request was received with Driver "
-                    + driver.getUsername());
+            Log.i(TAG, "onEvent: new package request was received with Driver " + driver);
             Preconditions.checkNotNull(requestReceived);
             createNotification();
           }
@@ -109,8 +108,7 @@ public class MainActivity extends AppCompatActivity {
                       .setSmallIcon(R.drawable.package_notification_icon)
                       .setContentTitle(getResources().getString(R.string.notification_newDriver_title))
                       .setContentText(getResources().getString(R.string.notification_newDriver_description))
-                      .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                      .setCategory(NotificationCompat.CATEGORY_MESSAGE);
+                      .setPriority(NotificationCompat.PRIORITY_DEFAULT);
       NotificationManager mNotificationManager =
               (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 

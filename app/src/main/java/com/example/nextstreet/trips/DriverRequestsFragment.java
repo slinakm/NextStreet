@@ -139,6 +139,9 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
         });
     }
 
+    private void updateRequest() {
+
+    }
     //TODO: make the notification show up as a heads up
     private void createNotification() {
         Log.d(TAG, "createNotification:here");
