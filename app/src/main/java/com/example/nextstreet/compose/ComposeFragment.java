@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeBinding;
 import com.example.nextstreet.home.HomeFragment;
+import com.example.nextstreet.home.NewSubmissionListener;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
@@ -56,9 +57,11 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
   private static final String TAG = ComposeFragment.class.getSimpleName();
 
   private static ParseUser minDriver;
+  private static NewSubmissionListener newSubmissionListener;
 
   private FragmentComposeBinding binding;
   private ComposeViewModel composeViewModel;
+
   //TODO: make sure compose fragment does change appearance after submitting
 
   private CameraOnClickListener cameraOnClickListener;
@@ -72,6 +75,14 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
     ComposeFragment fragment = new ComposeFragment();
     fragment.setArguments(args);
     return fragment;
+  }
+
+  public static void addNewSubmissionListener(NewSubmissionListener newSubmissionListener) {
+    ComposeFragment.newSubmissionListener = newSubmissionListener;
+  }
+
+  public static void removeNewSubmissionListener() {
+    ComposeFragment.newSubmissionListener = null;
   }
 
   @Override
@@ -168,6 +179,7 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
                   Snackbar.make(
                           binding.getRoot(), getString(R.string.toast_save_succ), Snackbar.LENGTH_LONG)
                       .show();
+                  newSubmissionListener.respondToNewSubmission(mostRecentRequest);
                   queryAvailableDrivers();
                 }
               }
