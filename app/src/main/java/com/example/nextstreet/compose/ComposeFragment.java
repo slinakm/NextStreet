@@ -179,6 +179,7 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
   private static final String KEY_HOME = "home";
   private static final int LIMIT_QUERY = 5;
 
+  //error handling with getting drivers and making home in drivers
   private void queryAvailableDrivers() {
     ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
     query.include(KEY_HOME);

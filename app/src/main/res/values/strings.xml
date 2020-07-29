@@ -83,5 +83,7 @@
     <string name="notification_newDriver_title">@string/notification_package_title</string>
     <string name="notification_newDriver_description">Driver has been found!</string>
     <string name="login_as">Login as</string>
-
+    <string name="notification_driver_request">New request found!</string>
+    <string name="notification_driver_reject">Reject?</string>
+    <string name="notification_driver_accept_action">Accept?</string>
 </resources>
