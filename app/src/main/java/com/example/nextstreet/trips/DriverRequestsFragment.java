@@ -50,6 +50,7 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     private static final int NOTIFICATION_NEW_DRIVER_ID = 22;
     private final static int YES_REQUEST_CODE = 1;
     private final static int NO_REQUEST_CODE = 0;
+    private final static int FULLSCREEN_REQUEST_CODE = 2;
 
     private final List<PackageRequest> requests = new ArrayList<>();
     private final Set<PackageRequest> rejectedRequests = new HashSet<>();
@@ -75,6 +76,7 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
 
         setUpRecyclerView();
         setUpListener();
+        createNotificationChannel();
         return binding.getRoot();
     }
 
@@ -113,16 +115,25 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             Log.i(TAG, "createNotification: creating new package notification");
-            createNotificationChannel();
 
-            NotificationCompat.Action acceptAction = createNotificationAction(YES_REQUEST_CODE);
-            NotificationCompat.Action rejectAction = createNotificationAction(NO_REQUEST_CODE);
+            NotificationCompat.Action acceptAction = createNotificationAction(YES_REQUEST_CODE,
+                    getResources().getString(R.string.notification_driver_accept_action));
+            NotificationCompat.Action rejectAction = createNotificationAction(NO_REQUEST_CODE,
+                    getResources().getString(R.string.notification_driver_reject));
+
+            Intent actionIntent = new Intent();
+            PendingIntent pendingFullScreenIntent =
+                    PendingIntent.getBroadcast(getContext(), FULLSCREEN_REQUEST_CODE, actionIntent, 0);
 
             NotificationCompat.Builder driverFoundNotification =
                     new NotificationCompat.Builder(getContext(), NOTIFICATION_CHANNEL_ID)
                             .setSmallIcon(R.drawable.package_notification_icon)
                             .setContentTitle(getResources().getString(R.string.notification_newDriver_title))
-                            .setContentText(getResources().getString(R.string.notification_newDriver_description));
+                            .setContentText(getResources().getString(R.string.notification_newDriver_description))
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setFullScreenIntent(pendingFullScreenIntent, true)
+                            .addAction(acceptAction)
+                            .addAction(rejectAction);
             NotificationManager mNotificationManager =
                     (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -130,14 +141,14 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
         }
     }
 
-    private NotificationCompat.Action createNotificationAction(int ACTION_CODE) {
+    private NotificationCompat.Action createNotificationAction(int ACTION_CODE, String stringForUser) {
         Intent actionIntent = new Intent();
         PendingIntent pendingActionIntent =
                 PendingIntent.getBroadcast(getContext(), ACTION_CODE, actionIntent, 0);
 
         NotificationCompat.Action actionToReturn = new NotificationCompat.Action.Builder(
                 R.drawable.ic_input_black_24dp,
-                getResources().getString(R.string.notification_driver_accept_action),
+                stringForUser,
                 pendingActionIntent).build();
 
         return actionToReturn;
@@ -151,7 +162,7 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = getString(R.string.channel_name);
             String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
             channel.setDescription(description);
             NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
