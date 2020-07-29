@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.nextstreet.MainActivity;
 import com.example.nextstreet.R;
@@ -59,6 +60,7 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     private DriverRequestsAdapter adapter;
 
     private SubscriptionHandling<PackageRequest> subscriptionHandling;
+    private SwipeRefreshLayout swipeContainer;
 
     @Nullable
     @Override
@@ -78,6 +80,23 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
         setUpListener();
         createNotificationChannel();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        swipeContainer = layoutDriverRequests.getRoot().findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryMostRecentPackage();
+            }
+        });
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     @Override
@@ -102,14 +121,24 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
             @Override
             public void onEvents(ParseQuery<PackageRequest> query, SubscriptionHandling.Event event,
                                  PackageRequest requestReceived) {
+                //TODO: ask irene if ok
+                swipeContainer.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeContainer.setRefreshing(true);
+                    }
+                });
                 ParseUser driver = requestReceived.getParseUser(PackageRequest.KEY_DRIVER);
+                Preconditions.checkNotNull(driver);
                 Log.i(TAG, "onEvent: new package request was received with Driver" );
                 Preconditions.checkNotNull(requestReceived);
                 createNotification();
+                queryMostRecentPackage();
             }
         });
     }
 
+    //TODO: make the notification show up as a heads up
     private void createNotification() {
         Log.d(TAG, "createNotification:here");
 
@@ -211,9 +240,11 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
         }
         if (requests.removeAll(rejectedRequests)
                 || rejectedRequests.size() == 0) {
+            adapter.clear();
             adapter.addAll(requests);
+            swipeContainer.setRefreshing(false);
         } else {
-            Log.d(TAG, "respondToQuery: error removing rejectedRequests");
+            Log.e(TAG, "respondToQuery: error removing rejectedRequests");
         }
     }
 }

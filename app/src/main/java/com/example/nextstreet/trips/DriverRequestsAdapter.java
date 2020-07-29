@@ -71,6 +71,11 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
     notifyDataSetChanged();
   }
 
+  void clear() {
+      packageRequests.clear();
+      notifyDataSetChanged();
+  }
+
   public class ViewHolder extends RecyclerView.ViewHolder {
 
     ItemDriverRequestBinding binding;
