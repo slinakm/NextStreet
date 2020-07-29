@@ -33,6 +33,12 @@ android {
         // should correspond to key/value pairs inside the file
         buildConfigField("String", "MAPS_API_KEY", apikeyProperties['MAPS_API_KEY'])
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 ext {
@@ -86,4 +92,9 @@ dependencies {
 
     implementation 'com.facebook.android:facebook-login:5.15.3'
     implementation 'com.squareup.okhttp3:okhttp:4.1.0'
+
+    testImplementation 'org.robolectric:robolectric:4.3'
+    testCompile 'org.robolectric:robolectric:4.3'
+    def fragment_version = "1.2.5"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 }
