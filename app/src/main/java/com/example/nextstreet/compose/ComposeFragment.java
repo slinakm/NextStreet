@@ -48,7 +48,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -56,8 +58,8 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
 
   private static final String TAG = ComposeFragment.class.getSimpleName();
 
-  private static ParseUser minDriver;
   private static NewSubmissionListener newSubmissionListener;
+  private static ParseUser minDriver;
 
   private FragmentComposeBinding binding;
   private ComposeViewModel composeViewModel;
@@ -173,19 +175,21 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
                   Snackbar.make(
                           binding.getRoot(), getString(R.string.toast_save_err), Snackbar.LENGTH_LONG)
                       .show();
-
                 } else {
                   Log.i(TAG, "done: Request save was successful!");
                   Snackbar.make(
                           binding.getRoot(), getString(R.string.toast_save_succ), Snackbar.LENGTH_LONG)
                       .show();
-                  newSubmissionListener.respondToNewSubmission(mostRecentRequest);
+                  notifyNewSubmissionListeners();
                   queryAvailableDrivers();
                 }
               }
             });
   }
 
+  private void notifyNewSubmissionListeners() {
+      ComposeFragment.newSubmissionListener.respondToNewSubmission(mostRecentRequest);
+  }
   private static final String KEY_ISDRIVER = "isDriver";
   private static final String KEY_ISAVAILABLE = "isAvailable";
   private static final String KEY_HOME = "home";

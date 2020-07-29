@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -240,11 +241,22 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
         }
         if (requests.removeAll(rejectedRequests)
                 || rejectedRequests.size() == 0) {
+            changeVisibilityOfBackgroundText(requests);
             adapter.clear();
             adapter.addAll(requests);
             swipeContainer.setRefreshing(false);
         } else {
             Log.e(TAG, "respondToQuery: error removing rejectedRequests");
+        }
+    }
+
+    private void changeVisibilityOfBackgroundText(List<PackageRequest> requests) {
+        TextView noRequests = layoutDriverRequests.getRoot().findViewById(R.id.noRequestsTextView);
+
+        if (requests.size() == 0) {
+            noRequests.setVisibility(View.VISIBLE);
+        } else {
+            noRequests.setVisibility(View.GONE);
         }
     }
 }

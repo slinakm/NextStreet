@@ -23,7 +23,6 @@ public abstract class SignupAbstractActivity extends AppCompatActivity implement
     public static final String KEY_PROFILEPIC = "profilePic";
     public static final String KEY_ISDRIVER = "isDriver";
 
-
     private SignupViewModel signupViewModel;
     private ActivitySignupBinding binding;
 

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentTripsBinding;
 import com.example.nextstreet.home.QueryResponder;
 import com.example.nextstreet.home.RequestQueryCallback;
@@ -67,7 +69,7 @@ public class TripsFragment extends Fragment implements QueryResponder {
     ParseUser currUser = ParseUser.getCurrentUser();
     Log.d(TAG, "queryMostRecentPackage: currUser = " + currUser.getUsername());
     query.whereEqualTo(PackageRequest.KEY_USER, currUser);
-    query.whereEqualTo(PackageRequest.KEY_ISFULFILLED, true);
+    query.whereEqualTo(PackageRequest.KEY_ISDONE, true);
 
     query.findInBackground(new RequestQueryCallback(this));
   }
@@ -77,7 +79,18 @@ public class TripsFragment extends Fragment implements QueryResponder {
     for (PackageRequest request : requests) {
       Log.i(TAG, "respondToQuery: received " + request);
     }
+
+    changeVisibilityOfBackgroundText(requests);
+
     this.requests.addAll(requests);
     this.adapter.notifyDataSetChanged();
+  }
+
+  private void changeVisibilityOfBackgroundText(List<PackageRequest> requests) {
+    if (requests.size() == 0) {
+      binding.noTripsTextView.setVisibility(View.VISIBLE);
+    } else {
+      binding.noTripsTextView.setVisibility(View.GONE);
+    }
   }
 }
