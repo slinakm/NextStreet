@@ -82,5 +82,6 @@
     <string name="notification_package_title">Recent Package Request updated</string>
     <string name="notification_newDriver_title">@string/notification_package_title</string>
     <string name="notification_newDriver_description">Driver has been found!</string>
+    <string name="login_as">Login as</string>
 
 </resources>

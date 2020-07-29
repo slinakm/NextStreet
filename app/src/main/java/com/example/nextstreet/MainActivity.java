@@ -86,12 +86,12 @@ public class MainActivity extends AppCompatActivity {
 
     subscriptionHandling.handleEvent(SubscriptionHandling.Event.ENTER,
             new SubscriptionHandling.HandleEventCallback<PackageRequest>() {
-      @Override
-      public void onEvent(ParseQuery<PackageRequest> query, PackageRequest requestReceived) {
-        Preconditions.checkNotNull(requestReceived);
-        createNotification();
-      }
-    });
+              @Override
+              public void onEvent(ParseQuery<PackageRequest> query, PackageRequest requestReceived) {
+                Preconditions.checkNotNull(requestReceived);
+                createNotification();
+              }
+            });
   }
 
   private void createNotification() {

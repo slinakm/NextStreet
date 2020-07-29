@@ -42,7 +42,9 @@
     <integer name="autocompleteFragmentDestination_time_disappearing">600</integer>
     <integer name="composeFragment_time_appearing">700</integer>
 
+    <dimen name="start_vertical_spacing">60dp</dimen>
     <dimen name="start_margin">20dp</dimen>
+    <dimen name="start_text_size">20sp</dimen>
 
     <dimen name="profile_vertical_spacing">20dp</dimen>
 

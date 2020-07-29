@@ -56,6 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <com.facebook.login.widget.LoginButton
+        android:visibility="gone"
         android:id="@+id/fbSignupButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
