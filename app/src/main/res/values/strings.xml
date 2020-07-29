@@ -88,4 +88,5 @@
     <string name="notification_driver_accept_action">Accept?</string>
     <string name="no_past_trips">No past trips!</string>
     <string name="no_requests_currently">No requests currently!</string>
+    <string name="menu_past_requests">Past Requests</string>
 </resources>
