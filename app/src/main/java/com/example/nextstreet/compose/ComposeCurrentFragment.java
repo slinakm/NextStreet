@@ -71,7 +71,8 @@ public class ComposeCurrentFragment extends CircularRevealDialogFragment {
     }
 
     ParseUser driver = request.getDriver();
-    if (driver != null) {
+    if (driver != null
+            && request.getBoolean(PackageRequest.KEY_ISFULFILLED)) {
       binding.driverTextView.setText(String.format("%s %s", driver.get(KEY_FIRSTNAME),
               driver.get(KEY_LASTNAME)));
     }
