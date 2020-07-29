@@ -29,39 +29,41 @@ An app that will allow users to send or receive local postal deliveries. Uber fo
 **Required Must-have Stories**
 
 - [x] Ability to log in and log out as a user.
-* Ability to sign in as a new user, 
-   - [x] using a custom form or 
-   - [ ] through another account (such as the user's Facebook profile).
+- [x] Ability to sign in as a new user, using a custom form,
 - [x] Ability to make a request to send package, by 
    - [x] taking a picture of the package contents, 
    - [x] writing a description of the package, 
    - [x] specifying ending destination with a long click on the map, and 
-   - [x] setting the starting destination to a location other than the current location
+   - [x] setting the starting destination to a location other than the current location.
 - [x] Ability to view package destination and starting location on a map.
 - [x] Ability to view current request details, such as driver name.
-    - [x] Double tap compose button to send a new request
+    - [x] Double tap compose button to send a new request.
     - [x] When viewing current request details, search fragments are animated to move upwards and disappear. 
 
 **Optional Nice-to-have Stories**
-
-- [ ] Ability to choose to sign in as a driver or user.
-- [ ] Ability to sign in as driver and accept/view a list of requests.
+- [ ] Can make multiple requests at once and see unfulfilled requests on home screen.
+- [x] Ability to choose to sign in as a driver or user.
+    - [x] Ability to accept/view a list of requests as a driver.
     - [ ] Ability to see past requests and details as a driver. 
 - [ ] Write unit and integration tests for a few features.
 - [ ] Implement Firebase as to update the Google maps based on traffic information (best estimate).
-- [ ] See past package requests in a list.
-    - [ ] Card view of past package requests with card flip animation.
+- [x] See past package requests in a list.
+    - [ ] Card view of past package requests with shared components animation.
 - [ ] Ability to view personal profile. 
 - [ ] Ability to view list of users to send package.
     - [ ] Double tap user to view user profile.
 - [ ] Ability to view profile of driver, including driver photo.
 - [ ] Set up cost of sending package.
-- [ ] Material design graphics on buttons and map. 
-- [ ] Ability to "track" package location (at least visually) on a map.
-- [x] Map automatically zooms into current location.
-- [x] Ability to search for package destination and starting location
+- [x] Material design graphics on buttons and map. 
+* Map details:
+    - [x] Map automatically zooms into current location.
+    - [x] Ability to search for package destination and starting location.
+    - [ ] Users can see place names instead of coordinates.
+    - [ ] Ability to "track" package location (at least visually) on a map.
 - [ ] Ability to create a package request using a bottom sheet fragment.
+- [x] Compose fragment is revealed with a colored circular reveal.
 - [ ] Implement notifications when package is delivered.
+- [ ] Signing up through another account (such as the user's Facebook profile).
 
 
 ### 2. Screen Archetypes
@@ -220,5 +222,3 @@ request.saveInBackground(new SaveCallback() {
             }
         });
 ```
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
-- Will list Google Maps API by next week
