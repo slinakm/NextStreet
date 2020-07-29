@@ -44,26 +44,28 @@ An app that will allow users to send or receive local postal deliveries. Uber fo
 - [ ] Can make multiple requests at once and see unfulfilled requests on home screen.
 - [x] Ability to choose to sign in as a driver or user.
     - [x] Ability to accept/view a list of requests as a driver.
-    - [ ] Ability to see past requests and details as a driver. 
+    - [x] Ability to see past requests and details as a user. 
 - [ ] Write unit and integration tests for a few features.
-- [ ] Implement Firebase as to update the Google maps based on traffic information (best estimate).
 - [x] See past package requests in a list.
-    - [ ] Card view of past package requests with shared components animation.
-- [ ] Ability to view personal profile. 
-- [ ] Ability to view list of users to send package.
-    - [ ] Double tap user to view user profile.
-- [ ] Ability to view profile of driver, including driver photo.
-- [ ] Set up cost of sending package.
-- [x] Material design graphics on buttons and map. 
-* Map details:
+- [ ] Card view of past package requests with shared components animation.
+- [x] Material design graphics on buttons and map.
+- [x] Compose fragment is revealed with a colored circular reveal.
+- [x] Implement notifications when package request is sent to Driver (by notifying the Driver), or accepted by Driver (by notifying the User).
+- Map details:
     - [x] Map automatically zooms into current location.
     - [x] Ability to search for package destination and starting location.
     - [ ] Users can see place names instead of coordinates.
     - [ ] Ability to "track" package location (at least visually) on a map.
+- Ability to view 
+    - [ ] personal profile. 
+    - [ ] list of users to send package.
+        - [ ] Double tap user to view user profile.
+    - [ ] profile of driver, including driver photo. 
 - [ ] Ability to create a package request using a bottom sheet fragment.
-- [x] Compose fragment is revealed with a colored circular reveal.
-- [ ] Implement notifications when package is delivered.
 - [ ] Signing up through another account (such as the user's Facebook profile).
+- [ ] Set up cost of sending package.
+- [ ] Implement Firebase as to update the Google maps based on traffic information (best estimate).
+
 
 
 ### 2. Screen Archetypes
