@@ -17,6 +17,8 @@ import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.DetailsMaterialCard;
 import com.example.nextstreet.utilities.OnDoubleTapListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.parse.Parse;
+import com.parse.ParseUser;
 
 import java.util.List;
 import java.util.Set;
@@ -85,6 +87,7 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
       setupOnClickListeners(request);
     }
 
+    private static final String KEY_ISAVAILABLE = "isAvailable";
     @SuppressLint("ClickableViewAccessibility")
     private void setupOnClickListeners(final PackageRequest request) {
       binding
@@ -110,6 +113,10 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
                   "onClick: the 'yes' image view was pressed on the request"
                       + request.getObjectId());
               request.put(PackageRequest.KEY_ISFULFILLED, true);
+              request.saveInBackground();
+              ParseUser currUser = ParseUser.getCurrentUser();
+              currUser.put(KEY_ISAVAILABLE, false);
+              currUser.saveInBackground();
               Snackbar.make(
                       view,
                       DriverRequestsAdapter.this
@@ -118,6 +125,7 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
                           .getText(R.string.driver_adapter_selected),
                       Snackbar.LENGTH_LONG)
                   .show();
+              switchLayouts();
             }
           });
 
@@ -133,7 +141,6 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
               int indexOfRemovedPackage = packageRequests.indexOf(request);
               packageRequests.remove(indexOfRemovedPackage);
               DriverRequestsAdapter.this.notifyItemRemoved(indexOfRemovedPackage);
-              switchLayouts();
             }
           });
     }

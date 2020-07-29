@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.profile.ProfileFragmentOnClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
   private AppBarConfiguration mAppBarConfiguration;
   private ActivityMainBinding binding;
+  private SubscriptionHandling<PackageRequest> subscriptionHandling;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -78,20 +81,25 @@ public class MainActivity extends AppCompatActivity {
     ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
 
     ParseQuery<PackageRequest> parseQuery = ParseQuery.getQuery(PackageRequest.class);
+    parseQuery.include(PackageRequest.KEY_DRIVER);
     parseQuery.whereEqualTo(PackageRequest.KEY_USER, ParseUser.getCurrentUser());
     parseQuery.whereEqualTo(PackageRequest.KEY_ISDONE, false);
     parseQuery.whereEqualTo(PackageRequest.KEY_ISFULFILLED, true);
 
-    SubscriptionHandling<PackageRequest> subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
+    subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
 
-    subscriptionHandling.handleEvent(SubscriptionHandling.Event.ENTER,
-            new SubscriptionHandling.HandleEventCallback<PackageRequest>() {
-              @Override
-              public void onEvent(ParseQuery<PackageRequest> query, PackageRequest requestReceived) {
-                Preconditions.checkNotNull(requestReceived);
-                createNotification();
-              }
-            });
+    subscriptionHandling.handleEvent(
+        SubscriptionHandling.Event.ENTER,
+        new SubscriptionHandling.HandleEventCallback<PackageRequest>() {
+          @Override
+          public void onEvent(ParseQuery<PackageRequest> query, PackageRequest requestReceived) {
+            ParseUser driver = requestReceived.getParseUser(PackageRequest.KEY_DRIVER);
+            Log.i(TAG, "onEvent: new package request was received with Driver "
+                    + driver.getUsername());
+            Preconditions.checkNotNull(requestReceived);
+            createNotification();
+          }
+        });
   }
 
   private void createNotification() {
@@ -110,17 +118,17 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * Create the NotificationChannel, but only on API 26+ because
+   * the NotificationChannel class is new and not in the support library.
+   */
   private void createNotificationChannel() {
-    // Create the NotificationChannel, but only on API 26+ because
-    // the NotificationChannel class is new and not in the support library
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       CharSequence name = getString(R.string.channel_name);
       String description = getString(R.string.channel_description);
       int importance = NotificationManager.IMPORTANCE_DEFAULT;
       NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
       channel.setDescription(description);
-      // Register the channel with the system; you can't change the importance
-      // or other notification behaviors after this
       NotificationManager notificationManager = getSystemService(NotificationManager.class);
       notificationManager.createNotificationChannel(channel);
     }

@@ -64,7 +64,7 @@ dependencies {
     implementation("com.google.guava:guava:29.0-android")
 
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.24.2'
-    implementation 'com.github.parse-community:ParseLiveQuery-Android:1.1.0' // for Parse Live Queries
+    implementation 'com.github.parse-community:ParseLiveQuery-Android:1.2.2' // for Parse Live Queries
     implementation 'com.squareup.okhttp3:logging-interceptor:4.1.0' // for logging API calls to LogCat
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
