@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Set;
 
 public class DriverRequestsFragment extends Fragment implements QueryResponder {
+
   private static final String TAG = DriverRequestsFragment.class.getSimpleName();
 
   private static final String NOTIFICATION_CHANNEL_ID = "NextStreet_Channel";
@@ -121,7 +122,6 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
               ParseQuery<PackageRequest> query,
               SubscriptionHandling.Event event,
               PackageRequest requestReceived) {
-            // TODO: ask irene if ok
             swipeContainer.post(
                 new Runnable() {
                   @Override
@@ -138,8 +138,6 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
           }
         });
   }
-
-  private void updateRequest() {}
 
   // TODO: make the notification show up as a heads up
   private void createNotification() {
@@ -221,10 +219,6 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
             layoutDriverRequests.getRoot(),
             layoutDriverDetails.getRoot());
     requestsRecyclerView.setAdapter(adapter);
-  }
-
-  private void setUpDetailsPage() {
-    layoutDriverDetails.getRoot().findViewById(R.id.card);
   }
 
   private void queryMostRecentPackage() {

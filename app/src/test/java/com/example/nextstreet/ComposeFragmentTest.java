@@ -1,6 +1,8 @@
 package com.example.nextstreet;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,9 +17,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static android.os.Looper.getMainLooper;
+import static org.junit.Assert.assertEquals;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
@@ -46,7 +50,7 @@ public class ComposeFragmentTest {
     fragmentScenario.onFragment(new testSubmitButton());
   }
 
-  private class testCancelButton implements FragmentScenario.FragmentAction<ComposeFragment> {
+  private static class testCancelButton implements FragmentScenario.FragmentAction<ComposeFragment> {
 
     @Override
     public void perform(@NonNull ComposeFragment fragment) {
@@ -57,7 +61,7 @@ public class ComposeFragmentTest {
     }
   }
 
-  private class testSubmitButton implements FragmentScenario.FragmentAction<ComposeFragment> {
+  private static class testSubmitButton implements FragmentScenario.FragmentAction<ComposeFragment> {
 
     @Override
     public void perform(@NonNull ComposeFragment fragment) {
@@ -69,6 +73,5 @@ public class ComposeFragmentTest {
               || binding.pbLoading.isIndeterminate());
     }
   }
-  
 }
 
