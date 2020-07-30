@@ -18,47 +18,40 @@ import java.text.MessageFormat;
 
 public class DetailsMaterialCard {
 
-    public static void setUpCard(ItemRequestBinding card,
-                                 PackageRequest request,
-                                 Context context) {
+  public static void setUpCard(ItemRequestBinding card, PackageRequest request, Context context) {
 
-        TextView descriptionTextView = card.descriptionTextView;
-        descriptionTextView.setText(request.getDescription());
+    TextView descriptionTextView = card.descriptionTextView;
+    descriptionTextView.setText(request.getDescription());
 
-        ParseGeoPoint destination = request.getDestination();
-        ParseGeoPoint origin = request.getOrigin();
-        Preconditions.checkNotNull(destination, "Destination should not be null");
-        Preconditions.checkNotNull(origin, "Origin should not be null");
+    ParseGeoPoint destination = request.getDestination();
+    ParseGeoPoint origin = request.getOrigin();
+    Preconditions.checkNotNull(destination, "Destination should not be null");
+    Preconditions.checkNotNull(origin, "Origin should not be null");
 
-        card.destinationTextView.setText(
-                new LatLng(destination.getLatitude(), destination.getLongitude()).toString());
-        card.originTextView.setText(
-                new LatLng(origin.getLatitude(), origin.getLongitude()).toString());
+    card.destinationTextView.setText(
+        new LatLng(destination.getLatitude(), destination.getLongitude()).toString());
+    card.originTextView.setText(new LatLng(origin.getLatitude(), origin.getLongitude()).toString());
 
-        card.timeTextView.setText(request.getRelativeTimeAgo());
-        card.distanceTextView.setText(
-                MessageFormat.format(
-                        "{0} {1}",
-                        (int) origin.distanceInMilesTo(destination),
-                        context.getResources().getString(R.string.miles)));
-        setUpImage(card, request, context);
+    card.timeTextView.setText(request.getRelativeTimeAgo());
+    card.distanceTextView.setText(
+        MessageFormat.format(
+            "{0} {1}",
+            (int) origin.distanceInMilesTo(destination),
+            context.getResources().getString(R.string.miles)));
+    setUpImage(card, request, context);
+  }
+
+  private static void setUpImage(ItemRequestBinding card, PackageRequest request, Context context) {
+    ParseFile image = request.getImage();
+    if (image != null) {
+      card.packageImageView.setVisibility(View.VISIBLE);
+      Glide.with(context)
+          .load(image.getUrl())
+          .transform(
+              new RoundedCorners(context.getResources().getInteger(R.integer.rounded_corners)))
+          .into(card.packageImageView);
+    } else {
+      card.packageImageView.setVisibility(View.GONE);
     }
-
-    private static void setUpImage(ItemRequestBinding card,
-                                   PackageRequest request,
-                                   Context context) {
-        ParseFile image = request.getImage();
-        if (image != null) {
-            card.packageImageView.setVisibility(View.VISIBLE);
-            Glide.with(context)
-                    .load(image.getUrl())
-                    .transform(
-                            new RoundedCorners(context.getResources().
-                                    getInteger(R.integer.rounded_corners)))
-                    .into(card.packageImageView);
-        } else {
-            card.packageImageView.setVisibility(View.GONE);
-        }
-
-    }
+  }
 }

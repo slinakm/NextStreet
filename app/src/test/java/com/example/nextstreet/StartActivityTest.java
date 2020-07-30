@@ -17,43 +17,42 @@ import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk=28)
+@Config(sdk = 28)
 public class StartActivityTest {
 
-    private StartActivity startActivity;
+  private StartActivity startActivity;
 
-    @Before
-    public void setup() {
-        startActivity = Robolectric.setupActivity(StartActivity.class);
-    }
+  @Before
+  public void setup() {
+    startActivity = Robolectric.setupActivity(StartActivity.class);
+  }
 
-    @Test
-    public void validateButtonsExistence() {
-        Button driverButton = (Button) startActivity.findViewById(R.id.driverButton);
-        assertNotNull("Driver login button could not be found", driverButton);
-        Button userButton = (Button) startActivity.findViewById(R.id.userButton);
-        assertNotNull("User login button could not be found", userButton);
-    }
+  @Test
+  public void validateButtonsExistence() {
+    Button driverButton = (Button) startActivity.findViewById(R.id.driverButton);
+    assertNotNull("Driver login button could not be found", driverButton);
+    Button userButton = (Button) startActivity.findViewById(R.id.userButton);
+    assertNotNull("User login button could not be found", userButton);
+  }
 
-    @Test
-    public void clickingUserLoginShouldStartLoginActivity() {
-        startActivity.findViewById(R.id.userButton).performClick();
+  @Test
+  public void clickingUserLoginShouldStartLoginActivity() {
+    startActivity.findViewById(R.id.userButton).performClick();
 
-        Intent expectedIntent = new Intent(startActivity, LoginActivity.class);
-        Intent actual = shadowOf(RuntimeEnvironment.application).getNextStartedActivity();
-        assertEquals(expectedIntent.getComponent(), actual.getComponent());
-    }
+    Intent expectedIntent = new Intent(startActivity, LoginActivity.class);
+    Intent actual = shadowOf(RuntimeEnvironment.application).getNextStartedActivity();
+    assertEquals(expectedIntent.getComponent(), actual.getComponent());
+  }
 
-    @Test
-    public void clickingDriverLoginShouldStartDriverLoginActivity() {
-        startActivity.findViewById(R.id.driverButton).performClick();
+  @Test
+  public void clickingDriverLoginShouldStartDriverLoginActivity() {
+    startActivity.findViewById(R.id.driverButton).performClick();
 
-        Intent expectedIntent = new Intent(startActivity, DriverLoginActivity.class);
-        Intent actual = shadowOf(RuntimeEnvironment.application).getNextStartedActivity();
-        assertEquals(expectedIntent.getComponent(), actual.getComponent());
-    }
+    Intent expectedIntent = new Intent(startActivity, DriverLoginActivity.class);
+    Intent actual = shadowOf(RuntimeEnvironment.application).getNextStartedActivity();
+    assertEquals(expectedIntent.getComponent(), actual.getComponent());
+  }
 }

@@ -2,8 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.nextstreet">
 
-    <permission android:name="android.permission.ACCESS_FINE_LOCATION" android:protectionLevel="dangerous"/>
-    <permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:protectionLevel="dangerous"/>
+    <permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:protectionLevel="dangerous" />
+    <permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:protectionLevel="dangerous" />
+
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,12 +24,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
 
         <activity
@@ -32,15 +38,17 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_api_key"/>
+            android:value="@string/google_maps_api_key" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -60,23 +68,27 @@
             </intent-filter>
         </activity>
         <!-- User Activities-->
-        <activity android:name=".login.LoginActivity"
+        <activity
+            android:name=".login.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".login.SignupActivity"
+        <activity
+            android:name=".login.SignupActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <!--  Driver Activities  -->
-        <activity android:name=".login.DriverLoginActivity"
+        <activity
+            android:name=".login.DriverLoginActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".login.DriverSignupActivity"
+        <activity
+            android:name=".login.DriverSignupActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".DriverMainActivity"
+        <activity
+            android:name=".DriverMainActivity"
             android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

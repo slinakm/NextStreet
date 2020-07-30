@@ -1,8 +1,6 @@
 package com.example.nextstreet.profile;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.nextstreet.databinding.FragmentProfileBinding;
-import com.example.nextstreet.login.StartActivity;
 import com.example.nextstreet.utilities.DismissOnClickListener;
-import com.parse.ParseUser;
 
 public class ProfileFragment extends DialogFragment {
 
@@ -52,5 +48,4 @@ public class ProfileFragment extends DialogFragment {
         .getWindow()
         .setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
   }
-
 }

@@ -18,7 +18,7 @@ public class StartActivity extends AppCompatActivity {
   private static final String TAG = StartActivity.class.getSimpleName();
   private ActivityStartBinding binding;
 
-  //TODO: go automatically to home if user already logged in
+  // TODO: go automatically to home if user already logged in
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -50,7 +50,7 @@ public class StartActivity extends AppCompatActivity {
   private boolean isLogedIn() {
     ParseUser currUser = ParseUser.getCurrentUser();
 
-    if (currUser == null)  {
+    if (currUser == null) {
       return false;
     }
 

@@ -26,9 +26,8 @@ public class CircularRevealDialogFragment extends DialogFragment {
    * To be called in OnCreateView to animate the entire fragment.
    *
    * @param viewToAnimate, the view to animate (should be the root view).
-   * @param animateEntireFragment, this determines whether a background color
-   *                               is also applied so that the entire fragment
-   *                               (and not just fragment contents) is animated.
+   * @param animateEntireFragment, this determines whether a background color is also applied so
+   *     that the entire fragment (and not just fragment contents) is animated.
    */
   protected void setUpOnLayoutListener(
       final View viewToAnimate, final boolean animateEntireFragment) {

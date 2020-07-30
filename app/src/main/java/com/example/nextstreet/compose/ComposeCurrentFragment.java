@@ -1,6 +1,5 @@
 package com.example.nextstreet.compose;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeCurrentBinding;
-import com.example.nextstreet.home.HomeFragment;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
@@ -59,7 +57,7 @@ public class ComposeCurrentFragment extends CircularRevealDialogFragment {
     return binding.getRoot();
   }
 
-  //TODO: make sure to turn long click off when on this fragment
+  // TODO: make sure to turn long click off when on this fragment
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -76,10 +74,9 @@ public class ComposeCurrentFragment extends CircularRevealDialogFragment {
     }
 
     ParseUser driver = request.getDriver();
-    if (driver != null
-            && request.getBoolean(PackageRequest.KEY_ISFULFILLED)) {
-      binding.driverTextView.setText(String.format("%s %s", driver.get(KEY_FIRSTNAME),
-              driver.get(KEY_LASTNAME)));
+    if (driver != null && request.getBoolean(PackageRequest.KEY_ISFULFILLED)) {
+      binding.driverTextView.setText(
+          String.format("%s %s", driver.get(KEY_FIRSTNAME), driver.get(KEY_LASTNAME)));
     }
 
     setupImage();
@@ -91,9 +88,9 @@ public class ComposeCurrentFragment extends CircularRevealDialogFragment {
     ParseFile image = request.getImage();
     if (image != null) {
       Glide.with(binding.getRoot())
-              .load(image.getUrl())
-              .transform(new RoundedCorners(getResources().getInteger(R.integer.rounded_corners)))
-              .into(binding.ivPackage);
+          .load(image.getUrl())
+          .transform(new RoundedCorners(getResources().getInteger(R.integer.rounded_corners)))
+          .into(binding.ivPackage);
     }
 
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));

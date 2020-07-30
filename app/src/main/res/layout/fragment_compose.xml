@@ -77,7 +77,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/compose_vertical_spacing"
         android:layout_marginEnd="@dimen/compose_side_margins"
-        android:layout_marginStart="@dimen/compose_side_margins"/>
+        android:layout_marginStart="@dimen/compose_side_margins" />
 
     <Button
         android:id="@+id/submitButton"
@@ -91,7 +91,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/compose_vertical_spacing"
         android:layout_marginEnd="@dimen/compose_side_margins"
-        android:layout_marginStart="@dimen/compose_side_margins"/>
+        android:layout_marginStart="@dimen/compose_side_margins" />
 
     <ProgressBar
         android:id="@+id/pbLoading"

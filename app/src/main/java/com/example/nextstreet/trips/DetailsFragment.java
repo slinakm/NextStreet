@@ -5,19 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ContentDetailBinding;
 import com.example.nextstreet.databinding.FragmentDetailsBinding;
-import com.example.nextstreet.databinding.ItemRequestBinding;
 import com.example.nextstreet.home.HomeFragment;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.DetailsMaterialCard;
@@ -31,10 +26,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
-import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
-
-import java.text.MessageFormat;
 
 public class DetailsFragment extends DialogFragment implements OnMapReadyCallback {
 

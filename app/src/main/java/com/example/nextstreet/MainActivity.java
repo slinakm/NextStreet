@@ -1,6 +1,5 @@
 package com.example.nextstreet;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -29,7 +28,6 @@ import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.profile.ProfileFragmentOnClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -104,28 +102,29 @@ public class MainActivity extends AppCompatActivity {
   private void createNotification() {
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
       NotificationCompat.Builder driverFoundNotification =
-              new NotificationCompat.Builder(MainActivity.this, NOTIFICATION_CHANNEL_ID)
-                      .setSmallIcon(R.drawable.package_notification_icon)
-                      .setContentTitle(getResources().getString(R.string.notification_newDriver_title))
-                      .setContentText(getResources().getString(R.string.notification_newDriver_description))
-                      .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+          new NotificationCompat.Builder(MainActivity.this, NOTIFICATION_CHANNEL_ID)
+              .setSmallIcon(R.drawable.package_notification_icon)
+              .setContentTitle(getResources().getString(R.string.notification_newDriver_title))
+              .setContentText(getResources().getString(R.string.notification_newDriver_description))
+              .setPriority(NotificationCompat.PRIORITY_DEFAULT);
       NotificationManager mNotificationManager =
-              (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+          (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
       mNotificationManager.notify(NOTIFICATION_NEW_DRIVER_ID, driverFoundNotification.build());
     }
   }
 
   /**
-   * Create the NotificationChannel, but only on API 26+ because
-   * the NotificationChannel class is new and not in the support library.
+   * Create the NotificationChannel, but only on API 26+ because the NotificationChannel class is
+   * new and not in the support library.
    */
   private void createNotificationChannel() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       CharSequence name = getString(R.string.channel_name);
       String description = getString(R.string.channel_description);
       int importance = NotificationManager.IMPORTANCE_DEFAULT;
-      NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+      NotificationChannel channel =
+          new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
       channel.setDescription(description);
       NotificationManager notificationManager = getSystemService(NotificationManager.class);
       notificationManager.createNotificationChannel(channel);
@@ -171,5 +170,4 @@ public class MainActivity extends AppCompatActivity {
     return NavigationUI.navigateUp(navController, mAppBarConfiguration)
         || super.onSupportNavigateUp();
   }
-
 }

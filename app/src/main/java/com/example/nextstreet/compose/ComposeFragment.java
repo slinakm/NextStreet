@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
-import android.transition.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,9 +36,7 @@ import com.example.nextstreet.utilities.TextObserver;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.common.base.Preconditions;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
@@ -50,14 +47,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 
 public class ComposeFragment extends CircularRevealDialogFragment
-        implements CameraLauncher, ThreadCompleteListener, PackageSubmissionResponder {
+    implements CameraLauncher, ThreadCompleteListener, PackageSubmissionResponder {
 
   private static final String TAG = ComposeFragment.class.getSimpleName();
 
@@ -67,14 +62,14 @@ public class ComposeFragment extends CircularRevealDialogFragment
   private FragmentComposeBinding binding;
   private ComposeViewModel composeViewModel;
 
-  //TODO: make sure compose fragment does change appearance after submitting
+  // TODO: make sure compose fragment does change appearance after submitting
 
   private CameraOnClickListener cameraOnClickListener;
   private File photoFile;
   private LatLng dest;
   private LatLng origin;
 
-  @VisibleForTesting (otherwise = VisibleForTesting.PRIVATE)
+  @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   public FragmentComposeBinding getFragmentComposeBinding() {
     return binding;
   }
@@ -171,40 +166,41 @@ public class ComposeFragment extends CircularRevealDialogFragment
   private PackageRequest mostRecentRequest;
 
   private void saveRequest(String desc, File file, ParseUser currUser) {
-        mostRecentRequest = new PackageRequest(file, desc, origin, dest, currUser);
+    mostRecentRequest = new PackageRequest(file, desc, origin, dest, currUser);
 
-        mostRecentRequest.saveInBackground(
-            new SaveCallback() {
-              @Override
-              public void done(ParseException e) {
-                binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
+    mostRecentRequest.saveInBackground(
+        new SaveCallback() {
+          @Override
+          public void done(ParseException e) {
+            binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
 
-                if (e != null) {
-                  Log.e(TAG, "done: Error while saving request", e);
-                  Snackbar.make(
-                          binding.getRoot(), getString(R.string.toast_save_err), Snackbar.LENGTH_LONG)
-                      .show();
-                } else {
-                  Log.i(TAG, "done: Request save was successful!");
-                  Snackbar.make(
-                          binding.getRoot(), getString(R.string.toast_save_succ), Snackbar.LENGTH_LONG)
-                      .show();
-                  notifyNewSubmissionListeners();
-                  queryAvailableDrivers();
-                }
-              }
-            });
+            if (e != null) {
+              Log.e(TAG, "done: Error while saving request", e);
+              Snackbar.make(
+                      binding.getRoot(), getString(R.string.toast_save_err), Snackbar.LENGTH_LONG)
+                  .show();
+            } else {
+              Log.i(TAG, "done: Request save was successful!");
+              Snackbar.make(
+                      binding.getRoot(), getString(R.string.toast_save_succ), Snackbar.LENGTH_LONG)
+                  .show();
+              notifyNewSubmissionListeners();
+              queryAvailableDrivers();
+            }
+          }
+        });
   }
 
   private void notifyNewSubmissionListeners() {
-      ComposeFragment.newSubmissionListener.respondToNewSubmission(mostRecentRequest);
+    ComposeFragment.newSubmissionListener.respondToNewSubmission(mostRecentRequest);
   }
+
   private static final String KEY_ISDRIVER = "isDriver";
   private static final String KEY_ISAVAILABLE = "isAvailable";
   private static final String KEY_HOME = "home";
   private static final int LIMIT_QUERY = 5;
 
-  //error handling with getting drivers and making home in drivers
+  // error handling with getting drivers and making home in drivers
   private void queryAvailableDrivers() {
     ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
     query.include(KEY_HOME);
@@ -225,11 +221,11 @@ public class ComposeFragment extends CircularRevealDialogFragment
       if (drivers != null) {
         Log.d(TAG, "done query: drivers size = " + drivers.size());
         if (e != null) {
-          Log.e(TAG,  "queryPosts: Issue getting drivers", e);
+          Log.e(TAG, "queryPosts: Issue getting drivers", e);
         }
 
-        DriverDistanceRunnable driverDistanceRunnable
-                = new DriverDistanceRunnable(origin, dest, binding.getRoot(), drivers);
+        DriverDistanceRunnable driverDistanceRunnable =
+            new DriverDistanceRunnable(origin, dest, binding.getRoot(), drivers);
 
         driverDistanceRunnable.addListener(ComposeFragment.this);
 
@@ -246,23 +242,23 @@ public class ComposeFragment extends CircularRevealDialogFragment
   public void notifyOfThreadComplete(Runnable runnable, final ParseUser driver) {
     Log.i(TAG, "notifyOfThreadComplete: minDriver = " + driver.getUsername() + " " + minDriver);
 
-    //TODO: Set this up so that driver has to accept or reject
+    // TODO: Set this up so that driver has to accept or reject
     mostRecentRequest.put(PackageRequest.KEY_DRIVER, driver);
-    mostRecentRequest.saveInBackground(new SaveCallback() {
-      @Override
-      public void done(ParseException e) {
-        if (e != null) {
-          Log.e(TAG, "done: Error while saving request", e);
-          Snackbar.make(
-                  binding.getRoot(), getString(R.string.toast_save_err),
-                  Snackbar.LENGTH_LONG)
+    mostRecentRequest.saveInBackground(
+        new SaveCallback() {
+          @Override
+          public void done(ParseException e) {
+            if (e != null) {
+              Log.e(TAG, "done: Error while saving request", e);
+              Snackbar.make(
+                      binding.getRoot(), getString(R.string.toast_save_err), Snackbar.LENGTH_LONG)
                   .show();
 
-        } else {
-          Log.i(TAG, "done: Request save was successful!");
-        }
-      }
-    });
+            } else {
+              Log.i(TAG, "done: Request save was successful!");
+            }
+          }
+        });
 
     // TODO: update availability on driver's end, when driver is logged in
   }

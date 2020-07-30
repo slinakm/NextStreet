@@ -22,7 +22,11 @@ public class SignupCallback implements SignUpCallback {
   private boolean isDriver;
 
   public SignupCallback(
-      String TAG, View view, Activity activity, String username, String password,
+      String TAG,
+      View view,
+      Activity activity,
+      String username,
+      String password,
       boolean isDriver) {
     this.TAG = TAG;
     this.view = view;
@@ -45,7 +49,8 @@ public class SignupCallback implements SignUpCallback {
   }
 
   private void goActivity(Class c) {
-    ParseUser.logInInBackground(username, password, new LoginCallback(TAG, view, activity, isDriver));
+    ParseUser.logInInBackground(
+        username, password, new LoginCallback(TAG, view, activity, isDriver));
 
     Intent i = new Intent(activity, c);
     activity.startActivity(i);

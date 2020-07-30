@@ -30,7 +30,6 @@ public class PackageRequest extends ParseObject {
   public static final String KEY_ISFULFILLED = "isFulfilled";
   public static final String KEY_ISDONE = "isDone";
 
-
   // Set up empty constructor to register as ParseObject subclass
   public PackageRequest() {}
 

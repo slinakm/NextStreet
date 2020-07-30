@@ -48,7 +48,10 @@ import java.util.List;
  * current-place-tutorial#get-the-location-of-the-android-device-and-position-the-map
  */
 public class HomeFragment extends Fragment
-    implements QueryResponder, OnMapReadyCallback, GoogleMap.OnMapLongClickListener, NewSubmissionListener {
+    implements QueryResponder,
+        OnMapReadyCallback,
+        GoogleMap.OnMapLongClickListener,
+        NewSubmissionListener {
 
   public static final int DEFAULT_ZOOM = 20;
   private static final String TAG = HomeFragment.class.getSimpleName();
@@ -145,7 +148,7 @@ public class HomeFragment extends Fragment
   }
 
   public View onCreateView(
-          LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
     binding = FragmentHomeBinding.inflate(getLayoutInflater());
 

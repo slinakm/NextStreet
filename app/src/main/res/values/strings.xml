@@ -54,7 +54,7 @@
     <string name="toast_json_err">Error processing drivers</string>
     <string name="snackbar_dismiss">Dismiss</string>
     <string name="compose_description">Description</string>
-    <string name="empty_string"/>
+    <string name="empty_string" />
     <string name="compose_camera">Submit picture of package contents</string>
     <string name="submit_package_request">Submit package request</string>
 

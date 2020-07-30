@@ -55,7 +55,7 @@ public abstract class LoginAbstractActivity extends AppCompatActivity implements
     boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
     ParseUser currUser = ParseUser.getCurrentUser();
 
-    if (currUser == null)  {
+    if (currUser == null) {
       return false;
     }
 
@@ -119,23 +119,19 @@ public abstract class LoginAbstractActivity extends AppCompatActivity implements
     }
   }
 
-
-
   private void loginUser(String username, String password) {
     Log.i(getTAG(), "loginUser: " + username);
 
     try {
       List<ParseUser> foundUsers =
-          ParseUser.getQuery()
-              .whereEqualTo(KEY_USERNAME, username)
-              .include(KEY_ISDRIVER)
-              .find();
+          ParseUser.getQuery().whereEqualTo(KEY_USERNAME, username).include(KEY_ISDRIVER).find();
 
       if (checkExistingUsers(foundUsers)) {
         Log.i(getTAG(), "loginUser: check was ok, now logging in " + username);
         ParseUser.logInInBackground(
-                username, password, new LoginCallback(getTAG(), getBinding().getRoot(), this,
-                        isDriver()));
+            username,
+            password,
+            new LoginCallback(getTAG(), getBinding().getRoot(), this, isDriver()));
       }
     } catch (ParseException e) {
       Log.e(getTAG(), "loginUser: error finding " + username + " in query", e);
@@ -146,8 +142,7 @@ public abstract class LoginAbstractActivity extends AppCompatActivity implements
   private boolean checkExistingUsers(List<ParseUser> foundUsers) {
     if (foundUsers.size() == 0) {
       Log.e(getTAG(), "checkExistingUsers: no users found");
-      Snackbar.make(binding.getRoot(), R.string.toast_login_noUsers, Snackbar.LENGTH_SHORT)
-          .show();
+      Snackbar.make(binding.getRoot(), R.string.toast_login_noUsers, Snackbar.LENGTH_SHORT).show();
       return false;
     } else {
       boolean userCorrectScreen = false;

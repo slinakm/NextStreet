@@ -20,8 +20,7 @@ public class LoginCallback implements LogInCallback {
   private Activity activity;
   private boolean isDriver;
 
-  public LoginCallback(String TAG, View view, Activity activity,
-                       boolean isDriver) {
+  public LoginCallback(String TAG, View view, Activity activity, boolean isDriver) {
     this.TAG = TAG;
     this.view = view;
     this.activity = activity;
@@ -37,7 +36,7 @@ public class LoginCallback implements LogInCallback {
       return;
     }
 
-    if(isDriver) {
+    if (isDriver) {
       goActivity(DriverMainActivity.class);
     } else {
       goActivity(MainActivity.class);

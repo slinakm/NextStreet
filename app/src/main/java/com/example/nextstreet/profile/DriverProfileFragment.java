@@ -13,23 +13,23 @@ import com.example.nextstreet.databinding.FragmentDriverProfileBinding;
 import com.example.nextstreet.home.HomeFragment;
 
 public class DriverProfileFragment extends Fragment {
-    private static final String TAG = HomeFragment.class.getSimpleName();
+  private static final String TAG = HomeFragment.class.getSimpleName();
 
-    private FragmentDriverProfileBinding binding;
+  private FragmentDriverProfileBinding binding;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+  @Nullable
+  @Override
+  public View onCreateView(
+      LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    super.onCreateView(inflater, container, savedInstanceState);
 
-        binding = FragmentDriverProfileBinding.inflate(getLayoutInflater());
-        return binding.getRoot();
-    }
+    binding = FragmentDriverProfileBinding.inflate(getLayoutInflater());
+    return binding.getRoot();
+  }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        binding.logoutButton.setOnClickListener(new LogoutOnClickListener(getActivity()));
-    }
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    binding.logoutButton.setOnClickListener(new LogoutOnClickListener(getActivity()));
+  }
 }

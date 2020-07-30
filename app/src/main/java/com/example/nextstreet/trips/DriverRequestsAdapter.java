@@ -9,16 +9,11 @@ import android.view.ViewGroup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewbinding.ViewBinding;
 
-import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ItemDriverRequestBinding;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.DetailsMaterialCard;
 import com.example.nextstreet.utilities.OnDoubleTapListener;
-import com.google.android.material.snackbar.Snackbar;
-import com.parse.Parse;
-import com.parse.ParseUser;
 
 import java.util.List;
 import java.util.Set;
@@ -72,8 +67,8 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
   }
 
   void clear() {
-      packageRequests.clear();
-      notifyDataSetChanged();
+    packageRequests.clear();
+    notifyDataSetChanged();
   }
 
   public class ViewHolder extends RecyclerView.ViewHolder {
@@ -93,6 +88,7 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
     }
 
     private static final String KEY_ISAVAILABLE = "isAvailable";
+
     @SuppressLint("ClickableViewAccessibility")
     private void setupOnClickListeners(final PackageRequest request) {
       binding
@@ -139,15 +135,14 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
           });
     }
 
-      private void switchLayouts() {
-          if (layoutDriverRequestsView.getVisibility() == View.VISIBLE) {
-              layoutDriverRequestsView.setVisibility(View.GONE);
-              layoutDriverDetailsView.setVisibility(View.VISIBLE);
-          } else {
-              layoutDriverRequestsView.setVisibility(View.VISIBLE);
-              layoutDriverDetailsView.setVisibility(View.GONE);
-          }
+    private void switchLayouts() {
+      if (layoutDriverRequestsView.getVisibility() == View.VISIBLE) {
+        layoutDriverRequestsView.setVisibility(View.GONE);
+        layoutDriverDetailsView.setVisibility(View.VISIBLE);
+      } else {
+        layoutDriverRequestsView.setVisibility(View.VISIBLE);
+        layoutDriverDetailsView.setVisibility(View.GONE);
       }
-
+    }
   }
 }

@@ -3,26 +3,17 @@ package com.example.nextstreet.trips;
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ItemRequestBinding;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.DetailsMaterialCard;
 import com.example.nextstreet.utilities.OnDoubleTapListener;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.common.base.Preconditions;
-import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> {
