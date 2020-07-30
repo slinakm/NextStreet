@@ -1,5 +1,6 @@
 package com.example.nextstreet.home;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
@@ -16,33 +17,35 @@ public class MapsPlaceSelectionListener implements PlaceSelectionListener {
   private static final String TAG = MapsPlaceSelectionListener.class.getSimpleName();
   private final boolean isOrigin;
   private final View view;
-  private final HomeFragment fragment;
+  private final MapsPlaceSelectionResponder mapsPlaceSelectionResponder;
+  private final Context context;
 
-  protected MapsPlaceSelectionListener(View view, HomeFragment fragment, boolean isOrigin) {
+  MapsPlaceSelectionListener(View view, MapsPlaceSelectionResponder mapsPlaceSelectionResponder, boolean isOrigin) {
     this.view = view;
-    this.fragment = fragment;
+    this.mapsPlaceSelectionResponder = mapsPlaceSelectionResponder;
     this.isOrigin = isOrigin;
+    this.context = (Context) mapsPlaceSelectionResponder;
   }
 
   @Override
   public void onPlaceSelected(@NonNull Place place) {
     String placeSelected =
-        place.getName().toString() + " " + fragment.getString(R.string.maps_onplace_succ);
+        place.getName().toString() + " " + context.getString(R.string.maps_onplace_succ);
     Snackbar.make(view, placeSelected, Snackbar.LENGTH_LONG).show();
     Log.i(TAG, "onPlaceSelected: Selected " + place.getName() + " and id: " + place.getId());
 
     if (isOrigin) {
-      fragment.setOrigin(place.getLatLng());
-      fragment.setOriginPlace();
+      mapsPlaceSelectionResponder.setOrigin(place.getLatLng());
+      mapsPlaceSelectionResponder.setOriginPlace(place);
     } else {
-      fragment.setDestination(place.getLatLng());
-      fragment.setDestinationPlace();
+      mapsPlaceSelectionResponder.setDestination(place.getLatLng());
+      mapsPlaceSelectionResponder.setDestinationPlace(place);
     }
   }
 
   @Override
   public void onError(@NonNull Status status) {
-    Snackbar.make(view, fragment.getText(R.string.maps_onplace_err), Snackbar.LENGTH_LONG)
+    Snackbar.make(view, context.getText(R.string.maps_onplace_err), Snackbar.LENGTH_LONG)
         .setAction("Action", null)
         .show();
     Log.e(TAG, "onError: Error choosing place " + status.toString(), null);

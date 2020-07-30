@@ -19,7 +19,7 @@ public class LocationResultOnCompleteListener implements OnCompleteListener<Loca
   private Location lastKnownLocation;
   private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
 
-  protected LocationResultOnCompleteListener(GoogleMap map, HomeFragment fragment) {
+  LocationResultOnCompleteListener(GoogleMap map, HomeFragment fragment) {
     this.map = map;
     this.fragment = fragment;
   }

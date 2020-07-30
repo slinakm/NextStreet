@@ -104,12 +104,12 @@ public class DetailsFragment extends DialogFragment implements OnMapReadyCallbac
     setDestination(latlngDest);
   }
 
-  protected void setOriginNoCamera(LatLng newPlace) {
+  void setOriginNoCamera(LatLng newPlace) {
     Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
     setMarkerOrigin(newPlace);
   }
 
-  protected void setDestination(LatLng newPlace) {
+  void setDestination(LatLng newPlace) {
     map.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
     Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
     setMarkerDestination(newPlace);

@@ -51,7 +51,8 @@ public class HomeFragment extends Fragment
     implements QueryResponder,
         OnMapReadyCallback,
         GoogleMap.OnMapLongClickListener,
-        NewSubmissionListener {
+        NewSubmissionListener,
+        MapsPlaceSelectionResponder {
 
   public static final int DEFAULT_ZOOM = 20;
   private static final String TAG = HomeFragment.class.getSimpleName();
@@ -61,8 +62,10 @@ public class HomeFragment extends Fragment
   private static PackageRequest currRequest;
 
   private static Location lastKnownLocation;
-  private static LatLng destination;
-  private static LatLng origin;
+  private LatLng destination;
+  private LatLng origin;
+  private Place destinationPlace;
+  private Place originPlace;
 
   private FragmentHomeBinding binding;
   private boolean locationPermissionGranted;
@@ -76,19 +79,41 @@ public class HomeFragment extends Fragment
   private Marker markerOrigin;
   private Marker markerDestination;
 
-  protected static void setLastKnownLocation(Location lastKnownLocation) {
+  static void setLastKnownLocation(Location lastKnownLocation) {
     HomeFragment.lastKnownLocation = lastKnownLocation;
   }
 
-  public static LatLng getDestination() {
+  @Override
+  public LatLng getDestination() {
     return destination;
   }
 
-  public static LatLng getOrigin() {
+  @Override
+  public LatLng getOrigin() {
     if (lastKnownLocation != null) {
       origin = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
     }
     return origin;
+  }
+
+  @Override
+  public Place getDestinationPlace() {
+    return destinationPlace;
+  }
+
+  @Override
+  public Place getOriginPlace() {
+    return originPlace;
+  }
+
+  @Override
+  public void setDestinationPlace(Place destinationPlace) {
+    this.destinationPlace = destinationPlace;
+  }
+
+  @Override
+  public void setOriginPlace(Place originPlace) {
+    this.originPlace = originPlace;
   }
 
   public static boolean hasCurrRequest() {
@@ -99,20 +124,22 @@ public class HomeFragment extends Fragment
     return currRequest;
   }
 
-  protected void setOrigin(LatLng newPlace) {
+  @Override
+  public void setOrigin(LatLng newPlace) {
     map.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
     origin = newPlace;
     Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
     setMarkerOrigin(newPlace);
   }
 
-  protected void setOriginNoCamera(LatLng newPlace) {
+  void setOriginNoCamera(LatLng newPlace) {
     origin = newPlace;
     Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
     setMarkerOrigin(newPlace);
   }
 
-  protected void setDestination(LatLng newPlace) {
+  @Override
+  public void setDestination(LatLng newPlace) {
     map.moveCamera(CameraUpdateFactory.newLatLngZoom(newPlace, HomeFragment.DEFAULT_ZOOM));
     destination = newPlace;
     Preconditions.checkNotNull(newPlace, "newPlace unexpectedly null");
