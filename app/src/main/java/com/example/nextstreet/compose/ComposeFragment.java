@@ -34,6 +34,7 @@ import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 import com.example.nextstreet.utilities.TextObserver;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
@@ -68,6 +69,8 @@ public class ComposeFragment extends CircularRevealDialogFragment
   private File photoFile;
   private LatLng dest;
   private LatLng origin;
+  private Place destPlace;
+  private Place originPlace;
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   public FragmentComposeBinding getFragmentComposeBinding() {
@@ -171,7 +174,7 @@ public class ComposeFragment extends CircularRevealDialogFragment
   private PackageRequest mostRecentRequest;
 
   private void saveRequest(String desc, File file, ParseUser currUser) {
-    mostRecentRequest = new PackageRequest(file, desc, origin, dest, currUser);
+    mostRecentRequest = new PackageRequest(file, desc, origin, dest, originPlace, destPlace, currUser);
 
     if (currUser != null) {
       mostRecentRequest.saveInBackground(

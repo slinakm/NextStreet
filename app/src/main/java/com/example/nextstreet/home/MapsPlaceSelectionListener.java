@@ -33,8 +33,10 @@ public class MapsPlaceSelectionListener implements PlaceSelectionListener {
 
     if (isOrigin) {
       fragment.setOrigin(place.getLatLng());
+      fragment.setOriginPlace();
     } else {
       fragment.setDestination(place.getLatLng());
+      fragment.setDestinationPlace();
     }
   }
 

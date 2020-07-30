@@ -65,7 +65,6 @@ public class HomeFragment extends Fragment
   private static LatLng origin;
 
   private FragmentHomeBinding binding;
-  private HomeViewModel homeViewModel;
   private boolean locationPermissionGranted;
 
   private PlacesClient placesClient;
@@ -149,7 +148,6 @@ public class HomeFragment extends Fragment
 
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
     binding = FragmentHomeBinding.inflate(getLayoutInflater());
 
     SupportMapFragment mMapFragment =
@@ -226,14 +224,10 @@ public class HomeFragment extends Fragment
   public void onRequestPermissionsResult(
       int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     locationPermissionGranted = false;
-    switch (requestCode) {
-      case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
-        {
-          // If request is cancelled, the result arrays are empty.
-          if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted = true;
-          }
-        }
+    if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) { // If request is cancelled, the result arrays are empty.
+      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        locationPermissionGranted = true;
+      }
     }
     updateLocationUI();
   }

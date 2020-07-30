@@ -3,6 +3,7 @@ package com.example.nextstreet.models;
 import android.text.format.DateUtils;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.model.Place;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -26,6 +27,8 @@ public class PackageRequest extends ParseObject {
   public static final String KEY_DESCRIPTION = "description";
   public static final String KEY_ORIGIN = "origin";
   public static final String KEY_DESTINATION = "destination";
+  public static final String KEY_ORIGINPLACEID= "originPlaceId";
+  public static final String KEY_DESTINATIONPLACEID= "destinationPlaceId";
   public static final String KEY_CREATEDAT = "createdAt";
   public static final String KEY_ISFULFILLED = "isFulfilled";
   public static final String KEY_ISDONE = "isDone";
@@ -38,6 +41,8 @@ public class PackageRequest extends ParseObject {
       @Nullable String description,
       LatLng origin,
       LatLng destination,
+      Place originPlace,
+      Place destPlace,
       ParseUser user) {
     if (image != null) {
       put(KEY_IMAGE, image);
@@ -50,6 +55,14 @@ public class PackageRequest extends ParseObject {
     ArrayList<ParseGeoPoint> geoPointArrayList = new ArrayList<ParseGeoPoint>();
     geoPointArrayList.add(destGeoPoint);
     put(KEY_DESTINATION, geoPointArrayList);
+
+    if (originPlace != null) {
+      put(KEY_ORIGINPLACEID, originPlace.getId());
+    }
+    if (description != null) {
+      put(KEY_DESTINATIONPLACEID, destPlace.getId());
+    }
+
     put(KEY_USER, user);
   }
 
