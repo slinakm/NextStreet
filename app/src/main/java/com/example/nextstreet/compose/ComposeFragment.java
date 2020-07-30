@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
+import android.transition.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -54,7 +56,8 @@ import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ComposeFragment extends CircularRevealDialogFragment implements CameraLauncher, ThreadCompleteListener {
+public class ComposeFragment extends CircularRevealDialogFragment
+        implements CameraLauncher, ThreadCompleteListener, PackageSubmissionResponder {
 
   private static final String TAG = ComposeFragment.class.getSimpleName();
 
@@ -70,6 +73,11 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
   private File photoFile;
   private LatLng dest;
   private LatLng origin;
+
+  @VisibleForTesting (otherwise = VisibleForTesting.PRIVATE)
+  public FragmentComposeBinding getFragmentComposeBinding() {
+    return binding;
+  }
 
   public static ComposeFragment newInstance() {
     Bundle args = new Bundle();
@@ -137,7 +145,8 @@ public class ComposeFragment extends CircularRevealDialogFragment implements Cam
         .setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
   }
 
-  void checkPostable() {
+  @Override
+  public void checkPostable() {
     binding.pbLoading.setVisibility(ProgressBar.VISIBLE);
 
     String desc = binding.etDescription.getText().toString();

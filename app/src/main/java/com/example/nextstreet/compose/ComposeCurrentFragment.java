@@ -44,6 +44,11 @@ public class ComposeCurrentFragment extends CircularRevealDialogFragment {
     return fragment;
   }
 
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
+
   public View onCreateView(
       @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentComposeCurrentBinding.inflate(getLayoutInflater());
@@ -77,14 +82,18 @@ public class ComposeCurrentFragment extends CircularRevealDialogFragment {
               driver.get(KEY_LASTNAME)));
     }
 
+    setupImage();
+  }
+
+  private void setupImage() {
     binding.descriptionTextView.setText(request.getDescription());
 
     ParseFile image = request.getImage();
     if (image != null) {
       Glide.with(binding.getRoot())
-          .load(image.getUrl())
-          .transform(new RoundedCorners(getResources().getInteger(R.integer.rounded_corners)))
-          .into(binding.ivPackage);
+              .load(image.getUrl())
+              .transform(new RoundedCorners(getResources().getInteger(R.integer.rounded_corners)))
+              .into(binding.ivPackage);
     }
 
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
