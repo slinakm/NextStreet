@@ -1,75 +1,51 @@
 package com.example.nextstreet;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentFactory;
+import androidx.fragment.app.testing.FragmentScenario;
 
 import com.example.nextstreet.compose.ComposeFragment;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+
+import static android.os.Looper.getMainLooper;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = 28)
 public class ComposeFragmentTest {
 
-  private ComposeFragment composeFragment;
-  final FakeContext fakeContext = new FakeContext();
-  com.example.nextstreet.databinding.FragmentComposeBinding binding;
+  FragmentScenario<ComposeFragment> fragmentScenario;
 
   @Before
   public void setup() {
-    Bundle args = new Bundle();
+    Bundle fragmentArgs = new Bundle();
 
-    composeFragment =
-        new ComposeFragment() {
-          @Nullable
-          @Override
-          public Context getContext() {
-            return fakeContext;
-          }
-        };
-
-    LayoutInflater fakeLayoutInflator = new FakeLayoutInflator(fakeContext);
-    ViewGroup fakeViewGroup = new FakeViewGroup(fakeContext);
-
-    composeFragment.onCreateView(fakeLayoutInflator, fakeViewGroup, args);
-
-    binding = composeFragment.getFragmentComposeBinding();
+    FragmentFactory factory = new FragmentFactory();
+    fragmentScenario = FragmentScenario.launch(ComposeFragment.class, fragmentArgs, factory);
   }
 
   @Test
-  public void testButtonClick() {
-    binding.ivCancel.performClick();
-    assert (!composeFragment.isVisible());
+  public void testButtons() {
+    fragmentScenario.onFragment(new testCancelButton());
   }
 
-  private static class FakeContext extends Activity {}
-
-  private static class FakeLayoutInflator extends LayoutInflater {
-    protected FakeLayoutInflator(Context context) {
-      super(context);
-    }
+  private class testCancelButton implements FragmentScenario.FragmentAction<ComposeFragment> {
 
     @Override
-    public LayoutInflater cloneInContext(Context context) {
-      return this;
-    }
-  }
+    public void perform(@NonNull ComposeFragment fragment) {
+      fragment.getFragmentComposeBinding().ivCancel.performClick();
+      shadowOf(getMainLooper()).idle();
 
-  private static class FakeViewGroup extends ViewGroup {
-    public FakeViewGroup(Context context) {
-      super(context);
+      assert(!fragment.isVisible());
     }
-
-    @Override
-    protected void onLayout(boolean b, int i, int i1, int i2, int i3) {}
   }
 }

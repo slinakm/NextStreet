@@ -102,7 +102,10 @@ public class ComposeFragment extends CircularRevealDialogFragment
     binding = FragmentComposeBinding.inflate(getLayoutInflater(), container, false);
 
     binding.getRoot().setVisibility(View.INVISIBLE);
-    super.setUpOnLayoutListener(binding.getRoot(), true);
+
+    if (ParseUser.getCurrentUser() != null) {
+      super.setUpOnLayoutListener(binding.getRoot(), true);
+    }
 
     return binding.getRoot();
   }
@@ -127,8 +130,10 @@ public class ComposeFragment extends CircularRevealDialogFragment
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
     cameraOnClickListener = new CameraOnClickListener(this);
     binding.cameraButton.setOnClickListener(cameraOnClickListener);
-    binding.submitButton.setOnClickListener(
-        new PackageSubmissionOnClickListener(ParseUser.getCurrentUser().getUsername(), this));
+    if (ParseUser.getCurrentUser() != null) {
+      binding.submitButton.setOnClickListener(
+              new PackageSubmissionOnClickListener(ParseUser.getCurrentUser().getUsername(), this));
+    }
   }
 
   @Override
@@ -168,27 +173,29 @@ public class ComposeFragment extends CircularRevealDialogFragment
   private void saveRequest(String desc, File file, ParseUser currUser) {
     mostRecentRequest = new PackageRequest(file, desc, origin, dest, currUser);
 
-    mostRecentRequest.saveInBackground(
-        new SaveCallback() {
-          @Override
-          public void done(ParseException e) {
-            binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
+    if (currUser != null) {
+      mostRecentRequest.saveInBackground(
+              new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                  binding.pbLoading.setVisibility(ProgressBar.INVISIBLE);
 
-            if (e != null) {
-              Log.e(TAG, "done: Error while saving request", e);
-              Snackbar.make(
-                      binding.getRoot(), getString(R.string.toast_save_err), Snackbar.LENGTH_LONG)
-                  .show();
-            } else {
-              Log.i(TAG, "done: Request save was successful!");
-              Snackbar.make(
-                      binding.getRoot(), getString(R.string.toast_save_succ), Snackbar.LENGTH_LONG)
-                  .show();
-              notifyNewSubmissionListeners();
-              queryAvailableDrivers();
-            }
-          }
-        });
+                  if (e != null) {
+                    Log.e(TAG, "done: Error while saving request", e);
+                    Snackbar.make(
+                            binding.getRoot(), getString(R.string.toast_save_err), Snackbar.LENGTH_LONG)
+                            .show();
+                  } else {
+                    Log.i(TAG, "done: Request save was successful!");
+                    Snackbar.make(
+                            binding.getRoot(), getString(R.string.toast_save_succ), Snackbar.LENGTH_LONG)
+                            .show();
+                    notifyNewSubmissionListeners();
+                    queryAvailableDrivers();
+                  }
+                }
+              });
+    }
   }
 
   private void notifyNewSubmissionListeners() {
