@@ -14,6 +14,7 @@ import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ContentDetailBinding;
 import com.example.nextstreet.databinding.ContentDriverDetailsBinding;
 import com.example.nextstreet.databinding.FragmentDetailsBinding;
+import com.example.nextstreet.databinding.FragmentDriverDetailsBinding;
 import com.example.nextstreet.databinding.FragmentDriverRequestsBinding;
 import com.example.nextstreet.home.HomeFragment;
 import com.example.nextstreet.models.PackageRequest;
@@ -34,7 +35,7 @@ public class DriverDetailsFragment extends Fragment {
 
     private FragmentDriverDetailsBinding binding;
     private ContentDetailBinding layoutDriverDetails;
-    
+
     private GoogleMap map;
     private PackageRequest request;
 
@@ -53,7 +54,7 @@ public class DriverDetailsFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDriverDetailsBinding.inflate(getLayoutInflater());
-        layoutDriverDetails = binding.layoutContentDetails;
+        layoutDriverDetails = binding.layoutDriverDetails;
 
         return binding.getRoot();
     }
