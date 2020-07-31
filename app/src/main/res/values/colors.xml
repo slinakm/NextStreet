@@ -27,11 +27,11 @@
     <color name="animation_start_color">@color/secondaryLightColor</color>
     <color name="animation_end_color">@color/white</color>
 
-    <color name="btn_color">@color/secondaryTrueColor</color>
-    <color name="btn_text_color">@color/text_primary</color>
+    <color name="btn_color">@color/accentSecondaryLightColor</color>
+    <color name="btn_text_color">@color/primaryTextColor</color>
 
-    <color name="btn_scnd_color">@color/secondaryLightColor</color>
-    <color name="btn_scnd_text_color">@color/text_primary</color>
+    <color name="btn_scnd_color">@color/accentSecondaryColor</color>
+    <color name="btn_scnd_text_color">@color/primaryTextColor</color>
 
     <color name="icon_color">@color/secondaryDarkColor</color>
     <color name="icon_text_color">@color/text_primary</color>

@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_as"
-        android:textColor="@color/black"
+        android:textColor="@color/blue_grey"
         android:textSize="@dimen/start_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/driverButton"
