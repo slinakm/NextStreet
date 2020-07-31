@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.nextstreet.BuildConfig;
 import com.example.nextstreet.R;
 import com.example.nextstreet.compose.ComposeFragment;
+import com.example.nextstreet.compose.ComposeFragmentOnClickListener;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.example.nextstreet.models.PackageRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -34,6 +36,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.ParseGeoPoint;
@@ -195,6 +198,9 @@ public class HomeFragment extends Fragment
         (AutocompleteSupportFragment)
             getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment_destination);
     autocompleteFragmentDestination.setHint(getString(R.string.destination));
+
+    FloatingActionButton composeFloatingActionButton = binding.fab;
+    composeFloatingActionButton.setOnClickListener(new ComposeFragmentOnClickListener(this));
 
     ComposeFragment.addNewSubmissionListener(this);
     return binding.getRoot();

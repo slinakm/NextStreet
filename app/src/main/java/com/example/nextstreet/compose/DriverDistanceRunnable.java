@@ -150,6 +150,7 @@ public class DriverDistanceRunnable implements Runnable {
     return distance;
   }
 
+  // TODO: Figure out if can get API exception and status
   private int driverDistanceRequestResponse(Response response) throws IOException {
     if (!response.isSuccessful()) {
       Log.d(TAG, "onResponse: Response was unexpectedly not successful with " + response);

@@ -66,6 +66,14 @@ public class PackageRequest extends ParseObject {
     put(KEY_USER, user);
   }
 
+  public String getOriginPlaceId() {
+    return getString(KEY_ORIGINPLACEID);
+  }
+
+  public String getDestinationPlaceId() {
+    return getString(KEY_DESTINATIONPLACEID);
+  }
+
   public ParseGeoPoint getOrigin() {
     return getParseGeoPoint(KEY_ORIGIN);
   }
