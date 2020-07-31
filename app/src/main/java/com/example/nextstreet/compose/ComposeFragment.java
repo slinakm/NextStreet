@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeBinding;
 import com.example.nextstreet.home.HomeFragment;
+import com.example.nextstreet.home.MapsPlaceSelectionResponder;
 import com.example.nextstreet.home.NewSubmissionListener;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.CircularRevealDialogFragment;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.base.Preconditions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -121,8 +123,10 @@ public class ComposeFragment extends CircularRevealDialogFragment
         .getDescription()
         .observe(getViewLifecycleOwner(), new TextObserver(binding.etDescription));
 
-    dest = HomeFragment.getDestination();
-    origin = HomeFragment.getOrigin();
+    MapsPlaceSelectionResponder mapsFragment = (MapsPlaceSelectionResponder) getTargetFragment();
+    Preconditions.checkNotNull(mapsFragment);
+    dest = mapsFragment.getDestination();
+    origin = mapsFragment.getOrigin();
     if (dest != null) {
       binding.destinationTextView.setText(dest.toString());
     }

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.nextstreet.R;
 import com.google.android.gms.common.api.Status;
@@ -24,7 +25,7 @@ public class MapsPlaceSelectionListener implements PlaceSelectionListener {
     this.view = view;
     this.mapsPlaceSelectionResponder = mapsPlaceSelectionResponder;
     this.isOrigin = isOrigin;
-    this.context = (Context) mapsPlaceSelectionResponder;
+    this.context = ((Fragment) mapsPlaceSelectionResponder).getContext();
   }
 
   @Override
