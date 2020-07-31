@@ -68,5 +68,6 @@ public class StartActivity extends AppCompatActivity {
   private void goActivity(Class c) {
     Intent i = new Intent(this, c);
     startActivity(i);
+    finish();
   }
 }
