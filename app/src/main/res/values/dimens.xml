@@ -47,6 +47,8 @@
     <dimen name="start_text_size">20sp</dimen>
 
     <dimen name="profile_vertical_spacing">20dp</dimen>
+    <dimen name="profile_header_height">250dp</dimen>
+    <dimen name="profile_picture_height">100dp</dimen>
 
     <integer name="range_of_drivers_miles">30</integer>
 

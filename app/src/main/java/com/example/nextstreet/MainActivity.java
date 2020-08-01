@@ -21,12 +21,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
-import com.example.nextstreet.compose.ComposeFragmentOnClickListener;
 import com.example.nextstreet.databinding.ActivityMainBinding;
 import com.example.nextstreet.login.SignupActivity;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.profile.ProfileFragmentOnClickListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.common.base.Preconditions;
 import com.parse.ParseFile;
@@ -143,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     String strUsername = currUser.getUsername();
     username.setText(strUsername);
 
-    ImageView profilePic = headerView.findViewById(R.id.ivProfilePic);
+    ImageView profilePic = headerView.findViewById(R.id.profilePictureImageView);
     profilePic.setOnClickListener(new ProfileFragmentOnClickListener(this));
     username.setOnClickListener(new ProfileFragmentOnClickListener(this));
     name.setOnClickListener(new ProfileFragmentOnClickListener(this));
