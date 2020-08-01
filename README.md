@@ -42,11 +42,10 @@ An app that will allow users to send or receive local postal deliveries. Uber fo
 
 **Optional Nice-to-have Stories**
 - [ ] Can make multiple requests at once and see unfulfilled requests on home screen.
-- [x] Add unit tests for activities and fragments.
 - [x] Ability to choose to sign in as a driver or user.
     - [x] Ability to accept/view a list of requests as a driver.
     - [x] Ability to see past requests and details as a user. 
-- [ ] Write unit and integration tests for a few features.
+- [x] Write unit and integration tests for a few features.
 - [x] See past package requests in a list.
 - [ ] Card view of past package requests with shared components animation.
 - [x] Material design graphics on buttons and map.
@@ -55,14 +54,13 @@ An app that will allow users to send or receive local postal deliveries. Uber fo
 - Map details:
     - [x] Map automatically zooms into current location.
     - [x] Ability to search for package destination and starting location.
-    - [ ] Users can see place names instead of coordinates.
+    - [x] Users can see place names instead of coordinates.
     - [ ] Ability to "track" package location (at least visually) on a map.
 - Ability to view 
     - [ ] personal profile. 
     - [ ] list of users to send package.
         - [ ] Double tap user to view user profile.
     - [ ] profile of driver, including driver photo. 
-- [ ] Ability to create a package request using a bottom sheet fragment.
 - [ ] Signing up through another account (such as the user's Facebook profile).
 - [ ] Set up cost of sending package.
 - [ ] Implement Firebase as to update the Google maps based on traffic information (best estimate).
