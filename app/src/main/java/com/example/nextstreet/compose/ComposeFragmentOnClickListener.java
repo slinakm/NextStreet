@@ -13,25 +13,26 @@ import com.example.nextstreet.home.MapsPlaceSelectionResponder;
 public class ComposeFragmentOnClickListener implements View.OnClickListener {
 
   private final String TAG = ComposeFragmentOnClickListener.class.getSimpleName();
-  private final Fragment fragment;
+  private final Fragment targetfragment;
 
-  public ComposeFragmentOnClickListener(MapsPlaceSelectionResponder fragment) {
-    this.fragment = (Fragment) fragment;
+  public ComposeFragmentOnClickListener(MapsPlaceSelectionResponder targetfragment) {
+    this.targetfragment = (Fragment) targetfragment;
   }
 
   @Override
   public void onClick(View view) {
     Log.d(TAG, "onClick to open compose fragment");
 
-    FragmentManager fm = fragment.getChildFragmentManager();
     if (HomeFragment.hasCurrRequest()) {
-      ComposeCurrentFragment fragment =
+      FragmentManager fm = targetfragment.getChildFragmentManager();
+      ComposeCurrentFragment composeCurrentFragment =
           ComposeCurrentFragment.newInstance(HomeFragment.getCurrRequest());
-      fragment.show(fm, ComposeCurrentFragment.class.getSimpleName());
+      composeCurrentFragment.show(fm, ComposeCurrentFragment.class.getSimpleName());
     } else {
-      ComposeFragment fragment = ComposeFragment.newInstance();
-      fragment.setTargetFragment(fragment, 0);
-      fragment.show(fm, ComposeFragment.class.getSimpleName());
+      FragmentManager fm = targetfragment.getParentFragmentManager();
+      ComposeFragment composeFragment = ComposeFragment.newInstance();
+      composeFragment.setTargetFragment(targetfragment, 0);
+      composeFragment.show(fm, ComposeFragment.class.getSimpleName());
     }
   }
 }

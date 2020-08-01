@@ -39,7 +39,7 @@
     <dimen name="card_image_size">78dp</dimen>
 
     <integer name="autocompleteFragmentOrigin_time_disappearing">300</integer>
-    <integer name="autocompleteFragmentDestination_time_disappearing">600</integer>
+    <integer name="autocompleteFragmentDestination_time_disappearing">300</integer>
     <integer name="composeFragment_time_appearing">700</integer>
 
     <dimen name="start_vertical_spacing">60dp</dimen>

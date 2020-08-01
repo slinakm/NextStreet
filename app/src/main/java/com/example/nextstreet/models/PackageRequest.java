@@ -59,7 +59,7 @@ public class PackageRequest extends ParseObject {
     if (originPlace != null) {
       put(KEY_ORIGINPLACEID, originPlace.getId());
     }
-    if (description != null) {
+    if (destPlace != null) {
       put(KEY_DESTINATIONPLACEID, destPlace.getId());
     }
 

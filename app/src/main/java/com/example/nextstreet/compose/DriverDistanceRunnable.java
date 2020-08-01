@@ -69,7 +69,7 @@ public class DriverDistanceRunnable implements Runnable {
       notifyListeners();
     }
   }
-
+  //TODO: make error message if no drivers are available
   public void doRun() {
     Log.d(TAG, "doRun: running");
     android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);

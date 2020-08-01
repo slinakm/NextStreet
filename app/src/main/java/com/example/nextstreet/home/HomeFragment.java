@@ -73,6 +73,7 @@ public class HomeFragment extends Fragment
   private FragmentHomeBinding binding;
   private boolean locationPermissionGranted;
 
+  private boolean onCurrentRequest;
   private PlacesClient placesClient;
   private FusedLocationProviderClient fusedLocationProviderClient;
   private AutocompleteSupportFragment autocompleteFragmentOrigin;
@@ -174,6 +175,17 @@ public class HomeFragment extends Fragment
       this.markerDestination.remove();
     }
     this.markerDestination = markerDestination;
+  }
+
+  private void setOnCurrentRequestToFalse() {
+    onCurrentRequest = false;
+    View originView = autocompleteFragmentOrigin.getView();
+    Preconditions.checkNotNull(originView);
+    originView.setVisibility(View.VISIBLE);
+
+    View destinationView = autocompleteFragmentDestination.getView();
+    Preconditions.checkNotNull(destinationView);
+    destinationView.setVisibility(View.VISIBLE);
   }
 
   public View onCreateView(
@@ -309,9 +321,11 @@ public class HomeFragment extends Fragment
 
   @Override
   public void onMapLongClick(LatLng latLng) {
-    Snackbar.make(binding.getRoot(), getString(R.string.set_destination), Snackbar.LENGTH_SHORT)
-        .show();
-    setDestination(latLng);
+    if (!onCurrentRequest) {
+      Snackbar.make(binding.getRoot(), getString(R.string.set_destination), Snackbar.LENGTH_SHORT)
+              .show();
+      setDestination(latLng);
+    }
   }
 
   private void queryMostRecentPackage() {
@@ -350,6 +364,7 @@ public class HomeFragment extends Fragment
       setMapToCurrRequest(request);
     } else {
       currRequest = null;
+      setOnCurrentRequestToFalse();
       getLocationPermission();
       updateLocationUI();
       getDeviceLocation();
@@ -358,6 +373,8 @@ public class HomeFragment extends Fragment
 
   private void setMapToCurrRequest(PackageRequest request) {
     Log.i(TAG, "setMapToCurrRequest: here! ");
+
+    onCurrentRequest = true;
     ParseGeoPoint origin = request.getOrigin();
     ParseGeoPoint destination = request.getDestination();
 
@@ -371,25 +388,12 @@ public class HomeFragment extends Fragment
     LatLng latlngDest = new LatLng(destination.getLatitude(), destination.getLongitude());
 
     View originView = autocompleteFragmentOrigin.getView();
-    if (originView != null) {
-      originView
-          .animate()
-          .translationYBy(-originView.getHeight())
-          .setDuration(
-              getResources().getInteger(R.integer.autocompleteFragmentOrigin_time_disappearing))
-          .setListener(new DismissAnimatorListenerAdapter(originView));
-    }
+    Preconditions.checkNotNull(originView);
+    originView.setVisibility(View.GONE);
 
     View destinationView = autocompleteFragmentDestination.getView();
-    if (destinationView != null) {
-      destinationView
-          .animate()
-          .translationYBy(-destinationView.getHeight() - originView.getHeight())
-          .setDuration(
-              getResources()
-                  .getInteger(R.integer.autocompleteFragmentDestination_time_disappearing))
-          .setListener(new DismissAnimatorListenerAdapter(destinationView));
-    }
+    Preconditions.checkNotNull(destinationView);
+    destinationView.setVisibility(View.GONE);
 
     setOriginNoCamera(latlngOrigin);
     setDestination(latlngDest);
