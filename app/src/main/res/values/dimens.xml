@@ -49,4 +49,6 @@
     <dimen name="profile_vertical_spacing">20dp</dimen>
 
     <integer name="range_of_drivers_miles">30</integer>
+
+    <dimen name="home_recyclerview_height">125dp</dimen>
 </resources>
