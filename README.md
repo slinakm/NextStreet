@@ -42,6 +42,7 @@ An app that will allow users to send or receive local postal deliveries. Uber fo
 
 **Optional Nice-to-have Stories**
 - [ ] Can make multiple requests at once and see unfulfilled requests on home screen.
+- [x] Add unit tests for activities and fragments.
 - [x] Ability to choose to sign in as a driver or user.
     - [x] Ability to accept/view a list of requests as a driver.
     - [x] Ability to see past requests and details as a user. 
