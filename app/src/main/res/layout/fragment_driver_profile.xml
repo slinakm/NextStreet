@@ -26,41 +26,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/com_facebook_profile_picture_blank_portrait" />
 
-    <Button
-        android:id="@+id/profilePictureButton"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/profile_vertical_spacing"
-        android:backgroundTint="@color/btn_color"
-        android:text="@string/profile_profilePictureButton"
-        android:textColor="@color/btn_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/profileHeaderImageView">
 
-    <Button
-        android:id="@+id/activeButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/profile_vertical_spacing"
-        android:backgroundTint="@color/btn_color"
-        android:text="@string/set_as_active"
-        android:textColor="@color/btn_text_color"
-        app:layout_constraintBottom_toTopOf="@+id/logoutButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePictureButton" />
+        <Button
+            android:id="@+id/profilePictureButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/profile_vertical_spacing"
+            android:backgroundTint="@color/btn_color"
+            android:text="@string/profile_profilePictureButton"
+            android:textColor="@color/btn_text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/profile_vertical_spacing"
-        android:backgroundTint="@color/btn_scnd_color"
-        android:text="@string/login_logOutButton"
-        android:textColor="@color/btn_text_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activeButton" />
+        <Button
+            android:id="@+id/activeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/profile_vertical_spacing"
+            android:backgroundTint="@color/btn_color"
+            android:text="@string/set_as_active"
+            android:textColor="@color/btn_text_color"
+            app:layout_constraintBottom_toTopOf="@+id/logoutButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilePictureButton" />
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/profile_vertical_spacing"
+            android:layout_marginTop="36dp"
+            android:backgroundTint="@color/btn_scnd_color"
+            android:text="@string/login_logOutButton"
+            android:textColor="@color/btn_text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activeButton" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
