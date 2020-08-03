@@ -217,7 +217,7 @@ public class HomeFragment extends Fragment
     bottomSheetComposeBinding.toDestinationImageView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, placeFields)
                 .build(getContext());
         startActivityForResult(intent, AUTOCOMPLETE_DESTINATION_REQUEST_CODE);
@@ -229,8 +229,7 @@ public class HomeFragment extends Fragment
       @Override
       public void onClick(View view) {
         FragmentManager fm = getChildFragmentManager();
-        ComposeDetailsFragment fragment = ComposeDetailsFragment.newInstance();
-        fragment.show(fm, ComposeDetailsFragment.class.getSimpleName());
+        ComposeDetailsFragment.display(fm);
       }
     });
   }

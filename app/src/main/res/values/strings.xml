@@ -94,7 +94,8 @@
     <string name="bottom_sheet_where">Where do you want to send your package?</string>
     <string name="bottom_choose_user_instead">Choose a user to send package to instead</string>
     <string name="bottom_search_up_destination">Search up a destination</string>
-    <string name="bottom_add_description_package">Do you want to add a description?</string>
-    <string name="bottom_add_package_image">Do you want to add an image of the package?</string>
+    <string name="bottom_add_description_package">add a description of the package?</string>
+    <string name="bottom_add_package_image">Add an image of the package?</string>
     <string name="button_next">Next</string>
+    <string name="menu_cancel">Cancel</string>
 </resources>
