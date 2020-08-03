@@ -100,8 +100,40 @@ public class ComposeDetailsFragment extends DialogFragment implements CameraLaun
         cameraOnClickListener = new CameraOnClickListener(this);
         binding.cameraButton.setOnClickListener(cameraOnClickListener);
         setUpPlaceAutocompleteIntents();
+        setUpButtons();
 
         composeHelper.onViewCreated(view, savedInstanceState, getTargetFragment());
+    }
+
+    private void setUpButtons() {
+        binding.toDescriptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isActivated = !binding.toDescriptionButton.isActivated();
+                binding.toDescriptionButton.setActivated(isActivated);
+
+                if (binding.etDescription.getVisibility() == View.GONE) {
+                    binding.etDescription.setVisibility(View.VISIBLE);
+                } else {
+                    binding.etDescription.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        binding.toImageButtonImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isActivated = !binding.toImageButtonImageView.isActivated();
+                binding.toImageButtonImageView.setActivated(isActivated);
+                
+                if (binding.cameraButton.getVisibility() == View.GONE) {
+                    binding.cameraButton.setVisibility(View.VISIBLE);
+                } else {
+                    binding.packageImageView.setVisibility(View.GONE);
+                    binding.cameraButton.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void setUpPlaceAutocompleteIntents() {
