@@ -38,7 +38,7 @@
     <color name="icon_text_color">@color/text_primary</color>
 
     <color name="back_icon_color">@color/secondaryDarkColor</color>
-    <color name="bottom_fragment_background">#CCc5ff75</color>
+    <color name="bottom_fragment_background">@color/primaryColor</color>
 
     <color name="white">#ffffff</color>
     <color name="light_grey">#90a4ae</color>

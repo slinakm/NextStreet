@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/bottom_fragment_margin"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/chooseDestinationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/bottom_fragment_vertical_parent_spacing"
+            android:layout_marginBottom="@dimen/bottom_fragment_vertical_child_spacing"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/bottom_search_up_destination"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/toDestinationImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/arrow_end_margin"
+            android:src="@drawable/next_right_arrow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/firstDivider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginTop="@dimen/bottom_fragment_vertical_child_spacing"
+        android:layout_marginBottom="@dimen/bottom_fragment_vertical_child_spacing"
+        android:background="?android:attr/listDivider" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/chooseUserTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/bottom_fragment_vertical_child_spacing"
+            android:layout_marginBottom="@dimen/bottom_fragment_vertical_child_spacing"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/bottom_choose_user_instead"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/toUsersImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/arrow_end_margin"
+            android:src="@drawable/next_right_arrow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/secondDivider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height_heavy"
+        android:layout_marginTop="@dimen/bottom_fragment_vertical_parent_spacing"
+        android:layout_marginBottom="@dimen/bottom_fragment_vertical_child_spacing"
+        android:src="@drawable/divider_heavy" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/addDescriptionTextVIew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/bottom_fragment_vertical_parent_spacing"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/bottom_add_description_package"
+            android:textColor="@color/light_blue_grey"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/toDescriptionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/arrow_end_margin"
+            android:src="@drawable/next_down_arrow"
+            app:layout_constraintBottom_toBottomOf="@+id/addDescriptionTextVIew"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/etDescription"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/bottom_fragment_vertical_child_spacing"
+            android:ems="@integer/description_ems"
+            android:hint="@string/compose_description"
+            android:lines="@integer/description_number_of_lines"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addDescriptionTextVIew" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/thirdDivider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginTop="@dimen/bottom_fragment_vertical_parent_spacing"
+        android:layout_marginBottom="@dimen/bottom_fragment_vertical_child_spacing"
+        android:background="?android:attr/listDivider" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/addImageTextVIew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/bottom_fragment_vertical_parent_spacing"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/bottom_add_package_image"
+            android:textColor="@color/light_blue_grey"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/toImageButtonImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/arrow_end_margin"
+            android:src="@drawable/next_down_arrow"
+            app:layout_constraintBottom_toBottomOf="@+id/addImageTextVIew"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/addImageTextVIew" />
+
+        <ImageView
+            android:id="@+id/packageImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/compose_side_margins"
+            android:layout_marginTop="@dimen/bottom_fragment_vertical_child_spacing"
+            android:layout_marginEnd="@dimen/compose_side_margins"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addImageTextVIew"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <Button
+            android:id="@+id/cameraButton"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/compose_side_margins"
+            android:layout_marginTop="@dimen/bottom_fragment_vertical_child_spacing"
+            android:layout_marginEnd="@dimen/compose_side_margins"
+            android:layout_marginBottom="@dimen/bottom_fragment_vertical_parent_spacing"
+            android:backgroundTint="@color/btn_color"
+            android:text="@string/compose_camera"
+            android:textColor="@color/btn_text_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/packageImageView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/finalDivider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height_heavy"
+        android:layout_marginTop="@dimen/bottom_fragment_vertical_parent_spacing"
+        android:layout_marginBottom="@dimen/bottom_fragment_vertical_parent_spacing"
+        android:src="@drawable/divider_heavy" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/bottom_fragment_vertical_parent_spacing"
+        android:backgroundTint="@color/btn_scnd_color"
+        android:text="@string/submit_package_request"
+        android:textColor="@color/btn_scnd_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/finalDivider" />
+</LinearLayout>

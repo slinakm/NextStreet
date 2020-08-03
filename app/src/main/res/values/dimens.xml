@@ -26,8 +26,8 @@
 
     <dimen name="bottom_fragment_margin">10dp</dimen>
     <dimen name="bottom_fragment_peak_height">56dp</dimen>
-    <dimen name="bottom_fragment_vertical_child_spacing">6dp</dimen>
-    <dimen name="bottom_fragment_vertical_parent_spacing">10dp</dimen>
+    <dimen name="bottom_fragment_vertical_child_spacing">10dp</dimen>
+    <dimen name="bottom_fragment_vertical_parent_spacing">15dp</dimen>
 
     <integer name="description_ems">10</integer>
     <integer name="description_number_of_lines">2</integer>

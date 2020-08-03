@@ -208,7 +208,7 @@ public class HomeFragment extends Fragment
     }
     // Map is ready
     map.setOnMapLongClickListener(this);
-    
+
     Snackbar.make(binding.getRoot(), "Map Fragment was loaded properly!", Snackbar.LENGTH_SHORT)
         .show();
 

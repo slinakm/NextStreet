@@ -96,4 +96,5 @@
     <string name="bottom_search_up_destination">Search up a destination</string>
     <string name="bottom_add_description_package">Do you want to add a description?</string>
     <string name="bottom_add_package_image">Do you want to add an image of the package?</string>
+    <string name="button_next">Next</string>
 </resources>
