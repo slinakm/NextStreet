@@ -418,6 +418,8 @@ public class HomeFragment extends Fragment
   @Override
   public void respondToNewSubmission(PackageRequest request) {
     Log.i(TAG, "respondToNewSubmission: new submission from self" + request);
+    binding.layoutBottomSheet.chooseDestinationTextView.setText(getString(R.string.bottom_search_up_destination));
+    binding.layoutBottomSheet.chooseUserTextView.setText(getString(R.string.bottom_choose_user_instead));
     currRequest = request;
     setMapToCurrRequest(request);
   }

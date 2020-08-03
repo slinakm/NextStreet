@@ -103,4 +103,5 @@
     <string name="search_up_an_origin">Search up an origin</string>
     <string name="choose_home_as_origin">Choose home as origin</string>
     <string name="yes">Yes</string>
+    <string name="set_starting_location">Set starting location</string>
 </resources>

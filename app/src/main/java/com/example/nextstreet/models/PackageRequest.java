@@ -45,7 +45,7 @@ public class PackageRequest extends ParseObject {
       Place destPlace,
       ParseUser user) {
     if (image != null) {
-      put(KEY_IMAGE, image);
+      put(KEY_IMAGE, new ParseFile(image));
     }
     if (description != null) {
       put(KEY_DESCRIPTION, description);

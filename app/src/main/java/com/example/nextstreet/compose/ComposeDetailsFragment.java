@@ -25,6 +25,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeDetailsBinding;
+import com.example.nextstreet.home.NewSubmissionListener;
+import com.example.nextstreet.models.PackageRequest;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -43,7 +45,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ComposeDetailsFragment extends DialogFragment implements CameraLauncher {
+public class ComposeDetailsFragment extends DialogFragment implements CameraLauncher, NewSubmissionListener {
 
     private static final String TAG = ComposeDetailsFragment.class.getSimpleName();
     private static final int AUTOCOMPLETE_DESTINATION_REQUEST_CODE = 2;
@@ -71,6 +73,7 @@ public class ComposeDetailsFragment extends DialogFragment implements CameraLaun
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentComposeDetailsBinding.inflate(getLayoutInflater());
         composeHelper  = new ComposeHelper(binding, getContext());
+        ComposeHelper.addNewSubmissionListener(this);
         toolbar = binding.toolbarDialog;
 
         return binding.getRoot();
@@ -125,7 +128,7 @@ public class ComposeDetailsFragment extends DialogFragment implements CameraLaun
             public void onClick(View view) {
                 boolean isActivated = !binding.toImageButtonImageView.isActivated();
                 binding.toImageButtonImageView.setActivated(isActivated);
-                
+
                 if (binding.cameraButton.getVisibility() == View.GONE) {
                     binding.cameraButton.setVisibility(View.VISIBLE);
                 } else {
@@ -279,5 +282,10 @@ public class ComposeDetailsFragment extends DialogFragment implements CameraLaun
             Log.e(TAG, "loadFromUri: error loading image from file", e);
         }
         return image;
+    }
+
+    @Override
+    public void respondToNewSubmission(PackageRequest request) {
+        dismiss();
     }
 }

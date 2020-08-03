@@ -30,12 +30,15 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ComposeHelper implements ThreadCompleteListener, PackageSubmissionResponder {
 
   private static final String TAG = ComposeHelper.class.getSimpleName();
 
+  private static final Set<NewSubmissionListener> newSubmissionListenerSet = new HashSet<>();
   private static NewSubmissionListener newSubmissionListener;
   private static ParseUser minDriver;
 
@@ -50,10 +53,12 @@ public class ComposeHelper implements ThreadCompleteListener, PackageSubmissionR
 
   public static void addNewSubmissionListener(NewSubmissionListener newSubmissionListener) {
     ComposeHelper.newSubmissionListener = newSubmissionListener;
+    newSubmissionListenerSet.add(newSubmissionListener);
   }
 
   public static void removeNewSubmissionListener() {
     ComposeHelper.newSubmissionListener = null;
+    newSubmissionListenerSet.clear();
   }
 
   void setPhotoFile(File photoFile) {
@@ -156,6 +161,9 @@ public class ComposeHelper implements ThreadCompleteListener, PackageSubmissionR
 
   private void notifyNewSubmissionListeners() {
     ComposeHelper.newSubmissionListener.respondToNewSubmission(mostRecentRequest);
+    for (NewSubmissionListener listener: newSubmissionListenerSet) {
+      listener.respondToNewSubmission(mostRecentRequest);
+    }
   }
 
   private static final String KEY_ISDRIVER = "isDriver";
