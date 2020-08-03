@@ -8,40 +8,80 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margins">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/destinationTextView"
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/layout_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/packageImageView"
+                android:layout_width="@dimen/card_image_size"
+                android:layout_height="@dimen/card_image_size"
+                android:layout_marginStart="@dimen/card_vertical_margins"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/card_vertical_spacing"
-            android:layout_marginBottom="@dimen/card_outside_margin"
-            android:text="@string/destination"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/originTextView"
-            app:layout_constraintTop_toBottomOf="@+id/originTextView" />
-
+            android:layout_marginStart="@dimen/card_outside_margin"
+            android:orientation="vertical">
         <TextView
-            android:id="@+id/originTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/card_vertical_spacing"
-            android:text="@string/origin"
-            app:layout_constraintBottom_toBottomOf="@+id/packageImageView"
-            app:layout_constraintStart_toStartOf="@+id/descriptionTextView"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+                android:id="@+id/destinationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/destination"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/originTextView"
+                app:layout_constraintTop_toBottomOf="@+id/originTextView" />
 
-        <ImageView
-            android:id="@+id/packageImageView"
-            android:layout_width="@dimen/card_image_size"
-            android:layout_height="@dimen/card_image_size"
-            android:layout_marginStart="@dimen/card_vertical_margins"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            <TextView
+                android:id="@+id/originTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/origin"
+                app:layout_constraintBottom_toBottomOf="@+id/packageImageView"
+                app:layout_constraintStart_toStartOf="@+id/descriptionTextView"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+
+            <TextView
+                android:id="@+id/driverTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/card_vertical_spacing"
+                android:text="@string/driver_name"
+                app:layout_constraintStart_toStartOf="@+id/descriptionTextView"
+                app:layout_constraintTop_toBottomOf="@+id/destinationTextView" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/distanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/card_horizontal_spacing"
+                app:layout_constraintEnd_toStartOf="@+id/timeTextView"
+                app:layout_constraintTop_toTopOf="@+id/timeTextView"
+                tools:text="xx miles" />
+
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/card_vertical_margins"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/card_margins"
+                tools:text="TextView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/descriptionTextView"
@@ -52,25 +92,9 @@
             tools:text="Description"
             app:layout_constraintStart_toEndOf="@+id/packageImageView"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/distanceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/card_horizontal_spacing"
-            app:layout_constraintEnd_toStartOf="@+id/timeTextView"
-            app:layout_constraintTop_toTopOf="@+id/timeTextView"
-            tools:text="xx miles" />
-
-        <TextView
-            android:id="@+id/timeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/card_vertical_margins"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="@dimen/card_margins"
-            tools:text="TextView" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
+
+
+
+

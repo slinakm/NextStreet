@@ -33,12 +33,12 @@
     <integer name="description_number_of_lines">2</integer>
 
     <dimen name="card_margins">10dp</dimen>
-    <dimen name="card_vertical_margins">10dp</dimen>
-    <dimen name="card_horizontal_margins">10dp</dimen>
-    <dimen name="card_vertical_spacing">10dp</dimen>
+    <dimen name="card_vertical_margins">8dp</dimen>
+    <dimen name="card_horizontal_margins">8dp</dimen>
+    <dimen name="card_vertical_spacing">5dp</dimen>
     <dimen name="card_horizontal_spacing">15dp</dimen>
     <dimen name="card_outside_margin">20dp</dimen>
-    <dimen name="card_image_size">78dp</dimen>
+    <dimen name="card_image_size">50dp</dimen>
 
     <integer name="autocompleteFragmentOrigin_time_disappearing">300</integer>
     <integer name="autocompleteFragmentDestination_time_disappearing">300</integer>

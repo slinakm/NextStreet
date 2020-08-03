@@ -25,9 +25,14 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.common.base.Preconditions;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.example.nextstreet.login.SignupAbstractActivity.KEY_FIRSTNAME;
+import static com.example.nextstreet.login.SignupAbstractActivity.KEY_LASTNAME;
 
 public class DetailsMaterialCard {
 
@@ -37,6 +42,12 @@ public class DetailsMaterialCard {
 
     TextView descriptionTextView = card.descriptionTextView;
     descriptionTextView.setText(request.getDescription());
+
+    ParseUser driver = request.getDriver();
+    if (driver != null && request.getBoolean(PackageRequest.KEY_ISFULFILLED)) {
+      card.driverTextView.setText(
+              String.format("%s %s", driver.get(KEY_FIRSTNAME), driver.get(KEY_LASTNAME)));
+    }
 
     setLocationTextViews(card, request, context);
 

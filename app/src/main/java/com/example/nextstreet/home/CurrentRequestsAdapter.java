@@ -3,6 +3,7 @@ package com.example.nextstreet.home;
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -73,7 +74,8 @@ public class CurrentRequestsAdapter extends RecyclerView.Adapter<CurrentRequests
 
         private void bind(PackageRequest request) {
             DetailsMaterialCard.setUpCard(binding, request, context);
-
+            binding.descriptionTextView.setVisibility(View.GONE);
+            binding.packageImageView.setVisibility(View.GONE);
             setupOnClickListener(request);
         }
 

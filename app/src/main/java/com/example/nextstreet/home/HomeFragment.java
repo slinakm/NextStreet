@@ -223,7 +223,13 @@ public class HomeFragment extends Fragment
 
   private void setUpCurrentRecyclerView() {
     currentPackagesRecyclerView = binding.currentPackagesRecyclerView.currentRequestsRecyclerView;
-    currentPackagesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+    currentPackagesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false) {
+      @Override
+      public boolean checkLayoutParams(RecyclerView.LayoutParams lp) {
+        lp.width = (int) (getWidth() / 1.5);
+        return true;
+      }
+    });
     AppCompatActivity appCompatActivityOfThis = (AppCompatActivity) getActivity();
     adapter = new CurrentRequestsAdapter(appCompatActivityOfThis, new ArrayList<PackageRequest>());
     currentPackagesRecyclerView.setAdapter(adapter);
