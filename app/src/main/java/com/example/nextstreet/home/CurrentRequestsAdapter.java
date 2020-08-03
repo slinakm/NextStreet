@@ -93,5 +93,6 @@ public class CurrentRequestsAdapter extends RecyclerView.Adapter<CurrentRequests
                                     detailsFragment.show(fm, DetailsFragment.class.getSimpleName());
                                 }
                             });
+        }
     }
 }

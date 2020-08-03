@@ -238,11 +238,11 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     query.whereEqualTo(PackageRequest.KEY_ISFULFILLED, false);
     query.whereEqualTo(PackageRequest.KEY_DRIVER, ParseUser.getCurrentUser());
 
-    query.findInBackground(new com.example.nextstreet.home.RequestQueryCallback(this));
+    query.findInBackground(new com.example.nextstreet.home.RequestQueryCallback(this, 0));
   }
 
   @Override
-  public void respondToQuery(List<PackageRequest> requests) {
+  public void respondToQuery(List<PackageRequest> requests, int requestCode) {
     for (PackageRequest request : requests) {
       Log.i(TAG, "respondToQuery: received " + request);
     }

@@ -10,6 +10,7 @@ public interface QueryResponder {
    * Called by RequestQueryCallback to handle changes.
    *
    * @param requests Package request from Parse.
+   * @param requestCode
    */
-  void respondToQuery(List<PackageRequest> requests);
+  void respondToQuery(List<PackageRequest> requests, int requestCode);
 }

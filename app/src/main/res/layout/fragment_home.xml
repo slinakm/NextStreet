@@ -18,6 +18,15 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <include
+        layout="@layout/view_current_request_list"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/home_recyclerview_height"
+        app:layout_constraintBottom_toTopOf="@+id/layout_bottom_sheet"
+        android:layout_marginBottom="@dimen/home_recyclerview_margin_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <include
         layout="@layout/bottom_sheet_compose"
         android:id="@+id/layout_bottom_sheet"
         android:layout_width="0dp"

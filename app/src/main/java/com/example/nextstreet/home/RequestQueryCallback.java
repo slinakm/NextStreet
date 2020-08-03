@@ -12,9 +12,11 @@ public class RequestQueryCallback implements FindCallback<PackageRequest> {
 
   private static final String TAG = RequestQueryCallback.class.getSimpleName();
   private final QueryResponder responder;
+  private final int requestCode;
 
-  public RequestQueryCallback(QueryResponder responder) {
+  public RequestQueryCallback(QueryResponder responder, int requestCode) {
     this.responder = responder;
+    this.requestCode = requestCode;
   }
 
   @Override
@@ -25,7 +27,7 @@ public class RequestQueryCallback implements FindCallback<PackageRequest> {
         Log.e(TAG, "queryPosts: Issue getting posts", e);
       }
 
-      responder.respondToQuery(posts);
+      responder.respondToQuery(posts, requestCode);
     }
   }
 }

@@ -55,6 +55,7 @@
     <integer name="range_of_drivers_miles">30</integer>
 
     <dimen name="home_recyclerview_height">125dp</dimen>
+    <dimen name="home_recyclerview_margin_bottom">10dp</dimen>
     <dimen name="divider_height">1dp</dimen>
     <dimen name="divider_height_heavy">2dp</dimen>
 

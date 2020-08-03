@@ -26,7 +26,6 @@ import com.example.nextstreet.compose.ComposeHelper;
 import com.example.nextstreet.databinding.BottomSheetComposeBinding;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.example.nextstreet.models.PackageRequest;
-import com.example.nextstreet.trips.TripsAdapter;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -73,6 +72,8 @@ public class HomeFragment extends Fragment
 
   private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
   private static final int AUTOCOMPLETE_DESTINATION_REQUEST_CODE = 2;
+  private static final int MOST_RECENT_PACKAGE_REQUEST_CODE = 10;
+  private static final int RECENT_PACKAGE_LIST_REQUEST_CODE = 10;
 
   private static PackageRequest currRequest;
 
@@ -219,12 +220,36 @@ public class HomeFragment extends Fragment
 
     ComposeHelper.addNewSubmissionListener(this);
 
+    setUpCurrentRecyclerView();
     setUpBottomSheet();
+  }
 
+  private void setUpCurrentRecyclerView() {
     rvPackages.setLayoutManager(new LinearLayoutManager(getContext()));
     AppCompatActivity appCompatActivityOfThis = (AppCompatActivity) getActivity();
     adapter = new CurrentRequestsAdapter(appCompatActivityOfThis, new ArrayList<PackageRequest>());
     rvPackages.setAdapter(adapter);
+    queryCurrentPackages();
+  }
+
+  private void queryCurrentPackages() {
+    ParseQuery<PackageRequest> query = ParseQuery.getQuery(PackageRequest.class);
+    query.orderByDescending(PackageRequest.KEY_CREATEDAT);
+    query.include(PackageRequest.KEY_USER);
+    query.include(PackageRequest.KEY_IMAGE);
+    query.include(PackageRequest.KEY_DESCRIPTION);
+    query.include(PackageRequest.KEY_ORIGIN);
+    query.include(PackageRequest.KEY_DRIVER);
+    query.include(PackageRequest.KEY_DESTINATION);
+    query.include(PackageRequest.KEY_IMAGE);
+    query.include(PackageRequest.KEY_ISFULFILLED);
+
+    ParseUser currUser = ParseUser.getCurrentUser();
+    Log.d(TAG, "queryMostRecentPackage: currUser = " + currUser.getUsername());
+    query.whereEqualTo(PackageRequest.KEY_USER, currUser);
+    query.whereEqualTo(PackageRequest.KEY_ISDONE, false);
+
+    query.findInBackground(new RequestQueryCallback(this, RECENT_PACKAGE_LIST_REQUEST_CODE));
   }
 
   private void setUpBottomSheet() {
@@ -383,29 +408,39 @@ public class HomeFragment extends Fragment
     query.whereEqualTo(PackageRequest.KEY_ISDONE, false);
 
     query.setLimit(3);
-    query.findInBackground(new RequestQueryCallback(this));
+    query.findInBackground(new RequestQueryCallback(this, MOST_RECENT_PACKAGE_REQUEST_CODE));
   }
 
   @Override
-  public void respondToQuery(List<PackageRequest> requests) {
-    boolean currRequestExists = (requests != null && requests.size() != 0);
+  public void respondToQuery(List<PackageRequest> requests, int requestCode) {
 
-    if (currRequestExists) {
-      PackageRequest request = requests.get(0);
-      Log.i(
-          TAG,
-          "respondToQuery: "
-              + request.getParseUser(PackageRequest.KEY_USER).getUsername()
-              + ", received "
-              + request);
-      currRequest = request;
-      setMapToCurrRequest(request);
-    } else {
-      currRequest = null;
-      setOnCurrentRequestToFalse();
-      getLocationPermission();
-      updateLocationUI();
-      getDeviceLocation();
+    if (requestCode == MOST_RECENT_PACKAGE_REQUEST_CODE) {
+      boolean currRequestExists = (requests != null && requests.size() != 0);
+
+      if (currRequestExists) {
+        PackageRequest request = requests.get(0);
+        Log.i(
+                TAG,
+                "respondToQuery: "
+                        + request.getParseUser(PackageRequest.KEY_USER).getUsername()
+                        + ", received "
+                        + request);
+        currRequest = request;
+        setMapToCurrRequest(request);
+      } else {
+        currRequest = null;
+        setOnCurrentRequestToFalse();
+        getLocationPermission();
+        updateLocationUI();
+        getDeviceLocation();
+      }
+    } else if (requestCode == RECENT_PACKAGE_LIST_REQUEST_CODE) {
+      for (PackageRequest request : requests) {
+        Log.i(TAG, "respondToQuery: received " + request);
+      }
+
+      adapter.addAll(requests);
+      this.adapter.notifyDataSetChanged();
     }
   }
 

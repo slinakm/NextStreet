@@ -68,11 +68,11 @@ public class TripsFragment extends Fragment implements QueryResponder {
     query.whereEqualTo(PackageRequest.KEY_USER, currUser);
     query.whereEqualTo(PackageRequest.KEY_ISDONE, true);
 
-    query.findInBackground(new RequestQueryCallback(this));
+    query.findInBackground(new RequestQueryCallback(this, 0));
   }
 
   @Override
-  public void respondToQuery(List<PackageRequest> requests) {
+  public void respondToQuery(List<PackageRequest> requests, int requestCode) {
     for (PackageRequest request : requests) {
       Log.i(TAG, "respondToQuery: received " + request);
     }
