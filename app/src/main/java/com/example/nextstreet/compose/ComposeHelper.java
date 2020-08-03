@@ -19,6 +19,7 @@ import com.example.nextstreet.home.NewSubmissionListener;
 import com.example.nextstreet.models.PackageRequest;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.FindCallback;
@@ -59,7 +60,15 @@ public class ComposeHelper implements ThreadCompleteListener, PackageSubmissionR
     this.photoFile = photoFile;
   }
 
+  void setOriginPlace(Place origin) {
+    this.origin = origin.getLatLng();
+    originPlace = origin;
+  }
 
+  void setDestinationPlace(Place destination) {
+    this.dest = destination.getLatLng();
+    this.destPlace = destination;
+  }
 
   ComposeHelper(com.example.nextstreet.databinding.FragmentComposeDetailsBinding binding, Context context) {
     minDriver = null;

@@ -25,19 +25,29 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeDetailsBinding;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.base.Preconditions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
 public class ComposeDetailsFragment extends DialogFragment implements CameraLauncher {
 
     private static final String TAG = ComposeDetailsFragment.class.getSimpleName();
+    private static final int AUTOCOMPLETE_DESTINATION_REQUEST_CODE = 2;
+    private static final int AUTOCOMPLETE_ORIGIN_REQUEST_CODE = 3;
 
     // Make enter and exit animation going to side
     private FragmentComposeDetailsBinding binding;
@@ -85,14 +95,38 @@ public class ComposeDetailsFragment extends DialogFragment implements CameraLaun
             }
         });
         toolbar.setTitle(getResources().getString(R.string.compose_details));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.primaryTextColor));
 
         cameraOnClickListener = new CameraOnClickListener(this);
         binding.cameraButton.setOnClickListener(cameraOnClickListener);
+        setUpPlaceAutocompleteIntents();
 
         composeHelper.onViewCreated(view, savedInstanceState, getTargetFragment());
     }
 
-    // TODO: fix crashing bug when submitting with camera!!!!
+    private void setUpPlaceAutocompleteIntents() {
+        binding.toDestinationImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, placeFields)
+                        .build(getContext());
+                startActivityForResult(intent, AUTOCOMPLETE_DESTINATION_REQUEST_CODE);
+            }
+        });
+
+        binding.toOriginImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, placeFields)
+                        .build(getContext());
+                startActivityForResult(intent, AUTOCOMPLETE_ORIGIN_REQUEST_CODE);
+            }
+        });
+    }
+
+        // TODO: fix crashing bug when submitting with camera!!!!
     @Override
     public File launchCamera() {
         Log.i(TAG, "launchCamera: ");
@@ -137,6 +171,30 @@ public class ComposeDetailsFragment extends DialogFragment implements CameraLaun
                         getString(R.string.toast_camera_err),
                         BaseTransientBottomBar.LENGTH_SHORT)
                         .show();
+            }
+        } else if (requestCode == AUTOCOMPLETE_DESTINATION_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Preconditions.checkNotNull(data);
+                Place destinationPlace = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + destinationPlace.getName() + ", " + destinationPlace.getId());
+                composeHelper.setDestinationPlace(destinationPlace);
+
+                binding.chooseDestinationTextView.setText(String.format("%s: %s", getResources().getText(R.string.destination), destinationPlace.getName()));
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.e(TAG, status.getStatusMessage());
+            }
+        } else if (requestCode == AUTOCOMPLETE_ORIGIN_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Preconditions.checkNotNull(data);
+                Place originPlace = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + originPlace.getName() + ", " + originPlace.getId());
+                composeHelper.setOriginPlace(originPlace);
+
+                binding.chooseOriginTextView.setText(String.format("%s: %s", getResources().getText(R.string.origin), originPlace.getName()));
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.e(TAG, status.getStatusMessage());
             }
         }
     }
