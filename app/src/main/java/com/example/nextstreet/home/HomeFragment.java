@@ -44,6 +44,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.ParseGeoPoint;
@@ -484,6 +485,7 @@ public class HomeFragment extends Fragment
     Log.i(TAG, "respondToNewSubmission: new submission from self" + request);
     binding.layoutBottomSheet.chooseDestinationTextView.setText(getString(R.string.bottom_search_up_destination));
     binding.layoutBottomSheet.chooseUserTextView.setText(getString(R.string.bottom_choose_user_instead));
+    queryCurrentPackages();
     currRequest = request;
     setMapToCurrRequest(request);
   }

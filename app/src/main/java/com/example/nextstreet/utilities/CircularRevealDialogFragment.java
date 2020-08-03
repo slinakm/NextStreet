@@ -83,12 +83,12 @@ public class CircularRevealDialogFragment extends DialogFragment {
 
       // get the center for the clipping circle: if you want to change where the
       // animation starts, change these two values
-      int cx = viewToAnimate.getWidth();
-      int cy = viewToAnimate.getHeight();
+      int cx = 0;
+      int cy = 0;
 
       // get the final radius for the clipping circle: if you change cx and cy,
       // change these just in case too
-      float finalRadius = (float) Math.hypot(cx, cy);
+      float finalRadius = (float) Math.hypot(viewToAnimate.getWidth(), viewToAnimate.getHeight());
 
       // create the animator for this view (the start radius is zero)
       Animator anim =

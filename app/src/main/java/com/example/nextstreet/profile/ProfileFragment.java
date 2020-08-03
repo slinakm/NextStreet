@@ -9,10 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.bumptech.glide.Glide;
+import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentProfileBinding;
+import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
 
-public class ProfileFragment extends DialogFragment {
+public class ProfileFragment extends CircularRevealDialogFragment {
 
   private static final String TAG = ProfileFragment.class.getSimpleName();
 
@@ -30,6 +33,7 @@ public class ProfileFragment extends DialogFragment {
   public View onCreateView(
       @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentProfileBinding.inflate(getLayoutInflater());
+    setUpOnLayoutListener(binding.getRoot(), true);
     return binding.getRoot();
   }
 
@@ -38,6 +42,7 @@ public class ProfileFragment extends DialogFragment {
     super.onViewCreated(view, savedInstanceState);
     binding.logoutButton.setOnClickListener(new LogoutOnClickListener(getActivity()));
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
+    Glide.with(getContext()).load(R.mipmap.ic_launcher_round).into(binding.profilePictureImageView);
   }
 
   @Override
