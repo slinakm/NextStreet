@@ -2,7 +2,6 @@ package com.example.nextstreet.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,7 +28,7 @@ public class ComposeDetailsFragment extends DialogFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentComposeDetailsBinding.inflate(getLayoutInflater());
-        toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar = binding.toolbarDialog;
 
         return binding.getRoot();
     }
@@ -52,14 +51,6 @@ public class ComposeDetailsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        toolbar.setTitle(getResources().getString(R.string.bottom_sheet_where));
-        toolbar.inflateMenu(R.menu.dialog_fullscreen);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                dismiss();
-                return true;
-            }
-        });
+        toolbar.setTitle(getResources().getString(R.string.compose_details));
     }
 }
