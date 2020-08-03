@@ -25,7 +25,7 @@ import static com.example.nextstreet.login.SignupAbstractActivity.KEY_LASTNAME;
 
 public class ComposeCurrentFragment extends CircularRevealDialogFragment {
 
-  private static final String TAG = ComposeFragment.class.getSimpleName();
+  private static final String TAG = ComposeHelper.class.getSimpleName();
 
   private FragmentComposeCurrentBinding binding;
 

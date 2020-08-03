@@ -104,7 +104,7 @@ public class DriverDistanceRunnable implements Runnable {
 
     Log.i(TAG, "run: min driver = " + minDriver.getUsername());
 
-    ComposeFragment.setMinDriver(minDriver);
+    ComposeHelper.setMinDriver(minDriver);
     this.minDriver = minDriver;
   }
 

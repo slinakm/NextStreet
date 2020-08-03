@@ -100,4 +100,7 @@
     <string name="menu_cancel">Cancel</string>
 
     <string name="compose_details">Compose Details</string>
+    <string name="search_up_an_origin">Search up an origin</string>
+    <string name="choose_home_as_origin">Choose home as origin</string>
+    <string name="yes">Yes</string>
 </resources>
