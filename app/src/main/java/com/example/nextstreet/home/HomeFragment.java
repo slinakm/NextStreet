@@ -179,9 +179,6 @@ public class HomeFragment extends Fragment
 
   private void setOnCurrentRequestToFalse() {
     onCurrentRequest = false;
-    View originView = autocompleteFragmentOrigin.getView();
-    Preconditions.checkNotNull(originView);
-    originView.setVisibility(View.VISIBLE);
 
     View destinationView = autocompleteFragmentDestination.getView();
     Preconditions.checkNotNull(destinationView);
@@ -202,17 +199,10 @@ public class HomeFragment extends Fragment
     placesClient = Places.createClient(getContext());
     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-    autocompleteFragmentOrigin =
-        (AutocompleteSupportFragment)
-            getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment_origin);
-    autocompleteFragmentOrigin.setHint(getString(R.string.origin));
     autocompleteFragmentDestination =
         (AutocompleteSupportFragment)
             getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment_destination);
     autocompleteFragmentDestination.setHint(getString(R.string.destination));
-
-    FloatingActionButton composeFloatingActionButton = binding.fab;
-    composeFloatingActionButton.setOnClickListener(new ComposeFragmentOnClickListener(this));
 
     ComposeFragment.addNewSubmissionListener(this);
     return binding.getRoot();
@@ -227,13 +217,6 @@ public class HomeFragment extends Fragment
     }
     // Map is ready
     map.setOnMapLongClickListener(this);
-
-    Preconditions.checkNotNull(
-        autocompleteFragmentOrigin, "autocompleteFragmentOrigin is unexpectedly null");
-    autocompleteFragmentOrigin.setPlaceFields(
-        Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-    autocompleteFragmentOrigin.setOnPlaceSelectedListener(
-        new MapsPlaceSelectionListener(binding.getRoot(), this, true));
 
     Preconditions.checkNotNull(
         autocompleteFragmentDestination, "autocompleteFragmentDestination is unexpectedly null");
@@ -386,10 +369,6 @@ public class HomeFragment extends Fragment
 
     LatLng latlngOrigin = new LatLng(origin.getLatitude(), origin.getLongitude());
     LatLng latlngDest = new LatLng(destination.getLatitude(), destination.getLongitude());
-
-    View originView = autocompleteFragmentOrigin.getView();
-    Preconditions.checkNotNull(originView);
-    originView.setVisibility(View.GONE);
 
     View destinationView = autocompleteFragmentDestination.getView();
     Preconditions.checkNotNull(destinationView);

@@ -90,4 +90,9 @@
     <string name="no_requests_currently">No requests currently!</string>
     <string name="menu_past_requests">Past Requests</string>
     <string name="profile_profilePictureButton">Take profile picture</string>
+
+    <string name="bottom_sheet_where">Where do you want to send your package?</string>
+    <string name="bottom_choose_user_instead">Choose a user to send package to instead</string>
+    <string name="bottom_search_up_destination">Search up a destination</string>
+    <string name="bottom_add_description_package">Do you want to add a description of the package?</string>
 </resources>

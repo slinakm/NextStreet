@@ -26,6 +26,8 @@
 
     <dimen name="bottom_fragment_margin">10dp</dimen>
     <dimen name="bottom_fragment_peak_height">56dp</dimen>
+    <dimen name="bottom_fragment_vertical_child_spacing">6dp</dimen>
+    <dimen name="bottom_fragment_vertical_parent_spacing">10dp</dimen>
 
     <integer name="description_ems">10</integer>
     <integer name="description_number_of_lines">3</integer>
@@ -53,4 +55,10 @@
     <integer name="range_of_drivers_miles">30</integer>
 
     <dimen name="home_recyclerview_height">125dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="divider_height_heavy">2dp</dimen>
+
+    <dimen name="arrow_dimen">30dp</dimen>
+    <dimen name="arrow_end_margin">20dp</dimen>
+
 </resources>

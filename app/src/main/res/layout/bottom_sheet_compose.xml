@@ -10,16 +10,98 @@
     android:background="@color/bottom_fragment_background"
     app:behavior_hideable="true"
     app:behavior_peekHeight="@dimen/bottom_fragment_peak_height"
+    android:elevation="20sp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <TextView
+        android:id="@+id/wherePackageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/testing" />
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/light_blue_grey"
+        android:text="@string/bottom_sheet_where"
+        android:textSize="18sp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/chooseDestinationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/bottom_fragment_vertical_parent_spacing"
+            android:layout_marginBottom="@dimen/bottom_fragment_vertical_child_spacing"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/bottom_search_up_destination"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/toDestinationImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/next_right_arrow"
+            android:layout_marginEnd="@dimen/arrow_end_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/firstDivider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginTop="@dimen/bottom_fragment_vertical_child_spacing"
+        android:layout_marginBottom="@dimen/bottom_fragment_vertical_child_spacing"
+        android:background="?android:attr/listDivider" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/chooseUserTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/bottom_fragment_vertical_child_spacing"
+            android:layout_marginBottom="@dimen/bottom_fragment_vertical_child_spacing"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/bottom_choose_user_instead"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/toUsersImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/next_right_arrow"
+            android:layout_marginEnd="@dimen/arrow_end_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height_heavy"
+        android:layout_marginTop="@dimen/bottom_fragment_vertical_parent_spacing"
+        android:layout_marginBottom="@dimen/bottom_fragment_vertical_parent_spacing"
+        android:src="@drawable/divider_heavy"/>
+
+    <TextView
+        android:id="@+id/addDescriptionTextVIew"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_marginTop="@dimen/bottom_fragment_vertical_child_spacing"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/light_blue_grey"
+        android:text="@string/bottom_add_description_package"
+        android:textSize="16sp"/>
+    
+
 </LinearLayout>

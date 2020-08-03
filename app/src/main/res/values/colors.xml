@@ -38,7 +38,7 @@
     <color name="icon_text_color">@color/text_primary</color>
 
     <color name="back_icon_color">@color/secondaryDarkColor</color>
-    <color name="bottom_fragment_background">@color/white</color>
+    <color name="bottom_fragment_background">#CCc5ff75</color>
 
     <color name="white">#ffffff</color>
     <color name="light_grey">#90a4ae</color>
@@ -48,6 +48,7 @@
     <color name="black">#000000</color>
 
     <color name="blue_grey">#37474f</color>
-    <color name="light_blue_grey">#62727b</color>
+    <color name="light_blue_grey">#62727B</color>
+    <color name="light_transparent_blue_grey">#8062727B</color>
     <color name="dark_blue_grey">#102027</color>
 </resources>
