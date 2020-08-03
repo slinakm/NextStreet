@@ -88,14 +88,13 @@ public class HomeFragment extends Fragment
   private boolean locationPermissionGranted;
 
   private boolean onCurrentRequest;
-  private PlacesClient placesClient;
   private FusedLocationProviderClient fusedLocationProviderClient;
   private GoogleMap map;
 
   private Marker markerOrigin;
   private Marker markerDestination;
 
-  private RecyclerView rvPackages;
+  private RecyclerView currentPackagesRecyclerView;
   private CurrentRequestsAdapter adapter;
 
   static void setLastKnownLocation(Location lastKnownLocation) {
@@ -201,6 +200,16 @@ public class HomeFragment extends Fragment
     binding = FragmentHomeBinding.inflate(getLayoutInflater());
     bottomSheetComposeBinding = binding.layoutBottomSheet;
 
+    SupportMapFragment mMapFragment =
+            (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+    Log.i(TAG, "onCreateView: " + mMapFragment);
+    Preconditions.checkNotNull(mMapFragment, "mMapFragment is unexpectedly null");
+    mMapFragment.getMapAsync(this);
+
+    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+    ComposeHelper.addNewSubmissionListener(this);
+
     return binding.getRoot();
   }
 
@@ -208,27 +217,16 @@ public class HomeFragment extends Fragment
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
-    SupportMapFragment mMapFragment =
-            (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-    Log.i(TAG, "onCreateView: " + mMapFragment);
-    Preconditions.checkNotNull(mMapFragment, "mMapFragment is unexpectedly null");
-    mMapFragment.getMapAsync(this);
-
-    Places.initialize(getActivity().getApplicationContext(), BuildConfig.MAPS_API_KEY);
-    placesClient = Places.createClient(getContext());
-    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
-    ComposeHelper.addNewSubmissionListener(this);
-
     setUpCurrentRecyclerView();
     setUpBottomSheet();
   }
 
   private void setUpCurrentRecyclerView() {
-    rvPackages.setLayoutManager(new LinearLayoutManager(getContext()));
+    currentPackagesRecyclerView = binding.currentPackagesRecyclerView.currentRequestsRecyclerView;
+    currentPackagesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
     AppCompatActivity appCompatActivityOfThis = (AppCompatActivity) getActivity();
     adapter = new CurrentRequestsAdapter(appCompatActivityOfThis, new ArrayList<PackageRequest>());
-    rvPackages.setAdapter(adapter);
+    currentPackagesRecyclerView.setAdapter(adapter);
     queryCurrentPackages();
   }
 
@@ -245,7 +243,7 @@ public class HomeFragment extends Fragment
     query.include(PackageRequest.KEY_ISFULFILLED);
 
     ParseUser currUser = ParseUser.getCurrentUser();
-    Log.d(TAG, "queryMostRecentPackage: currUser = " + currUser.getUsername());
+    Log.d(TAG, "queryCurrentPackage: currUser = " + currUser.getUsername());
     query.whereEqualTo(PackageRequest.KEY_USER, currUser);
     query.whereEqualTo(PackageRequest.KEY_ISDONE, false);
 
@@ -400,6 +398,8 @@ public class HomeFragment extends Fragment
     query.include(PackageRequest.KEY_ORIGIN);
     query.include(PackageRequest.KEY_DRIVER);
     query.include(PackageRequest.KEY_DESTINATION);
+    query.include(PackageRequest.KEY_ORIGINPLACEID);
+    query.include(PackageRequest.KEY_DESTINATIONPLACEID);
     query.include(PackageRequest.KEY_ISFULFILLED);
 
     ParseUser currUser = ParseUser.getCurrentUser();
@@ -420,11 +420,11 @@ public class HomeFragment extends Fragment
       if (currRequestExists) {
         PackageRequest request = requests.get(0);
         Log.i(
-                TAG,
-                "respondToQuery: "
-                        + request.getParseUser(PackageRequest.KEY_USER).getUsername()
-                        + ", received "
-                        + request);
+            TAG,
+            "respondToQuery: "
+                + request.getParseUser(PackageRequest.KEY_USER).getUsername()
+                + ", received "
+                + request);
         currRequest = request;
         setMapToCurrRequest(request);
       } else {
@@ -434,14 +434,17 @@ public class HomeFragment extends Fragment
         updateLocationUI();
         getDeviceLocation();
       }
-    } else if (requestCode == RECENT_PACKAGE_LIST_REQUEST_CODE) {
+    }
+
+    if (requestCode == RECENT_PACKAGE_LIST_REQUEST_CODE) {
       for (PackageRequest request : requests) {
         Log.i(TAG, "respondToQuery: received " + request);
       }
-
+      adapter.clear();
       adapter.addAll(requests);
       this.adapter.notifyDataSetChanged();
     }
+
   }
 
   private void setMapToCurrRequest(PackageRequest request) {

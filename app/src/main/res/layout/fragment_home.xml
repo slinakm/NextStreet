@@ -19,6 +19,7 @@
 
     <include
         layout="@layout/view_current_request_list"
+        android:id="@+id/currentPackagesRecyclerView"
         android:layout_width="0dp"
         android:layout_height="@dimen/home_recyclerview_height"
         app:layout_constraintBottom_toTopOf="@+id/layout_bottom_sheet"

@@ -29,9 +29,6 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
-
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-
 public class DetailsMaterialCard {
 
   private static String TAG = DetailsMaterialCard.class.getSimpleName();
@@ -53,30 +50,19 @@ public class DetailsMaterialCard {
     Preconditions.checkNotNull(destination, "Destination should not be null");
     Preconditions.checkNotNull(origin, "Origin should not be null");
 
-    String destinationPlaceId = request.getDestinationPlaceId();
-    String originPlaceId = request.getOriginPlaceId();
+    card.destinationTextView.setText(
+            new LatLng(destination.getLatitude(), destination.getLongitude()).toString());
 
-    if (destinationPlaceId == null) {
-      card.destinationTextView.setText(
-              new LatLng(destination.getLatitude(), destination.getLongitude()).toString());
-    } else {
-      Place destPlace = getPlaceFromId(destinationPlaceId, context);
-      CharSequence name = destPlace.getName();
-      if (name == null) {
-        name = destPlace.getAddress();
-      }
-      card.destinationTextView.setText(name.toString());
+    card.originTextView.setText(new LatLng(origin.getLatitude(), origin.getLongitude()).toString());
+
+    String destinationPlaceId = request.getDestinationPlaceId();
+    if (destinationPlaceId != null) {
+      getPlaceFromId(card, destinationPlaceId, context, false);
     }
 
-    if (originPlaceId == null) {
-      card.originTextView.setText(new LatLng(origin.getLatitude(), origin.getLongitude()).toString());
-    } else {
-      Place originPlace = getPlaceFromId(originPlaceId, context);
-      CharSequence name = originPlace.getName();
-      if (name == null) {
-        name = originPlace.getAddress();
-      }
-      card.originTextView.setText(name.toString());
+    String originPlaceId = request.getOriginPlaceId();
+    if (originPlaceId != null) {
+      getPlaceFromId(card, originPlaceId, context, true);
     }
 
     card.distanceTextView.setText(
@@ -86,12 +72,12 @@ public class DetailsMaterialCard {
                     context.getResources().getString(R.string.miles)));
   }
 
-  private static Place getPlaceFromId(String placeId, Context context) {
-    final Place[] place = {null};
-    final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+  private static void getPlaceFromId(final ItemRequestBinding card, String placeId,
+                                      Context context, final boolean isOrigin) {
+    final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS);
 
     final FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeId, placeFields);
-    Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
+    Places.initialize(context.getApplicationContext(), BuildConfig.MAPS_API_KEY);
     PlacesClient placesClient = Places.createClient(context);
 
     placesClient.fetchPlace(request).addOnFailureListener(new OnFailureListener() {
@@ -107,12 +93,21 @@ public class DetailsMaterialCard {
     }).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
       @Override
       public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
-        place[0] = fetchPlaceResponse.getPlace();
-        Log.i(TAG, "Place found: " + place[0].getName());
+        Place place = fetchPlaceResponse.getPlace();
+        Log.i(TAG, "Place found: " + place.getName() + fetchPlaceResponse);
+
+        CharSequence name = place.getName();
+        if (name == null) {
+          name = place.getAddress();
+        }
+
+        if (isOrigin) {
+          card.originTextView.setText(name);
+        } else {
+          card.destinationTextView.setText(name);
+        }
       }
     });
-
-    return place[0];
   }
 
   private static void setUpImage(ItemRequestBinding card, PackageRequest request, Context context) {
