@@ -8,6 +8,15 @@
     android:padding="@dimen/bottom_fragment_margin"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/destinationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        tools:text="@string/destination"
+        android:textColor="@color/blue_grey"
+        android:textSize="18sp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
