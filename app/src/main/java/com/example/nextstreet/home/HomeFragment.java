@@ -1,5 +1,6 @@
 package com.example.nextstreet.home;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -9,18 +10,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.nextstreet.BuildConfig;
 import com.example.nextstreet.R;
 import com.example.nextstreet.compose.ComposeFragment;
 import com.example.nextstreet.compose.ComposeFragmentOnClickListener;
+import com.example.nextstreet.databinding.BottomSheetComposeBinding;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.example.nextstreet.models.PackageRequest;
+import com.example.nextstreet.profile.ProfileFragment;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,7 +41,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
@@ -45,6 +54,9 @@ import com.parse.ParseUser;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Google maps manipulation based on https://developers.google.com/maps/documentation/android-sdk/
@@ -61,6 +73,7 @@ public class HomeFragment extends Fragment
   private static final String TAG = HomeFragment.class.getSimpleName();
 
   private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+  private static final int AUTOCOMPLETE_DESTINATION_REQUEST_CODE = 2;
 
   private static PackageRequest currRequest;
 
@@ -71,13 +84,12 @@ public class HomeFragment extends Fragment
   private Place originPlace;
 
   private FragmentHomeBinding binding;
+  private BottomSheetComposeBinding bottomSheetComposeBinding;
   private boolean locationPermissionGranted;
 
   private boolean onCurrentRequest;
   private PlacesClient placesClient;
   private FusedLocationProviderClient fusedLocationProviderClient;
-  private AutocompleteSupportFragment autocompleteFragmentOrigin;
-  private AutocompleteSupportFragment autocompleteFragmentDestination;
   private GoogleMap map;
 
   private Marker markerOrigin;
@@ -184,6 +196,7 @@ public class HomeFragment extends Fragment
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentHomeBinding.inflate(getLayoutInflater());
+    bottomSheetComposeBinding = binding.layoutBottomSheet;
 
     SupportMapFragment mMapFragment =
         (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -195,8 +208,54 @@ public class HomeFragment extends Fragment
     placesClient = Places.createClient(getContext());
     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
+    setUpBottomSheet();
     ComposeFragment.addNewSubmissionListener(this);
     return binding.getRoot();
+  }
+
+  private void setUpBottomSheet() {
+    bottomSheetComposeBinding.toDestinationImageView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, placeFields)
+                .build(getContext());
+        startActivityForResult(intent, AUTOCOMPLETE_DESTINATION_REQUEST_CODE);
+      }
+    });
+    //TODO: make a new fragment with a map for users, get requests programatically
+
+    bottomSheetComposeBinding.nextButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        FragmentManager fm = getChildFragmentManager();
+        ComposeDetailsFragment fragment = ComposeDetailsFragment.newInstance();
+        fragment.show(fm, ComposeDetailsFragment.class.getSimpleName());
+      }
+    });
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    if (requestCode == AUTOCOMPLETE_DESTINATION_REQUEST_CODE) {
+      if (resultCode == RESULT_OK) {
+        Preconditions.checkNotNull(data);
+        Place destinationPlace = Autocomplete.getPlaceFromIntent(data);
+        Log.i(TAG, "Place: " + destinationPlace.getName() + ", " + destinationPlace.getId());
+
+        setDestination(destinationPlace.getLatLng());
+        setDestinationPlace(destinationPlace);
+
+        bottomSheetComposeBinding.chooseDestinationTextView.setText(getContext().getResources().getText(R.string.destination)
+                + ": " + destinationPlace.getName());
+        bottomSheetComposeBinding.secondDivider.setVisibility(View.VISIBLE);
+        bottomSheetComposeBinding.nextButton.setVisibility(View.VISIBLE);
+      } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+        Status status = Autocomplete.getStatusFromIntent(data);
+        Log.e(TAG, status.getStatusMessage());
+      }
+    }
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   @Override
@@ -353,10 +412,6 @@ public class HomeFragment extends Fragment
 
     LatLng latlngOrigin = new LatLng(origin.getLatitude(), origin.getLongitude());
     LatLng latlngDest = new LatLng(destination.getLatitude(), destination.getLongitude());
-
-    View destinationView = autocompleteFragmentDestination.getView();
-    Preconditions.checkNotNull(destinationView);
-    destinationView.setVisibility(View.GONE);
 
     setOriginNoCamera(latlngOrigin);
     setDestination(latlngDest);
