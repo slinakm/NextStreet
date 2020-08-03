@@ -11,10 +11,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nextstreet.BuildConfig;
 import com.example.nextstreet.R;
@@ -23,6 +26,7 @@ import com.example.nextstreet.compose.ComposeHelper;
 import com.example.nextstreet.databinding.BottomSheetComposeBinding;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.example.nextstreet.models.PackageRequest;
+import com.example.nextstreet.trips.TripsAdapter;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -47,6 +51,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,6 +93,9 @@ public class HomeFragment extends Fragment
 
   private Marker markerOrigin;
   private Marker markerDestination;
+
+  private RecyclerView rvPackages;
+  private CurrentRequestsAdapter adapter;
 
   static void setLastKnownLocation(Location lastKnownLocation) {
     HomeFragment.lastKnownLocation = lastKnownLocation;
@@ -192,8 +200,15 @@ public class HomeFragment extends Fragment
     binding = FragmentHomeBinding.inflate(getLayoutInflater());
     bottomSheetComposeBinding = binding.layoutBottomSheet;
 
+    return binding.getRoot();
+  }
+
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+
     SupportMapFragment mMapFragment =
-        (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+            (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
     Log.i(TAG, "onCreateView: " + mMapFragment);
     Preconditions.checkNotNull(mMapFragment, "mMapFragment is unexpectedly null");
     mMapFragment.getMapAsync(this);
@@ -202,9 +217,14 @@ public class HomeFragment extends Fragment
     placesClient = Places.createClient(getContext());
     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-    setUpBottomSheet();
     ComposeHelper.addNewSubmissionListener(this);
-    return binding.getRoot();
+
+    setUpBottomSheet();
+
+    rvPackages.setLayoutManager(new LinearLayoutManager(getContext()));
+    AppCompatActivity appCompatActivityOfThis = (AppCompatActivity) getActivity();
+    adapter = new CurrentRequestsAdapter(appCompatActivityOfThis, new ArrayList<PackageRequest>());
+    rvPackages.setAdapter(adapter);
   }
 
   private void setUpBottomSheet() {
