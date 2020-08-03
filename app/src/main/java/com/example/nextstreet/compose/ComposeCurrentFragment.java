@@ -90,7 +90,7 @@ public class ComposeCurrentFragment extends CircularRevealDialogFragment {
       Glide.with(binding.getRoot())
           .load(image.getUrl())
           .transform(new RoundedCorners(getResources().getInteger(R.integer.rounded_corners)))
-          .into(binding.ivPackage);
+          .into(binding.packageImageView);
     }
 
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));

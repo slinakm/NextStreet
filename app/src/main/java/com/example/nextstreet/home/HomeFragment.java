@@ -179,10 +179,6 @@ public class HomeFragment extends Fragment
 
   private void setOnCurrentRequestToFalse() {
     onCurrentRequest = false;
-
-    View destinationView = autocompleteFragmentDestination.getView();
-    Preconditions.checkNotNull(destinationView);
-    destinationView.setVisibility(View.VISIBLE);
   }
 
   public View onCreateView(
@@ -199,11 +195,6 @@ public class HomeFragment extends Fragment
     placesClient = Places.createClient(getContext());
     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-    autocompleteFragmentDestination =
-        (AutocompleteSupportFragment)
-            getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment_destination);
-    autocompleteFragmentDestination.setHint(getString(R.string.destination));
-
     ComposeFragment.addNewSubmissionListener(this);
     return binding.getRoot();
   }
@@ -217,14 +208,7 @@ public class HomeFragment extends Fragment
     }
     // Map is ready
     map.setOnMapLongClickListener(this);
-
-    Preconditions.checkNotNull(
-        autocompleteFragmentDestination, "autocompleteFragmentDestination is unexpectedly null");
-    autocompleteFragmentDestination.setPlaceFields(
-        Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-    autocompleteFragmentDestination.setOnPlaceSelectedListener(
-        new MapsPlaceSelectionListener(binding.getRoot(), this, false));
-
+    
     Snackbar.make(binding.getRoot(), "Map Fragment was loaded properly!", Snackbar.LENGTH_SHORT)
         .show();
 

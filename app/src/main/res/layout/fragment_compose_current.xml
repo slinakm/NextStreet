@@ -65,7 +65,7 @@
 
 
     <ImageView
-        android:id="@+id/ivPackage"
+        android:id="@+id/packageImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"

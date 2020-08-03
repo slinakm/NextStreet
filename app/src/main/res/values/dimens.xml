@@ -30,7 +30,7 @@
     <dimen name="bottom_fragment_vertical_parent_spacing">10dp</dimen>
 
     <integer name="description_ems">10</integer>
-    <integer name="description_number_of_lines">3</integer>
+    <integer name="description_number_of_lines">2</integer>
 
     <dimen name="card_margins">10dp</dimen>
     <dimen name="card_vertical_margins">10dp</dimen>

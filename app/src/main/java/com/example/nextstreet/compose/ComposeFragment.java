@@ -167,7 +167,7 @@ public class ComposeFragment extends CircularRevealDialogFragment
     } else {
       if (desc.isEmpty()) {
         Snackbar.make(binding.getRoot(), R.string.toast_desc_empt, Snackbar.LENGTH_LONG).show();
-      } else if (photoFile == null || binding.ivPackage.getDrawable() == null) {
+      } else if (photoFile == null || binding.packageImageView.getDrawable() == null) {
         Snackbar.make(binding.getRoot(), R.string.toast_img_empt, Snackbar.LENGTH_LONG).show();
       }
       ParseUser currUser = ParseUser.getCurrentUser();
@@ -317,8 +317,8 @@ public class ComposeFragment extends CircularRevealDialogFragment
             BitmapManipulation.scaleToFitWidth(
                 takenImage, (int) getResources().getDimension((R.dimen.resized_post_image)));
 
-        binding.ivPackage.setImageBitmap(resizedBitmap);
-        binding.ivPackage.setVisibility(View.VISIBLE);
+        binding.packageImageView.setImageBitmap(resizedBitmap);
+        binding.packageImageView.setVisibility(View.VISIBLE);
 
         photoFile = writeResizedBitmap(photoFileName, resizedBitmap, "resized");
       } else {
