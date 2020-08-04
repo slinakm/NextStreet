@@ -25,7 +25,7 @@
     <integer name="rounded_corners">30</integer>
 
     <dimen name="bottom_fragment_margin">10dp</dimen>
-    <dimen name="bottom_fragment_peak_height">56dp</dimen>
+    <dimen name="bottom_fragment_peak_height">20dp</dimen>
     <dimen name="bottom_fragment_vertical_child_spacing">10dp</dimen>
     <dimen name="bottom_fragment_vertical_parent_spacing">15dp</dimen>
 

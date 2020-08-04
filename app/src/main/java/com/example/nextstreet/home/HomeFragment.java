@@ -1,5 +1,7 @@
 package com.example.nextstreet.home;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +22,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.nextstreet.BuildConfig;
 import com.example.nextstreet.R;
 import com.example.nextstreet.compose.ComposeDetailsFragment;
@@ -258,6 +262,42 @@ public class HomeFragment extends Fragment
   }
 
   private void setUpBottomSheet() {
+    bottomSheetComposeBinding.bottomSheetTopPanel.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if (bottomSheetComposeBinding.bottomSheetCompose.getVisibility() == View.GONE) {
+
+          bottomSheetComposeBinding.bottomSheetCompose.setVisibility(View.INVISIBLE);
+
+          Glide.with(getContext())
+                  .load(getResources().getDrawable(R.drawable.ic_baseline_minimize_24))
+                  .into(bottomSheetComposeBinding.minmaxImageView);
+
+          bottomSheetComposeBinding.bottomSheetComposeFragment
+                  .animate()
+                  .translationYBy(-bottomSheetComposeBinding.bottomSheetCompose.getHeight())
+                  .setDuration(0)
+                  .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                      super.onAnimationEnd(animation);
+                      bottomSheetComposeBinding.bottomSheetCompose.setVisibility(View.VISIBLE);
+                    }
+                  });
+          bottomSheetComposeBinding.bottomSheetComposeFragment
+                  .animate()
+                  .translationYBy(bottomSheetComposeBinding.bottomSheetCompose.getHeight())
+                  .setDuration(
+                          getResources().getInteger(R.integer.autocompleteFragmentOrigin_time_disappearing));
+        } else {
+          bottomSheetComposeBinding.bottomSheetCompose.setVisibility(View.GONE);
+          Glide.with(getContext())
+                  .load(getResources().getDrawable(R.drawable.ic_baseline_maximize_24))
+                  .into(bottomSheetComposeBinding.minmaxImageView);
+        }
+      }
+    });
+
     bottomSheetComposeBinding.toDestinationImageView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -304,15 +344,10 @@ public class HomeFragment extends Fragment
   public void onMapReady(GoogleMap googleMap) {
     map = googleMap;
     if (map == null) {
-      Snackbar.make(binding.getRoot(), "Error - Map was null!!", Snackbar.LENGTH_SHORT).show();
+      Log.e(TAG, "onMapReady: Error loading map, map was null");
       return;
     }
-    // Map is ready
     map.setOnMapLongClickListener(this);
-
-    Snackbar.make(binding.getRoot(), "Map Fragment was loaded properly!", Snackbar.LENGTH_SHORT)
-        .show();
-
     queryMostRecentPackage();
   }
 
