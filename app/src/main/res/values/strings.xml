@@ -104,4 +104,6 @@
     <string name="choose_home_as_origin">Choose home as origin</string>
     <string name="yes">Yes</string>
     <string name="set_starting_location">Set starting location</string>
+    <string name="driver_yes">Yes</string>
+    <string name="driver_no">No</string>
 </resources>

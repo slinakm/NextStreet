@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.nextstreet.databinding.ItemDriverRequestBinding;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.DetailsMaterialCard;
+import com.example.nextstreet.utilities.DetailsMaterialCardResponder;
 import com.example.nextstreet.utilities.OnDoubleTapListener;
 
 import java.util.List;
@@ -71,7 +72,7 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
     notifyDataSetChanged();
   }
 
-  public class ViewHolder extends RecyclerView.ViewHolder {
+  public class ViewHolder extends RecyclerView.ViewHolder implements DetailsMaterialCardResponder {
 
     ItemDriverRequestBinding binding;
 
@@ -83,7 +84,7 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
 
     private void bind(PackageRequest request) {
       DetailsMaterialCard.setUpCard(binding.requestCard, request, context);
-
+      DetailsMaterialCard.setUpButtons(binding.requestCard, request, this);
       setupOnClickListeners(request);
     }
 
@@ -105,34 +106,6 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
                   detailsFragment.show(fm, DetailsFragment.class.getSimpleName());
                 }
               });
-      binding.yesImageView.setOnClickListener(
-          new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              Log.i(
-                  TAG,
-                  "onClick: the 'yes' image view was pressed on the request"
-                      + request.getObjectId());
-              request.put(PackageRequest.KEY_ISFULFILLED, true);
-              request.saveInBackground();
-              switchLayouts();
-            }
-          });
-
-      binding.noImageView.setOnClickListener(
-          new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              Log.i(
-                  TAG,
-                  "onClick: the 'no' image view was pressed on the request"
-                      + request.getObjectId());
-              rejectedRequests.add(request);
-              int indexOfRemovedPackage = packageRequests.indexOf(request);
-              packageRequests.remove(indexOfRemovedPackage);
-              DriverRequestsAdapter.this.notifyItemRemoved(indexOfRemovedPackage);
-            }
-          });
     }
 
     private void switchLayouts() {
@@ -142,6 +115,18 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
       } else {
         layoutDriverRequestsView.setVisibility(View.VISIBLE);
         layoutDriverDetailsView.setVisibility(View.GONE);
+      }
+    }
+
+    @Override
+    public void respond(boolean yes, PackageRequest request) {
+      if (yes) {
+        switchLayouts();
+      } else {
+        rejectedRequests.add(request);
+        int indexOfRemovedPackage = packageRequests.indexOf(request);
+        packageRequests.remove(indexOfRemovedPackage);
+        DriverRequestsAdapter.this.notifyItemRemoved(indexOfRemovedPackage);
       }
     }
   }

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:elevation="@dimen/card_outside_margin"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -11,27 +12,5 @@
     <include
         layout="@layout/item_request"
         android:id="@+id/requestCard"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/yesImageView" />
-
-    <ImageView
-        android:id="@+id/yesImageView"
-        android:layout_width="38dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="20dp"
-        android:tint="@color/secondaryLightColor"
-        app:layout_constraintTop_toBottomOf="@+id/requestCard"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/noImageView"
-        app:srcCompat="@drawable/com_facebook_button_like_icon_selected" />
-
-    <ImageView
-        android:id="@+id/noImageView"
-        android:layout_width="36dp"
-        android:layout_height="25dp"
-        android:tint="@color/secondaryDarkColor"
-        app:layout_constraintTop_toTopOf="@id/yesImageView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/com_facebook_tooltip_black_xout" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

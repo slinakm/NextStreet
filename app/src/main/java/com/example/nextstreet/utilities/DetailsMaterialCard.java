@@ -13,6 +13,7 @@ import com.example.nextstreet.BuildConfig;
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ItemRequestBinding;
 import com.example.nextstreet.models.PackageRequest;
+import com.example.nextstreet.trips.DriverRequestsAdapter;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,6 +38,37 @@ import static com.example.nextstreet.login.SignupAbstractActivity.KEY_LASTNAME;
 public class DetailsMaterialCard {
 
   private static String TAG = DetailsMaterialCard.class.getSimpleName();
+
+  public static void setUpButtons(ItemRequestBinding binding, final PackageRequest request, final DetailsMaterialCardResponder responder) {
+    binding.yesImageView.setVisibility(View.VISIBLE);
+    binding.noImageView.setVisibility(View.VISIBLE);
+
+    binding.yesImageView.setOnClickListener(
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                Log.i(
+                        TAG,
+                        "onClick: the 'yes' image view was pressed on the request"
+                                + request.getObjectId());
+                request.put(PackageRequest.KEY_ISFULFILLED, true);
+                request.saveInBackground();
+                responder.respond(true, request);
+              }
+            });
+
+    binding.noImageView.setOnClickListener(
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                Log.i(
+                        TAG,
+                        "onClick: the 'no' image view was pressed on the request"
+                                + request.getObjectId());
+                responder.respond(false, request);
+              }
+            });
+  }
 
   public static void setUpCard(ItemRequestBinding card, PackageRequest request, Context context) {
 
