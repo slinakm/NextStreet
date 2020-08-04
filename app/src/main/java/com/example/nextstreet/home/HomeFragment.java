@@ -266,29 +266,10 @@ public class HomeFragment extends Fragment
       @Override
       public void onClick(View view) {
         if (bottomSheetComposeBinding.bottomSheetCompose.getVisibility() == View.GONE) {
-
-          bottomSheetComposeBinding.bottomSheetCompose.setVisibility(View.INVISIBLE);
-
+          bottomSheetComposeBinding.bottomSheetCompose.setVisibility(View.VISIBLE);
           Glide.with(getContext())
                   .load(getResources().getDrawable(R.drawable.ic_baseline_minimize_24))
                   .into(bottomSheetComposeBinding.minmaxImageView);
-
-          bottomSheetComposeBinding.bottomSheetComposeFragment
-                  .animate()
-                  .translationYBy(-bottomSheetComposeBinding.bottomSheetCompose.getHeight())
-                  .setDuration(0)
-                  .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                      super.onAnimationEnd(animation);
-                      bottomSheetComposeBinding.bottomSheetCompose.setVisibility(View.VISIBLE);
-                    }
-                  });
-          bottomSheetComposeBinding.bottomSheetComposeFragment
-                  .animate()
-                  .translationYBy(bottomSheetComposeBinding.bottomSheetCompose.getHeight())
-                  .setDuration(
-                          getResources().getInteger(R.integer.autocompleteFragmentOrigin_time_disappearing));
         } else {
           bottomSheetComposeBinding.bottomSheetCompose.setVisibility(View.GONE);
           Glide.with(getContext())
