@@ -48,9 +48,8 @@ public class CircularRevealDialogFragment extends DialogFragment {
             v.removeOnLayoutChangeListener(this);
             if (animateEntireFragment) {
               setUpForShowAnimation(viewToAnimate);
-            } else {
-              animateShowingFragment(viewToAnimate);
             }
+            animateShowingFragment(viewToAnimate);
           }
         });
   }
@@ -60,7 +59,7 @@ public class CircularRevealDialogFragment extends DialogFragment {
    *
    * @param root, root view to animate
    */
-  private void setUpForShowAnimation(final View root) {
+  protected void setUpForShowAnimation(final View root) {
     Log.i(TAG, "setUpForShowAnimation: ");
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     builder.setView(root).setCancelable(false);
@@ -69,7 +68,41 @@ public class CircularRevealDialogFragment extends DialogFragment {
 
     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
     dialog.show();
-    animateShowingFragment(root);
+    setFinalWidth(root.getWidth());
+    setFinalHeight(root.getHeight());
+  }
+
+
+  /**
+   * Get the center for the clipping circle:
+   * if you want to change where the animation starts,
+   * change these two values.
+   * */
+  private int cx = 0;
+  private int cy = 0;
+
+  protected void setCx(int cx) {
+    this.cx = cx;
+  }
+
+  protected void setCy(int cy) {
+    this.cy = cy;
+  }
+
+  /**
+   * Get the final radius for the clipping circle:
+   * if you change cx and cy, change these just in
+   * case too.
+   */
+  private int finalWidth;
+  private int finalHeight;
+
+  protected void setFinalWidth(int finalWidth) {
+    this.finalWidth = finalWidth;
+  }
+
+  protected void setFinalHeight(int finalHeight) {
+    this.finalHeight = finalHeight;
   }
 
   /**
@@ -81,14 +114,7 @@ public class CircularRevealDialogFragment extends DialogFragment {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       Log.i(TAG, "animateShowingFragment: animating");
 
-      // get the center for the clipping circle: if you want to change where the
-      // animation starts, change these two values
-      int cx = 0;
-      int cy = 0;
-
-      // get the final radius for the clipping circle: if you change cx and cy,
-      // change these just in case too
-      float finalRadius = (float) Math.hypot(viewToAnimate.getWidth(), viewToAnimate.getHeight());
+      float finalRadius = (float) Math.hypot(finalWidth, finalHeight);
 
       // create the animator for this view (the start radius is zero)
       Animator anim =

@@ -1,5 +1,6 @@
 package com.example.nextstreet.compose;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,6 +28,7 @@ import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeDetailsBinding;
 import com.example.nextstreet.home.NewSubmissionListener;
 import com.example.nextstreet.models.PackageRequest;
+import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -45,7 +47,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ComposeDetailsFragment extends DialogFragment implements CameraLauncher, NewSubmissionListener {
+public class ComposeDetailsFragment extends CircularRevealDialogFragment implements CameraLauncher, NewSubmissionListener {
 
     private static final String TAG = ComposeDetailsFragment.class.getSimpleName();
     private static final int AUTOCOMPLETE_DESTINATION_REQUEST_CODE = 2;
@@ -76,6 +78,29 @@ public class ComposeDetailsFragment extends DialogFragment implements CameraLaun
         ComposeHelper.addNewSubmissionListener(this);
         toolbar = binding.toolbarDialog;
 
+        final View root = binding.getRoot();
+
+        root.addOnLayoutChangeListener(
+                new View.OnLayoutChangeListener() {
+                    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public void onLayoutChange(
+                            View v,
+                            int left,
+                            int top,
+                            int right,
+                            int bottom,
+                            int oldLeft,
+                            int oldTop,
+                            int oldRight,
+                            int oldBottom) {
+                        v.removeOnLayoutChangeListener(this);
+                        setCx(root.getWidth()/2);
+                        setCy(root.getHeight());
+                        setUpForShowAnimation(root);
+                        animateShowingFragment(root);
+                    }
+                });
         return binding.getRoot();
     }
 
@@ -200,12 +225,6 @@ public class ComposeDetailsFragment extends DialogFragment implements CameraLaun
                 binding.packageImageView.setVisibility(View.VISIBLE);
 
                 composeHelper.setPhotoFile(writeResizedBitmap(photoFileName, resizedBitmap, "resized"));
-            } else {
-                Snackbar.make(
-                        binding.getRoot(),
-                        getString(R.string.toast_camera_err),
-                        BaseTransientBottomBar.LENGTH_SHORT)
-                        .show();
             }
         } else if (requestCode == AUTOCOMPLETE_DESTINATION_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
