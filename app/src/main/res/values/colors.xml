@@ -16,7 +16,7 @@
     <color name="accentPrimaryDarkColor">#5ea600</color>
     <color name="accentSecondaryColor">#009688</color>
     <color name="accentSecondaryLightColor">#52c7b8</color>
-    <color name="secondaryDarkColorTransparent">#BF0966A5</color>
+    <color name="secondaryDarkColorTransparent">#BFc5ff75</color>
     <color name="accentSecondaryDarkColor">#00675b</color>
     <color name="accentPrimaryTextColor">#000000</color>
     <color name="accentSecondaryTextColor">#000000</color>
@@ -38,7 +38,7 @@
     <color name="icon_text_color">@color/text_primary</color>
 
     <color name="back_icon_color">@color/secondaryDarkColor</color>
-    <color name="bottom_fragment_background">@color/primaryColor</color>
+    <color name="bottom_fragment_background">@color/accentPrimaryColor</color>
 
     <color name="white">#ffffff</color>
     <color name="light_grey">#90a4ae</color>
