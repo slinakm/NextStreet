@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_image"
             android:layout_marginTop="@dimen/card_vertical_spacing"
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/to"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
@@ -84,21 +84,30 @@
                     android:text="@string/origin"
                     android:textStyle="bold"
                     android:layout_marginStart="@dimen/card_horizontal_spacing"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/toTextView" />
+
+                <TextView
+                    android:id="@+id/driverTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_vertical_spacing"
+                    android:text="@string/driver_name"
+                    android:layout_marginStart="@dimen/card_horizontal_spacing"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/originTextView" />
+
+                <ProgressBar
+                    android:id="@+id/pbLoading"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                </ProgressBar>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <TextView
-                android:id="@+id/driverTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/card_vertical_spacing"
-                android:text="@string/driver_name"
-                android:layout_marginStart="@dimen/card_horizontal_spacing"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

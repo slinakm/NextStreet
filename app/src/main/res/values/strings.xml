@@ -113,4 +113,8 @@
     <string name="requests">Requests</string>
     <string name="users">Users</string>
     <string name="set_home">Set Home</string>
+    <string name="location">Location:</string>
+    <string name="home">home</string>
+
+    <string name="toast_place_loading">"Place Loading"</string>
 </resources>

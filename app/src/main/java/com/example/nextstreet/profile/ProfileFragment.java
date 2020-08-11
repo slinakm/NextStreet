@@ -1,5 +1,6 @@
 package com.example.nextstreet.profile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,21 +19,43 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.example.nextstreet.BuildConfig;
 import com.example.nextstreet.R;
 import com.example.nextstreet.compose.BitmapManipulation;
 import com.example.nextstreet.compose.CameraLauncher;
 import com.example.nextstreet.compose.CameraOnClickListener;
 import com.example.nextstreet.databinding.FragmentProfileBinding;
+import com.example.nextstreet.databinding.ItemRequestBinding;
 import com.example.nextstreet.utilities.CircularRevealDialogFragment;
 import com.example.nextstreet.utilities.DismissOnClickListener;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.common.base.Preconditions;
+import com.parse.Parse;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -40,6 +63,8 @@ public class ProfileFragment extends CircularRevealDialogFragment implements Cam
 
   private static final String TAG = ProfileFragment.class.getSimpleName();
   private static final String PROFILE_PIC = "profilePic";
+  private static final String HOME_PLACE = "homePlaceId";
+  private static final int AUTOCOMPLETE_DESTINATION_REQUEST_CODE = 20;
 
   private FragmentProfileBinding binding;
   private CameraOnClickListener cameraOnClickListener;
@@ -51,6 +76,12 @@ public class ProfileFragment extends CircularRevealDialogFragment implements Cam
     ProfileFragment fragment = new ProfileFragment();
     fragment.setArguments(args);
     return fragment;
+  }
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
   }
 
   public View onCreateView(
@@ -65,10 +96,72 @@ public class ProfileFragment extends CircularRevealDialogFragment implements Cam
     super.onViewCreated(view, savedInstanceState);
     cameraOnClickListener = new CameraOnClickListener(this);
 
+    binding.chooseHomeButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, placeFields)
+                .build(getContext());
+        startActivityForResult(intent, AUTOCOMPLETE_DESTINATION_REQUEST_CODE);
+      }
+    });
+
+    ParseUser currUser = ParseUser.getCurrentUser();
+    String homePlace = currUser.getString(HOME_PLACE);
+    if (homePlace != null) {
+      setPlaceFromId(homePlace);
+    }
+
     binding.logoutButton.setOnClickListener(new LogoutOnClickListener(getActivity()));
     binding.profilePictureButton.setOnClickListener(cameraOnClickListener);
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
-    Glide.with(getContext()).load(R.mipmap.ic_launcher_round).into(binding.profilePictureImageView);
+
+    ParseFile profilePic = ParseUser.getCurrentUser().getParseFile(PROFILE_PIC);
+
+    if (profilePic != null) {
+      Glide.with(getContext())
+              .load(profilePic.getUrl())
+              .placeholder(R.mipmap.ic_launcher_round)
+              .transform(new CircleCrop())
+              .into(binding.profilePictureImageView);
+    } else {
+      Glide.with(getContext()).load(R.mipmap.ic_launcher_round).into(binding.profilePictureImageView);
+    }
+  }
+
+  private void setPlaceFromId(String placeId) {
+    final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS);
+
+    final FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeId, placeFields);
+    Places.initialize(getContext().getApplicationContext(), BuildConfig.MAPS_API_KEY);
+    PlacesClient placesClient = Places.createClient(getContext());
+
+    View rootView = getActivity().findViewById(android.R.id.content).getRootView();
+    Snackbar.make(rootView, R.string.toast_place_loading, Snackbar.LENGTH_SHORT);
+
+    placesClient.fetchPlace(request).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        if (e instanceof ApiException) {
+          ApiException apiException = (ApiException) e;
+          int statusCode = apiException.getStatusCode();
+          Log.e(TAG, "Place not found: " + e.getMessage());
+        }
+      }
+    }).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
+      @Override
+      public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
+        Place place = fetchPlaceResponse.getPlace();
+        Log.i(TAG, "Place found: " + place.getName() + fetchPlaceResponse);
+
+        CharSequence name = place.getName();
+        if (name == null) {
+          name = place.getAddress();
+        }
+
+        binding.chooseHomeButton.setText(String.format("%s %s", getString(R.string.home), name));
+      }
+    });
   }
 
   @Override
@@ -97,15 +190,35 @@ public class ProfileFragment extends CircularRevealDialogFragment implements Cam
                         takenImage, (int) getResources().getDimension((R.dimen.resized_post_image)));
 
         binding.profileHeaderImageView.setImageBitmap(resizedBitmap);
+        File resizedPhotoFile = writeResizedBitmap(photoFileName, resizedBitmap, "_resized");
+
+        Glide.with(getContext())
+                .load(resizedPhotoFile)
+                .transform(new CircleCrop())
+                .into(binding.profilePictureImageView);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
-        currentUser.put(PROFILE_PIC, takenImage);
+        currentUser.put(PROFILE_PIC, new ParseFile(resizedPhotoFile));
         currentUser.saveInBackground();
+      }
+    } else if (requestCode == AUTOCOMPLETE_DESTINATION_REQUEST_CODE) {
+      if (resultCode == RESULT_OK) {
+        Preconditions.checkNotNull(data);
+        Place place = Autocomplete.getPlaceFromIntent(data);
+        Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+
+        binding.chooseHomeButton.setText(place.getName());
+        ParseUser currUser = ParseUser.getCurrentUser();
+        currUser.put(HOME_PLACE, place.getId());
+        currUser.saveInBackground();
+      } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+        Status status = Autocomplete.getStatusFromIntent(data);
+        Log.e(TAG, status.getStatusMessage());
       }
     }
   }
 
-    @Override
+  @Override
   public File launchCamera() {
     Log.i(TAG, "launchCamera: ");
     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

@@ -21,6 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.nextstreet.databinding.ActivityMainBinding;
 import com.example.nextstreet.login.SignupActivity;
 import com.example.nextstreet.models.PackageRequest;
@@ -36,7 +37,7 @@ import com.parse.livequery.SubscriptionHandling;
 public class MainActivity extends AppCompatActivity {
 
   private static final String TAG = MainActivity.class.getSimpleName();
-
+  private static final String PROFILE_PIC = "profilePic";
 
   private AppBarConfiguration mAppBarConfiguration;
   private ActivityMainBinding binding;
@@ -87,7 +88,11 @@ public class MainActivity extends AppCompatActivity {
     ParseFile image = currUser.getParseFile(SignupActivity.KEY_PROFILEPIC);
 
     if (image != null) {
-      Glide.with(binding.getRoot()).load(image.getUrl()).into(profilePic);
+      Glide.with(this)
+              .load(image.getUrl())
+              .placeholder(R.mipmap.ic_launcher_round)
+              .transform(new CircleCrop())
+              .into(profilePic);
     }
   }
 

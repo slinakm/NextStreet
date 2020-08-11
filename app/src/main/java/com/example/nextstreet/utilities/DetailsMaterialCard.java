@@ -1,5 +1,6 @@
 package com.example.nextstreet.utilities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -126,6 +128,7 @@ public class DetailsMaterialCard {
 
   private static void getPlaceFromId(final ItemRequestBinding card, String placeId,
                                       Context context, final boolean isOrigin) {
+    card.pbLoading.setVisibility(View.VISIBLE);
     final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS);
 
     final FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeId, placeFields);
@@ -135,6 +138,8 @@ public class DetailsMaterialCard {
     placesClient.fetchPlace(request).addOnFailureListener(new OnFailureListener() {
       @Override
       public void onFailure(@NonNull Exception e) {
+        card.pbLoading.setVisibility(View.GONE);
+
         if (e instanceof ApiException) {
           ApiException apiException = (ApiException) e;
           int statusCode = apiException.getStatusCode();
@@ -145,6 +150,8 @@ public class DetailsMaterialCard {
     }).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
       @Override
       public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
+        card.pbLoading.setVisibility(View.GONE);
+
         Place place = fetchPlaceResponse.getPlace();
         Log.i(TAG, "Place found: " + place.getName() + fetchPlaceResponse);
 
