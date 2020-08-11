@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -38,6 +40,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static androidx.core.content.ContextCompat.getColor;
+import static androidx.core.content.ContextCompat.getDrawable;
 
 public class DriverRequestsFragment extends Fragment implements QueryResponder {
 
@@ -72,6 +77,7 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     Preconditions.checkNotNull(layoutDriverDetails);
     Preconditions.checkNotNull(layoutDriverRequests);
 
+    binding.getRoot().setBackgroundColor(getColor(getContext(), R.color.backgroundVeryLightColor));
     setUpRecyclerView();
     setUpListener();
     createNotificationChannel();
@@ -81,6 +87,8 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+
+    getActivity().setTitle(getResources().getText(R.string.requests));
 
     swipeContainer = layoutDriverRequests.getRoot().findViewById(R.id.swipeContainer);
     swipeContainer.setOnRefreshListener(
@@ -162,7 +170,7 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
           new NotificationCompat.Builder(getContext(), NOTIFICATION_CHANNEL_ID)
               .setSmallIcon(R.drawable.package_notification_icon)
               .setContentTitle(getResources().getString(R.string.notification_newDriver_title))
-              .setContentText(getResources().getString(R.string.notification_newDriver_description))
+              .setContentText(getResources().getString(R.string.notification_driver_request))
               .setPriority(NotificationCompat.PRIORITY_HIGH)
               .setFullScreenIntent(pendingFullScreenIntent, true)
               .addAction(acceptAction)
@@ -210,6 +218,10 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
     RecyclerView requestsRecyclerView =
         layoutDriverRequests.getRoot().findViewById(R.id.requestsRecyclerView);
     requestsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requestsRecyclerView.getContext(),
+            DividerItemDecoration.VERTICAL);
+    dividerItemDecoration.setDrawable(getDrawable(getContext(), R.drawable.divider));
+    requestsRecyclerView.addItemDecoration(dividerItemDecoration);
     AppCompatActivity appCompatActivityOfThis = (AppCompatActivity) getActivity();
     adapter =
         new DriverRequestsAdapter(
@@ -217,7 +229,7 @@ public class DriverRequestsFragment extends Fragment implements QueryResponder {
             requests,
             rejectedRequests,
             layoutDriverRequests.getRoot(),
-            layoutDriverDetails.getRoot());
+            layoutDriverDetails);
     requestsRecyclerView.setAdapter(adapter);
   }
 

@@ -305,6 +305,5 @@ public class ComposeDetailsFragment extends CircularRevealDialogFragment impleme
 
     @Override
     public void respondToNewSubmission(PackageRequest request) {
-        dismiss();
     }
 }

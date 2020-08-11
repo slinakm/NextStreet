@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentDriverProfileBinding;
 import com.example.nextstreet.home.HomeFragment;
 
@@ -31,5 +32,6 @@ public class DriverProfileFragment extends Fragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     binding.logoutButton.setOnClickListener(new LogoutOnClickListener(getActivity()));
+    getActivity().setTitle(getResources().getText(R.string.personal_profile));
   }
 }

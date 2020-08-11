@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="primaryColor">@color/accentPrimaryColor</color>
-    <color name="primaryLightColor">@color/accentPrimaryLightColor</color>
-    <color name="primaryDarkColor">#004d40</color>
+    <color name="primaryColor">#29b6f6</color>
+    <color name="primaryLightColor">#73e8ff</color>
+    <color name="primaryDarkColor">#0086c3</color>
     <color name="secondaryColor">@color/primaryColor</color>
     <color name="secondaryTrueColor">@color/accentPrimaryDarkColor</color>
     <color name="secondaryLightColor">@color/accentPrimaryLightColor</color>
     <color name="secondaryDarkColor">#000051</color>
-    <color name="primaryTextColor">#ffffff</color>
+    <color name="primaryTextColor">#434343</color>
     <color name="secondaryTextColor">#ffffff</color>
 
     <color name="accentPrimaryColor">#91d843</color>
@@ -16,7 +16,9 @@
     <color name="accentPrimaryDarkColor">#5ea600</color>
     <color name="accentSecondaryColor">#009688</color>
     <color name="accentSecondaryLightColor">#52c7b8</color>
-    <color name="secondaryDarkColorTransparent">#BFc5ff75</color>
+    <color name="secondaryDarkColorTransparent">#BF9BEFFF</color>
+    <color name="accentVeryLightColor">#F9FFFF</color>
+    <color name="backgroundVeryLightColor">#BF9BEFFF</color>
     <color name="accentSecondaryDarkColor">#00675b</color>
     <color name="accentPrimaryTextColor">#000000</color>
     <color name="accentSecondaryTextColor">#000000</color>
@@ -25,20 +27,22 @@
     <color name="text_primary">@color/primaryTextColor</color>
     <color name="text_secondary">@color/secondaryTextColor</color>
 
-    <color name="animation_start_color">@color/secondaryLightColor</color>
+    <color name="animation_start_color">@color/primaryDarkColor</color>
     <color name="animation_end_color">@color/white</color>
 
-    <color name="btn_color">@color/accentSecondaryLightColor</color>
+    <color name="btn_color">@color/primaryLightColor</color>
     <color name="btn_text_color">@color/primaryTextColor</color>
 
-    <color name="btn_scnd_color">@color/accentSecondaryColor</color>
-    <color name="btn_scnd_text_color">@color/primaryTextColor</color>
+    <color name="btn_scnd_color">@color/primaryDarkColor</color>
+    <color name="btn_scnd_text_color">@color/secondaryTextColor</color>
 
     <color name="icon_color">@color/secondaryDarkColor</color>
     <color name="icon_text_color">@color/text_primary</color>
 
     <color name="back_icon_color">@color/secondaryDarkColor</color>
-    <color name="bottom_fragment_background">@color/accentPrimaryColor</color>
+    <color name="bottom_fragment_background">@color/primaryDarkColor</color>
+    <color name="card_background">#B0F2FF</color>
+    <color name="card_text">@color/black</color>
 
     <color name="white">#ffffff</color>
     <color name="light_grey">#90a4ae</color>
@@ -51,4 +55,6 @@
     <color name="light_blue_grey">#62727B</color>
     <color name="light_transparent_blue_grey">#8062727B</color>
     <color name="dark_blue_grey">#102027</color>
+
+    <color name="red">#FF9E97</color>
 </resources>

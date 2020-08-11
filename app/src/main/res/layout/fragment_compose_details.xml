@@ -320,7 +320,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/bottom_fragment_vertical_parent_spacing"
-                    android:backgroundTint="@color/btn_scnd_color"
+                    android:backgroundTint="@color/primaryColor"
                     android:text="@string/submit_package_request"
                     android:textColor="@color/btn_scnd_text_color"
                     app:layout_constraintEnd_toEndOf="parent"

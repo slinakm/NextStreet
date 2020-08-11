@@ -42,6 +42,7 @@ public class DetailsMaterialCard {
   public static void setUpButtons(ItemRequestBinding binding, final PackageRequest request, final DetailsMaterialCardResponder responder) {
     binding.yesImageView.setVisibility(View.VISIBLE);
     binding.noImageView.setVisibility(View.VISIBLE);
+    binding.secondDivider.setVisibility(View.VISIBLE);
 
     binding.yesImageView.setOnClickListener(
             new View.OnClickListener() {
@@ -73,7 +74,15 @@ public class DetailsMaterialCard {
   public static void setUpCard(ItemRequestBinding card, PackageRequest request, Context context) {
 
     TextView descriptionTextView = card.descriptionTextView;
-    descriptionTextView.setText(request.getDescription());
+    if (request.getDescription().isEmpty()
+            || request.getDescription() == null) {
+      card.description.setVisibility(View.GONE);
+      card.firstDivider.setVisibility(View.GONE);
+    } else {
+      card.description.setVisibility(View.VISIBLE);
+      card.firstDivider.setVisibility(View.VISIBLE);
+      descriptionTextView.setText(request.getDescription());
+    }
 
     ParseUser driver = request.getDriver();
     if (driver != null && request.getBoolean(PackageRequest.KEY_ISFULFILLED)) {

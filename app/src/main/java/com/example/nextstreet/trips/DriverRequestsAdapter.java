@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nextstreet.databinding.ContentDriverDetailsBinding;
 import com.example.nextstreet.databinding.ItemDriverRequestBinding;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.DetailsMaterialCard;
@@ -27,14 +28,14 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
   private final List<PackageRequest> packageRequests;
   private final Set<PackageRequest> rejectedRequests;
   private final View layoutDriverRequestsView;
-  private final View layoutDriverDetailsView;
+  private final ContentDriverDetailsBinding layoutDriverDetailsView;
 
   DriverRequestsAdapter(
       AppCompatActivity context,
       List<PackageRequest> packageRequests,
       Set<PackageRequest> rejectedRequests,
       View layoutDriverRequestsView,
-      View layoutDriverDetailsView) {
+      ContentDriverDetailsBinding layoutDriverDetailsView) {
     this.context = context;
     this.packageRequests = packageRequests;
     this.rejectedRequests = rejectedRequests;
@@ -85,6 +86,8 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
     private void bind(PackageRequest request) {
       DetailsMaterialCard.setUpCard(binding.requestCard, request, context);
       DetailsMaterialCard.setUpButtons(binding.requestCard, request, this);
+      binding.requestCard.driverTextView.setVisibility(View.GONE);
+      binding.requestCard.fulfilledTextView.setVisibility(View.INVISIBLE);
       setupOnClickListeners(request);
     }
 
@@ -108,20 +111,23 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
               });
     }
 
-    private void switchLayouts() {
+    private void switchLayouts(PackageRequest request) {
       if (layoutDriverRequestsView.getVisibility() == View.VISIBLE) {
         layoutDriverRequestsView.setVisibility(View.GONE);
-        layoutDriverDetailsView.setVisibility(View.VISIBLE);
+        layoutDriverDetailsView.getRoot().setVisibility(View.VISIBLE);
+        DetailsMaterialCard.setUpCard(layoutDriverDetailsView.layoutContentDetails.card, request, context);
+        layoutDriverDetailsView.layoutContentDetails.card.driverTextView.setVisibility(View.GONE);
+        layoutDriverDetailsView.layoutContentDetails.card.fulfilledTextView.setVisibility(View.INVISIBLE);
       } else {
         layoutDriverRequestsView.setVisibility(View.VISIBLE);
-        layoutDriverDetailsView.setVisibility(View.GONE);
+        layoutDriverDetailsView.getRoot().setVisibility(View.GONE);
       }
     }
 
     @Override
     public void respond(boolean yes, PackageRequest request) {
       if (yes) {
-        switchLayouts();
+        switchLayouts(request);
       } else {
         rejectedRequests.add(request);
         int indexOfRemovedPackage = packageRequests.indexOf(request);

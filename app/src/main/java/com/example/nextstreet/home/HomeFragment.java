@@ -2,9 +2,13 @@ package com.example.nextstreet.home;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -24,9 +29,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.nextstreet.BuildConfig;
+import com.example.nextstreet.MainActivity;
 import com.example.nextstreet.R;
 import com.example.nextstreet.compose.ComposeDetailsFragment;
 import com.example.nextstreet.compose.ComposeHelper;
+import com.example.nextstreet.compose.UsersFragment;
 import com.example.nextstreet.databinding.BottomSheetComposeBinding;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.example.nextstreet.models.PackageRequest;
@@ -54,6 +61,8 @@ import com.google.common.base.Preconditions;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.livequery.ParseLiveQueryClient;
+import com.parse.livequery.SubscriptionHandling;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,6 +88,10 @@ public class HomeFragment extends Fragment
   private static final int AUTOCOMPLETE_DESTINATION_REQUEST_CODE = 2;
   private static final int MOST_RECENT_PACKAGE_REQUEST_CODE = 10;
   private static final int RECENT_PACKAGE_LIST_REQUEST_CODE = 10;
+
+  private static final String NOTIFICATION_CHANNEL_ID = "NextStreet_Channel";
+  private static final int NOTIFICATION_NEW_DRIVER_ID = 22;
+  private SubscriptionHandling<PackageRequest> subscriptionHandling;
 
   private static PackageRequest currRequest;
 
@@ -172,7 +185,7 @@ public class HomeFragment extends Fragment
   private void setMarkerOrigin(LatLng latLng) {
 
     MarkerOptions marker =
-        new MarkerOptions().position(latLng).title(getString(R.string.origin)).flat(true);
+        new MarkerOptions().position(latLng).title(getActivity().getString(R.string.origin)).flat(true);
     Marker markerOrigin = map.addMarker(marker);
 
     if (this.markerOrigin != null) {
@@ -185,7 +198,7 @@ public class HomeFragment extends Fragment
     MarkerOptions marker =
         new MarkerOptions()
             .position(latLng)
-            .title(getString(R.string.destination))
+            .title(getActivity().getString(R.string.destination))
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
             .flat(true);
     Marker markerDestination = map.addMarker(marker);
@@ -214,7 +227,8 @@ public class HomeFragment extends Fragment
     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
     ComposeHelper.addNewSubmissionListener(this);
-
+    createNotificationChannel();
+    setUpListener();
     return binding.getRoot();
   }
 
@@ -239,6 +253,63 @@ public class HomeFragment extends Fragment
     adapter = new CurrentRequestsAdapter(appCompatActivityOfThis, new ArrayList<PackageRequest>());
     currentPackagesRecyclerView.setAdapter(adapter);
     queryCurrentPackages();
+  }
+
+  private void setUpListener() {
+    ParseLiveQueryClient parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient();
+
+    ParseQuery<PackageRequest> parseQuery = ParseQuery.getQuery(PackageRequest.class);
+    parseQuery.include(PackageRequest.KEY_DRIVER);
+    parseQuery.whereEqualTo(PackageRequest.KEY_USER, ParseUser.getCurrentUser());
+    parseQuery.whereEqualTo(PackageRequest.KEY_ISDONE, false);
+    parseQuery.whereEqualTo(PackageRequest.KEY_ISFULFILLED, true);
+
+    subscriptionHandling = parseLiveQueryClient.subscribe(parseQuery);
+
+    subscriptionHandling.handleEvent(
+            SubscriptionHandling.Event.ENTER,
+            new SubscriptionHandling.HandleEventCallback<PackageRequest>() {
+              @Override
+              public void onEvent(ParseQuery<PackageRequest> query, PackageRequest requestReceived) {
+                ParseUser driver = requestReceived.getParseUser(PackageRequest.KEY_DRIVER);
+                Log.i(TAG, "onEvent: new package request was received with Driver " + driver);
+                Preconditions.checkNotNull(requestReceived);
+                queryCurrentPackages();
+                createNotification();
+              }
+            });
+  }
+
+  private void createNotification() {
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+      NotificationCompat.Builder driverFoundNotification =
+              new NotificationCompat.Builder(getContext(), NOTIFICATION_CHANNEL_ID)
+                      .setSmallIcon(R.drawable.package_notification_icon)
+                      .setContentTitle(getResources().getString(R.string.notification_newDriver_title))
+                      .setContentText(getResources().getString(R.string.notification_newDriver_description))
+                      .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+      NotificationManager mNotificationManager =
+              (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+      mNotificationManager.notify(NOTIFICATION_NEW_DRIVER_ID, driverFoundNotification.build());
+    }
+  }
+
+  /**
+   * Create the NotificationChannel, but only on API 26+ because the NotificationChannel class is
+   * new and not in the support library.
+   */
+  private void createNotificationChannel() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      CharSequence name = getString(R.string.channel_name);
+      String description = getString(R.string.channel_description);
+      int importance = NotificationManager.IMPORTANCE_DEFAULT;
+      NotificationChannel channel =
+              new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+      channel.setDescription(description);
+      NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
+      notificationManager.createNotificationChannel(channel);
+    }
   }
 
   private void queryCurrentPackages() {
@@ -288,6 +359,15 @@ public class HomeFragment extends Fragment
         startActivityForResult(intent, AUTOCOMPLETE_DESTINATION_REQUEST_CODE);
       }
     });
+
+    bottomSheetComposeBinding.toUsersImageView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        FragmentManager fm = getParentFragmentManager();
+        UsersFragment.display(HomeFragment.this, fm);
+      }
+    });
+
     //TODO: make a new fragment with a map for users, get requests programatically
     // TODO: set up sliding for bottom sheet
     bottomSheetComposeBinding.nextButton.setOnClickListener(new View.OnClickListener() {
@@ -393,7 +473,7 @@ public class HomeFragment extends Fragment
       } else {
         Snackbar.make(
                 binding.getRoot(),
-                getString(R.string.maps_no_permissions_err),
+                getActivity().getString(R.string.maps_no_permissions_err),
                 Snackbar.LENGTH_SHORT)
             .show();
         Log.d(TAG, "getDeviceLocation: Location Permission not granted");
@@ -406,7 +486,7 @@ public class HomeFragment extends Fragment
   @Override
   public void onMapLongClick(LatLng latLng) {
     if (!onCurrentRequest) {
-      Snackbar.make(binding.getRoot(), getString(R.string.set_destination), Snackbar.LENGTH_SHORT)
+      Snackbar.make(binding.getRoot(), getActivity().getString(R.string.set_destination), Snackbar.LENGTH_SHORT)
               .show();
       setDestination(latLng);
     }
@@ -499,10 +579,14 @@ public class HomeFragment extends Fragment
   @Override
   public void respondToNewSubmission(PackageRequest request) {
     Log.i(TAG, "respondToNewSubmission: new submission from self" + request);
-    binding.layoutBottomSheet.chooseDestinationTextView.setText(getString(R.string.bottom_search_up_destination));
-    binding.layoutBottomSheet.chooseUserTextView.setText(getString(R.string.bottom_choose_user_instead));
     queryCurrentPackages();
     currRequest = request;
     setMapToCurrRequest(request);
+
+    binding.layoutBottomSheet.chooseDestinationTextView.setText(getActivity().getString(R.string.bottom_search_up_destination));
+    binding.layoutBottomSheet.chooseUserTextView.setText(getActivity().getString(R.string.bottom_choose_user_instead));
+    bottomSheetComposeBinding.bottomSheetCompose.setVisibility(View.GONE);
+    bottomSheetComposeBinding.nextButton.setVisibility(View.GONE);
+    bottomSheetComposeBinding.secondDivider.setVisibility(View.GONE);
   }
 }

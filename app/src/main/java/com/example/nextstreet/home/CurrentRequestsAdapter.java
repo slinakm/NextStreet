@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ItemRequestBinding;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.trips.DetailsFragment;
@@ -74,7 +75,8 @@ public class CurrentRequestsAdapter extends RecyclerView.Adapter<CurrentRequests
 
         private void bind(PackageRequest request) {
             DetailsMaterialCard.setUpCard(binding, request, context);
-            binding.descriptionTextView.setVisibility(View.GONE);
+            binding.description.setVisibility(View.GONE);
+            binding.fulfilledTextView.setVisibility(View.GONE);
             binding.packageImageView.setVisibility(View.GONE);
             setupOnClickListener(request);
         }

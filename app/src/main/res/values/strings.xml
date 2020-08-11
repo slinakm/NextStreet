@@ -106,4 +106,10 @@
     <string name="set_starting_location">Set starting location</string>
     <string name="driver_yes">Yes</string>
     <string name="driver_no">No</string>
+    <string name="ongoing">Ongoing</string>
+    <string name="fulfilled">Fulfilled!</string>
+    <string name="to">to</string>
+    <string name="personal_profile">Personal Profile</string>
+    <string name="requests">Requests</string>
+    <string name="users">Users</string>
 </resources>

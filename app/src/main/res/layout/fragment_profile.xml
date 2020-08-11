@@ -47,7 +47,7 @@
         android:layout_margin="@dimen/profile_vertical_spacing"
         android:backgroundTint="@color/btn_scnd_color"
         android:text="@string/login_logOutButton"
-        android:textColor="@color/btn_text_color"
+        android:textColor="@color/secondaryTextColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilePictureButton" />

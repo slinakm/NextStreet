@@ -25,7 +25,7 @@ public class StartActivity extends AppCompatActivity {
     binding = ActivityStartBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
 
-    isLogedIn();
+    isLoggedIn();
 
     binding.driverButton.setOnClickListener(new StartActivity.DriverOnClickListener());
     binding.userButton.setOnClickListener(new StartActivity.UserOnClickListener());
@@ -47,7 +47,7 @@ public class StartActivity extends AppCompatActivity {
     }
   }
 
-  private boolean isLogedIn() {
+  private boolean isLoggedIn() {
     ParseUser currUser = ParseUser.getCurrentUser();
 
     if (currUser == null) {
@@ -58,9 +58,11 @@ public class StartActivity extends AppCompatActivity {
 
     if (currUserIsDriver) {
       goActivity(DriverMainActivity.class);
+      finish();
       return true;
     } else {
       goActivity(MainActivity.class);
+      finish();
       return true;
     }
   }
@@ -68,6 +70,5 @@ public class StartActivity extends AppCompatActivity {
   private void goActivity(Class c) {
     Intent i = new Intent(this, c);
     startActivity(i);
-    finish();
   }
 }

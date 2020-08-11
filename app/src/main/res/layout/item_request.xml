@@ -4,7 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card"
-    android:elevation="40dp"
+    android:elevation="100dp"
+    android:padding="@dimen/card_outside_margin"
+    android:background="@color/white"
+    android:backgroundTint="@color/card_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_margins">
@@ -30,25 +33,60 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/card_outside_margin"
+            android:layout_marginStart="@dimen/card_horizontal_spacing"
             android:orientation="vertical">
-        <TextView
-                android:id="@+id/destinationTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/destination"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/originTextView"
-                app:layout_constraintTop_toBottomOf="@+id/originTextView" />
 
-            <TextView
-                android:id="@+id/originTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/origin"
-                app:layout_constraintBottom_toBottomOf="@+id/packageImageView"
-                app:layout_constraintStart_toStartOf="@+id/descriptionTextView"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/destinationTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/destination"
+                    android:textColor="@color/card_text"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/fulfilledTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/fulfilled"
+                    android:textAllCaps="true"
+                    android:textColor="@color/accentPrimaryDarkColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="@dimen/card_horizontal_spacing"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/toTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/to"
+                    android:textColor="@color/card_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/originTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/origin"
+                    android:textColor="@color/card_text"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/card_horizontal_spacing"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/toTextView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <TextView
                 android:id="@+id/driverTextView"
@@ -56,68 +94,104 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/card_vertical_spacing"
                 android:text="@string/driver_name"
-                app:layout_constraintStart_toStartOf="@+id/descriptionTextView"
-                app:layout_constraintTop_toBottomOf="@+id/destinationTextView" />
+                android:textColor="@color/card_text"
+                android:layout_marginStart="@dimen/card_horizontal_spacing"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/distanceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/card_horizontal_spacing"
+                    app:layout_constraintEnd_toStartOf="@+id/timeTextView"
+                    app:layout_constraintTop_toTopOf="@+id/timeTextView"
+                    tools:text="xx miles" />
+
+                <TextView
+                    android:id="@+id/timeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_vertical_margins"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="@dimen/card_margins"
+                    android:layout_marginBottom="@dimen/card_vertical_spacing"
+                    tools:text="5 minutes ago" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/distanceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/card_horizontal_spacing"
-                app:layout_constraintEnd_toStartOf="@+id/timeTextView"
-                app:layout_constraintTop_toTopOf="@+id/timeTextView"
-                tools:text="xx miles" />
-
-            <TextView
-                android:id="@+id/timeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/card_vertical_margins"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="@dimen/card_margins"
-                tools:text="TextView" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/descriptionTextView"
+        <LinearLayout
+            android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/card_horizontal_spacing"
-            android:layout_marginTop="@dimen/card_vertical_margins"
-            tools:text="Description"
-            app:layout_constraintStart_toEndOf="@+id/packageImageView"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical">
+            <View
+                android:id="@+id/firstDivider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginTop="@dimen/bottom_fragment_vertical_child_spacing"
+                android:layout_marginBottom="@dimen/bottom_fragment_vertical_child_spacing"
+                android:background="?android:attr/listDivider" />
+            <TextView
+                android:id="@+id/descriptionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/card_horizontal_spacing"
+                android:layout_marginTop="@dimen/card_vertical_margins"
+                tools:text="Description"
+                app:layout_constraintStart_toEndOf="@+id/packageImageView"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/yesImageView"
+            android:orientation="vertical">
+            <View
+                android:id="@+id/secondDivider"
+                android:layout_width="match_parent"
                 android:visibility="gone"
+                android:layout_height="@dimen/divider_height"
+                android:layout_marginTop="@dimen/bottom_fragment_vertical_child_spacing"
+                android:layout_marginBottom="@dimen/bottom_fragment_vertical_child_spacing"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="@string/driver_yes"
-                style="?attr/borderlessButtonStyle"
-                />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/noImageView"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/driver_no"
-                android:textColor="@color/blue_grey"
-                style="?attr/borderlessButtonStyle"
-                />
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/yesImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="@color/accentPrimaryLightColor"
+                    android:text="@string/driver_yes"
+                    android:textColor="@color/blue_grey"
+                    style="?attr/borderlessButtonStyle"
+                    />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/noImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="@string/driver_no"
+                    android:textColor="@color/text_primary"
+                    android:backgroundTint="@color/red"
+                    style="?attr/borderlessButtonStyle"
+                    />
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
