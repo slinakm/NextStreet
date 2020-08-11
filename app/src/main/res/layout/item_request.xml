@@ -7,9 +7,11 @@
     android:elevation="100dp"
     android:padding="@dimen/card_outside_margin"
     android:background="@color/white"
-    android:backgroundTint="@color/card_background"
+    android:backgroundTint="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:strokeColor="@color/card_background"
+    app:strokeWidth="@dimen/divider_height_heavy"
     android:layout_margin="@dimen/card_margins">
 
     <LinearLayout
@@ -18,6 +20,7 @@
         android:orientation="vertical">
         <LinearLayout
             android:id="@+id/layout_image"
+            android:layout_marginTop="@dimen/card_vertical_spacing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
@@ -34,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/card_horizontal_spacing"
+            android:layout_marginTop="@dimen/card_vertical_spacing"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +48,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/destination"
-                    android:textColor="@color/card_text"
                     android:textAllCaps="false"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -71,7 +74,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/to"
-                    android:textColor="@color/card_text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -80,7 +82,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/origin"
-                    android:textColor="@color/card_text"
                     android:textStyle="bold"
                     android:layout_marginStart="@dimen/card_horizontal_spacing"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -94,7 +95,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/card_vertical_spacing"
                 android:text="@string/driver_name"
-                android:textColor="@color/card_text"
                 android:layout_marginStart="@dimen/card_horizontal_spacing"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>

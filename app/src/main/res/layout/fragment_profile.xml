@@ -41,6 +41,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/chooseHomeButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/profile_vertical_spacing"
+        android:backgroundTint="@color/btn_color"
+        android:text="@string/set_home"
+        android:textColor="@color/btn_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePictureButton" />
+
+    <Button
         android:id="@+id/logoutButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -50,7 +62,7 @@
         android:textColor="@color/secondaryTextColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePictureButton" />
+        app:layout_constraintTop_toBottomOf="@+id/chooseHomeButton" />
 
     <ImageView
         android:id="@+id/ivCancel"

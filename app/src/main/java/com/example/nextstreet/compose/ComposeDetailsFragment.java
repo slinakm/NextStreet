@@ -34,8 +34,6 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 
 import java.io.ByteArrayOutputStream;
@@ -186,7 +184,6 @@ public class ComposeDetailsFragment extends CircularRevealDialogFragment impleme
         });
     }
 
-        // TODO: fix crashing bug when submitting with camera!!!!
     @Override
     public File launchCamera() {
         Log.i(TAG, "launchCamera: ");

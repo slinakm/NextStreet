@@ -54,10 +54,21 @@
             android:backgroundTint="@color/btn_color"
             android:text="@string/set_as_active"
             android:textColor="@color/btn_text_color"
-            app:layout_constraintBottom_toTopOf="@+id/logoutButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profilePictureButton" />
+
+        <Button
+            android:id="@+id/chooseHomeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/profile_vertical_spacing"
+            android:backgroundTint="@color/btn_color"
+            android:text="@string/set_home"
+            android:textColor="@color/btn_text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activeButton" />
 
         <Button
             android:id="@+id/logoutButton"
@@ -70,6 +81,6 @@
             android:textColor="@color/btn_text_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activeButton" />
+            app:layout_constraintTop_toBottomOf="@+id/chooseHomeButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

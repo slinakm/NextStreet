@@ -41,7 +41,7 @@
 
     <color name="back_icon_color">@color/secondaryDarkColor</color>
     <color name="bottom_fragment_background">@color/primaryDarkColor</color>
-    <color name="card_background">#B0F2FF</color>
+    <color name="card_background">#D8F9FF</color>
     <color name="card_text">@color/black</color>
 
     <color name="white">#ffffff</color>
