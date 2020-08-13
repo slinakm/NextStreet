@@ -1,9 +1,12 @@
 package com.example.nextstreet.compose;
 
 import android.app.Activity;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,15 +24,20 @@ import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
 
+    private static final String TAG = UsersAdapter.class.getSimpleName();
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
     private static final String PROFILE_PIC = "profilePic";
     private final Activity context;
     private final List<ParseUser> users;
+    private final FragmentCallback callback;
+    private final FragmentCallback containingFragment;
 
-    UsersAdapter(Activity context, List<ParseUser> users) {
+    UsersAdapter(Activity context, List<ParseUser> users, FragmentCallback callback, FragmentCallback containingFragment) {
         this.context = context;
         this.users = users;
+        this.callback = callback;
+        this.containingFragment = containingFragment;
     }
 
     @NonNull
@@ -70,7 +78,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
             this.binding = binding;
         }
 
-        private void bind(ParseUser user) {
+        private void bind(final ParseUser user) {
             binding.nameTextView.setText(String.format("%s %s", user.getString(FIRST_NAME), user.getString(LAST_NAME)));
             binding.usernameTextView.setText(user.getUsername());
 
@@ -87,6 +95,18 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
                         .transform(new RoundedCorners(R.integer.rounded_corners))
                         .into(binding.profilePictureImageView);
             }
+            binding.toUserDetailsImageView.setVisibility(View.INVISIBLE);
+      binding
+          .getRoot()
+          .setOnClickListener(
+              new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                  Log.i(TAG, "onClick: " + user.getUsername());
+                  callback.call(user);
+                  containingFragment.call(user);
+                }
+              });
         }
     }
 }

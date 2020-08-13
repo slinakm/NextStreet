@@ -182,8 +182,8 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ToggleButton
-                        android:id="@+id/toggleButton"
-                        android:background="@color/btn_color"
+                        android:id="@+id/selectHomeButton"
+                        android:background="@color/light_grey"
                         android:textColor="@color/btn_text_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

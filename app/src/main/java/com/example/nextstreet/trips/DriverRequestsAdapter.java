@@ -7,9 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.ContentDriverDetailsBinding;
 import com.example.nextstreet.databinding.ItemDriverRequestBinding;
 import com.example.nextstreet.models.PackageRequest;
@@ -112,16 +115,12 @@ public class DriverRequestsAdapter extends RecyclerView.Adapter<DriverRequestsAd
     }
 
     private void switchLayouts(PackageRequest request) {
-      if (layoutDriverRequestsView.getVisibility() == View.VISIBLE) {
-        layoutDriverRequestsView.setVisibility(View.GONE);
-        layoutDriverDetailsView.getRoot().setVisibility(View.VISIBLE);
-        DetailsMaterialCard.setUpCard(layoutDriverDetailsView.layoutContentDetails.card, request, context);
-        layoutDriverDetailsView.layoutContentDetails.card.driverTextView.setVisibility(View.GONE);
-        layoutDriverDetailsView.layoutContentDetails.card.fulfilledTextView.setVisibility(View.INVISIBLE);
-      } else {
-        layoutDriverRequestsView.setVisibility(View.VISIBLE);
-        layoutDriverDetailsView.getRoot().setVisibility(View.GONE);
-      }
+      FragmentManager fm = context.getSupportFragmentManager();
+      DriverDetailsFragment detailsFragment = DriverDetailsFragment.newInstance(request);
+      FragmentTransaction transaction = fm.beginTransaction();
+      transaction.replace(R.id.nav_driver_host_fragment, detailsFragment);
+      transaction.addToBackStack(detailsFragment.getTag());
+      transaction.commit();
     }
 
     @Override

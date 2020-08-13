@@ -33,24 +33,32 @@ import com.example.nextstreet.MainActivity;
 import com.example.nextstreet.R;
 import com.example.nextstreet.compose.ComposeDetailsFragment;
 import com.example.nextstreet.compose.ComposeHelper;
+import com.example.nextstreet.compose.FragmentCallback;
 import com.example.nextstreet.compose.UsersFragment;
 import com.example.nextstreet.databinding.BottomSheetComposeBinding;
 import com.example.nextstreet.databinding.FragmentHomeBinding;
 import com.example.nextstreet.models.PackageRequest;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -79,10 +87,14 @@ public class HomeFragment extends Fragment
         OnMapReadyCallback,
         GoogleMap.OnMapLongClickListener,
         NewSubmissionListener,
-        MapsPlaceSelectionResponder {
+        MapsPlaceSelectionResponder,
+        FragmentCallback,
+        CurrentRequestsAdapter.OnSingleClickRequestResponder{
 
-  public static final int DEFAULT_ZOOM = 20;
+  public static final int DEFAULT_ZOOM = 500;
   private static final String TAG = HomeFragment.class.getSimpleName();
+  private static final String HOME_PLACE = "homePlaceId";
+
 
   private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
   private static final int AUTOCOMPLETE_DESTINATION_REQUEST_CODE = 2;
@@ -250,7 +262,7 @@ public class HomeFragment extends Fragment
       }
     });
     AppCompatActivity appCompatActivityOfThis = (AppCompatActivity) getActivity();
-    adapter = new CurrentRequestsAdapter(appCompatActivityOfThis, new ArrayList<PackageRequest>());
+    adapter = new CurrentRequestsAdapter(appCompatActivityOfThis, new ArrayList<PackageRequest>(), this);
     currentPackagesRecyclerView.setAdapter(adapter);
     queryCurrentPackages();
   }
@@ -363,8 +375,8 @@ public class HomeFragment extends Fragment
     bottomSheetComposeBinding.toUsersImageView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        FragmentManager fm = getParentFragmentManager();
-        UsersFragment.display(HomeFragment.this, fm);
+        FragmentManager fm = getChildFragmentManager();
+        UsersFragment.display(fm);
       }
     });
 
@@ -389,16 +401,20 @@ public class HomeFragment extends Fragment
 
         setDestination(destinationPlace.getLatLng());
         setDestinationPlace(destinationPlace);
-
         bottomSheetComposeBinding.chooseDestinationTextView.setText(String.format("%s: %s", getResources().getText(R.string.destination), destinationPlace.getName()));
-        bottomSheetComposeBinding.secondDivider.setVisibility(View.VISIBLE);
-        bottomSheetComposeBinding.nextButton.setVisibility(View.VISIBLE);
+
+        setBottomVisible();
       } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
         Status status = Autocomplete.getStatusFromIntent(data);
         Log.e(TAG, status.getStatusMessage());
       }
     }
     super.onActivityResult(requestCode, resultCode, data);
+  }
+
+  private void setBottomVisible() {
+    bottomSheetComposeBinding.secondDivider.setVisibility(View.VISIBLE);
+    bottomSheetComposeBinding.nextButton.setVisibility(View.VISIBLE);
   }
 
   @Override
@@ -550,6 +566,11 @@ public class HomeFragment extends Fragment
 
   }
 
+  @Override
+  public void moveMap(PackageRequest request) {
+    setMapToCurrRequest(request);
+  }
+
   private void setMapToCurrRequest(PackageRequest request) {
     Log.i(TAG, "setMapToCurrRequest: here! ");
 
@@ -568,6 +589,14 @@ public class HomeFragment extends Fragment
 
     setOriginNoCamera(latlngOrigin);
     setDestination(latlngDest);
+
+    LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+    boundsBuilder.include(latlngDest);
+    boundsBuilder.include(latlngOrigin);
+    LatLngBounds bounds = boundsBuilder.build();
+
+    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, DEFAULT_ZOOM);
+    map.animateCamera(cu);
   }
 
   @Override
@@ -588,5 +617,46 @@ public class HomeFragment extends Fragment
     bottomSheetComposeBinding.bottomSheetCompose.setVisibility(View.GONE);
     bottomSheetComposeBinding.nextButton.setVisibility(View.GONE);
     bottomSheetComposeBinding.secondDivider.setVisibility(View.GONE);
+  }
+
+  @Override
+  public void call(final ParseUser user) {
+    bottomSheetComposeBinding.chooseUserTextView.setText(String.format("To User: %s", user.getUsername()));
+
+    String placeId =  user.getString(HOME_PLACE);
+
+    binding.pbLoading.setVisibility(View.VISIBLE);
+    Snackbar.make(binding.getRoot(), "Loading destination to map", Snackbar.LENGTH_SHORT).show();
+    final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+
+    final FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeId, placeFields);
+    Places.initialize(getContext().getApplicationContext(), BuildConfig.MAPS_API_KEY);
+    PlacesClient placesClient = Places.createClient(getContext());
+
+    placesClient.fetchPlace(request).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        binding.pbLoading.setVisibility(View.GONE);
+
+        if (e instanceof ApiException) {
+          ApiException apiException = (ApiException) e;
+          int statusCode = apiException.getStatusCode();
+          // TODO: Handle error with given status code.
+          Log.e(TAG, "Place not found: " + e.getMessage());
+        }
+      }
+    }).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
+      @Override
+      public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
+        binding.pbLoading.setVisibility(View.GONE);
+
+        Place place = fetchPlaceResponse.getPlace();
+        Log.i(TAG, "Place found: " + place.getName() + fetchPlaceResponse);
+
+        setDestinationPlace(place);
+        setDestination(place.getLatLng());
+        setBottomVisible();
+      }
+    });
   }
 }

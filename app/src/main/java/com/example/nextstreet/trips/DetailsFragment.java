@@ -17,16 +17,21 @@ import com.example.nextstreet.home.HomeFragment;
 import com.example.nextstreet.models.PackageRequest;
 import com.example.nextstreet.utilities.DetailsMaterialCard;
 import com.example.nextstreet.utilities.DismissOnClickListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.base.Preconditions;
 import com.parse.ParseGeoPoint;
+
+import static com.example.nextstreet.home.HomeFragment.DEFAULT_ZOOM;
 
 public class DetailsFragment extends DialogFragment implements OnMapReadyCallback {
 
@@ -62,6 +67,11 @@ public class DetailsFragment extends DialogFragment implements OnMapReadyCallbac
 
     request = (PackageRequest) getArguments().get(PackageRequest.class.getSimpleName());
 
+    SupportMapFragment mMapFragment =
+            (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+    mMapFragment.getMapAsync(this);
+
+
     ContentDetailBinding layoutDetails = binding.layoutContentDetails;
     DetailsMaterialCard.setUpCard(layoutDetails.card, request, getContext());
     binding.ivCancel.setOnClickListener(new DismissOnClickListener(this));
@@ -81,13 +91,14 @@ public class DetailsFragment extends DialogFragment implements OnMapReadyCallbac
     map = googleMap;
     if (map == null) {
       Snackbar.make(binding.getRoot(), "Error - Map was null!!", Snackbar.LENGTH_LONG).show();
-    } else {
-      setMapToCurrRequest();
+      return;
     }
+    setMapToCurrRequest();
   }
 
   private void setMapToCurrRequest() {
     Log.i(TAG, "setMapToCurrRequest: here! ");
+
     ParseGeoPoint origin = request.getOrigin();
     ParseGeoPoint destination = request.getDestination();
 
@@ -102,6 +113,18 @@ public class DetailsFragment extends DialogFragment implements OnMapReadyCallbac
 
     setOriginNoCamera(latlngOrigin);
     setDestination(latlngDest);
+
+    LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+    boundsBuilder.include(latlngDest);
+    boundsBuilder.include(latlngOrigin);
+    LatLngBounds bounds = boundsBuilder.build();
+
+    int width = getResources().getDisplayMetrics().widthPixels;
+    int height = getResources().getDisplayMetrics().heightPixels;
+    int padding = (int) (width * 0.40);
+
+    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+    map.animateCamera(cu);
   }
 
   void setOriginNoCamera(LatLng newPlace) {

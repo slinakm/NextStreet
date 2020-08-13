@@ -26,10 +26,14 @@ public class CurrentRequestsAdapter extends RecyclerView.Adapter<CurrentRequests
 
     private final AppCompatActivity context;
     private final List<PackageRequest> currentRequests;
+    private final OnSingleClickRequestResponder singleClickRequestResponder;
 
-    public CurrentRequestsAdapter(AppCompatActivity context, List<PackageRequest> currentRequests) {
+    public CurrentRequestsAdapter(AppCompatActivity context,
+                                  List<PackageRequest> currentRequests,
+                                  OnSingleClickRequestResponder singleClickRequestResponder) {
         this.context = context;
         this.currentRequests = currentRequests;
+        this.singleClickRequestResponder = singleClickRequestResponder;
     }
 
     @NonNull
@@ -96,7 +100,17 @@ public class CurrentRequestsAdapter extends RecyclerView.Adapter<CurrentRequests
 
                                     detailsFragment.show(fm, DetailsFragment.class.getSimpleName());
                                 }
+
+                                @Override
+                                public void onSingleTap(MotionEvent e) {
+                                    Log.i(TAG, "onSingleTap: single performed");
+                                    singleClickRequestResponder.moveMap(request);
+                                }
                             });
         }
+    }
+
+    public interface OnSingleClickRequestResponder {
+        void moveMap(PackageRequest request);
     }
 }

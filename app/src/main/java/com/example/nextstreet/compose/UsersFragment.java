@@ -33,19 +33,19 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersFragment extends DialogFragment {
+public class UsersFragment extends DialogFragment implements FragmentCallback {
 
     private static final String TAG = UsersFragment.class.getSimpleName();
     private static final String IS_DRIVER = "isDriver";
-    private static final String HOME = "home";
+    private static final String HOME_PLACE = "homePlaceId";
 
     private FragmentUsersBinding binding;
     private UsersAdapter adapter;
     private Toolbar toolbar;
+    private FragmentCallback callback;
 
-    public static UsersFragment display(Fragment targetFragment, FragmentManager fragmentManager) {
+    public static UsersFragment display(FragmentManager fragmentManager) {
         UsersFragment usersFragment = new UsersFragment();
-        usersFragment.setTargetFragment(targetFragment, 0);
         usersFragment.show(fragmentManager, TAG);
         return usersFragment;
     }
@@ -53,6 +53,11 @@ public class UsersFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            callback = (FragmentCallback) getParentFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Calling fragment must implement Callback interface");
+        }
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
     }
 
@@ -84,7 +89,7 @@ public class UsersFragment extends DialogFragment {
         toolbar.setTitle(getResources().getString(R.string.users));
         toolbar.setTitleTextColor(getResources().getColor(R.color.primaryTextColor));
 
-        adapter = new UsersAdapter(getActivity(), new ArrayList<ParseUser>());
+        adapter = new UsersAdapter(getActivity(), new ArrayList<ParseUser>(), callback, this);
         binding.usersRecyclerView.setAdapter(adapter);
         binding.usersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         queryUsers();
@@ -94,7 +99,7 @@ public class UsersFragment extends DialogFragment {
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
 
         query.whereEqualTo(IS_DRIVER, false);
-        query.whereExists(HOME);
+        query.whereExists(HOME_PLACE);
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> objects, ParseException e) {
@@ -102,5 +107,10 @@ public class UsersFragment extends DialogFragment {
                 adapter.addAll(objects);
             }
         });
+    }
+
+    @Override
+    public void call(ParseUser user) {
+        dismiss();
     }
 }

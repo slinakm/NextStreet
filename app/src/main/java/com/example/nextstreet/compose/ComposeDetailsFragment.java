@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.nextstreet.R;
 import com.example.nextstreet.databinding.FragmentComposeDetailsBinding;
@@ -35,6 +37,7 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.common.base.Preconditions;
+import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -45,7 +48,10 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ComposeDetailsFragment extends CircularRevealDialogFragment implements CameraLauncher, NewSubmissionListener {
+public class ComposeDetailsFragment extends CircularRevealDialogFragment
+        implements CameraLauncher,
+                NewSubmissionListener,
+                FragmentCallback {
 
     private static final String TAG = ComposeDetailsFragment.class.getSimpleName();
     private static final int AUTOCOMPLETE_DESTINATION_REQUEST_CODE = 2;
@@ -132,6 +138,19 @@ public class ComposeDetailsFragment extends CircularRevealDialogFragment impleme
     }
 
     private void setUpButtons() {
+        binding.selectHomeButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    buttonView.setBackgroundColor(getResources().getColor(R.color.btn_color));
+                    buttonView.setText("Origin");
+                    binding.originTextView.setText(getResources().getText(R.string.origin));
+                } else {
+                    buttonView.setBackgroundColor(getResources().getColor(R.color.light_grey));
+                    buttonView.setText(getResources().getText(R.string.choose_home_as_origin));
+                }
+            }
+        });
+
         binding.toDescriptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,6 +177,14 @@ public class ComposeDetailsFragment extends CircularRevealDialogFragment impleme
                     binding.packageImageView.setVisibility(View.GONE);
                     binding.cameraButton.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        binding.toUsersImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getChildFragmentManager();
+                UsersFragment.display(fm);
             }
         });
     }
@@ -302,5 +329,15 @@ public class ComposeDetailsFragment extends CircularRevealDialogFragment impleme
 
     @Override
     public void respondToNewSubmission(PackageRequest request) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.remove(this);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        ft.commit();
+    }
+
+    @Override
+    public void call(ParseUser user) {
+        binding.chooseUserTextView.setText(String.format("To User: %s", user.getUsername()));
     }
 }

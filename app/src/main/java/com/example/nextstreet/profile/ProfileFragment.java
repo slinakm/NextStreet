@@ -88,6 +88,8 @@ public class ProfileFragment extends CircularRevealDialogFragment implements Cam
       @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentProfileBinding.inflate(getLayoutInflater());
     setUpOnLayoutListener(binding.getRoot(), true);
+    Places.initialize(getContext().getApplicationContext(), BuildConfig.MAPS_API_KEY);
+
     return binding.getRoot();
   }
 
@@ -133,11 +135,10 @@ public class ProfileFragment extends CircularRevealDialogFragment implements Cam
     final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS);
 
     final FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeId, placeFields);
-    Places.initialize(getContext().getApplicationContext(), BuildConfig.MAPS_API_KEY);
     PlacesClient placesClient = Places.createClient(getContext());
 
     View rootView = getActivity().findViewById(android.R.id.content).getRootView();
-    Snackbar.make(rootView, R.string.toast_place_loading, Snackbar.LENGTH_SHORT);
+    Snackbar.make(rootView, R.string.toast_place_loading, Snackbar.LENGTH_SHORT).show();
 
     placesClient.fetchPlace(request).addOnFailureListener(new OnFailureListener() {
       @Override
@@ -159,7 +160,7 @@ public class ProfileFragment extends CircularRevealDialogFragment implements Cam
           name = place.getAddress();
         }
 
-        binding.chooseHomeButton.setText(String.format("%s %s", getString(R.string.home), name));
+        binding.chooseHomeButton.setText(String.format("%s: %s", getString(R.string.home), name));
       }
     });
   }

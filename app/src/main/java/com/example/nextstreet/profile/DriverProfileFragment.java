@@ -122,7 +122,7 @@ public class DriverProfileFragment extends Fragment implements CameraLauncher {
     PlacesClient placesClient = Places.createClient(getContext());
 
     View rootView = getActivity().findViewById(android.R.id.content).getRootView();
-    Snackbar.make(rootView, R.string.toast_place_loading, Snackbar.LENGTH_SHORT);
+    Snackbar.make(rootView, R.string.toast_place_loading, Snackbar.LENGTH_SHORT).show();
 
     placesClient.fetchPlace(request).addOnFailureListener(new OnFailureListener() {
       @Override
