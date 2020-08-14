@@ -9,13 +9,13 @@
         android:id="@+id/nav_driver_requests"
         android:title="@string/driver_menu_requests"
         android:name="com.example.nextstreet.trips.DriverRequestsFragment"
-        android:label="DriverRequestsFragment"
+        android:label="@string/driver_menu_requests"
         tools:layout="@layout/fragment_driver_requests" />
 
     <fragment
         android:id="@+id/nav_driver_profile"
-        android:title="@string/driver_menu_requests"
+        android:title="@string/driver_menu_profile"
         android:name="com.example.nextstreet.profile.DriverProfileFragment"
-        android:label="DriverProfileFragment"
+        android:label="@string/driver_menu_profile"
         tools:layout="@layout/fragment_driver_profile" />
 </navigation>

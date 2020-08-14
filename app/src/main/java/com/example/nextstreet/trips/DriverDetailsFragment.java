@@ -81,7 +81,7 @@ public class DriverDetailsFragment extends Fragment implements OnMapReadyCallbac
         binding = FragmentDriverDetailsBinding.inflate(getLayoutInflater());
 
         layoutDriverDetails = binding.layoutDriverDetails;
-        
+
         return binding.getRoot();
     }
 
