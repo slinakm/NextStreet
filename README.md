@@ -41,7 +41,7 @@ An app that will allow users to send or receive local postal deliveries. Uber fo
     - [x] When viewing current request details, search fragments are animated to move upwards and disappear. 
 
 **Optional Nice-to-have Stories**
-- [ ] Can make multiple requests at once and see unfulfilled requests on home screen.
+- [x] Can make multiple requests at once and see unfulfilled requests on home screen.
 - [x] Ability to choose to sign in as a driver or user.
     - [x] Ability to accept/view a list of requests as a driver.
     - [x] Ability to see past requests and details as a user. 
@@ -57,7 +57,7 @@ An app that will allow users to send or receive local postal deliveries. Uber fo
     - [x] Users can see place names instead of coordinates.
     - [ ] Ability to "track" package location (at least visually) on a map.
 - Ability to view 
-    - [ ] personal profile. 
+    - [x] personal profile. 
     - [ ] list of users to send package.
         - [ ] Double tap user to view user profile.
     - [ ] profile of driver, including driver photo. 
